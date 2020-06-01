@@ -16,7 +16,7 @@ extension NSPredicate
         self.init()
     }
 }
-
-*/
  
 #endif
+
+*/
