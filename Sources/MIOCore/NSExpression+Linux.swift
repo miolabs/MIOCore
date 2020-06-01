@@ -7,6 +7,8 @@
 
 import Foundation
 
+/*
+
 #if os(Linux)
 
 extension NSExpression
@@ -15,3 +17,5 @@ extension NSExpression
 }
 
 #endif
+
+ */

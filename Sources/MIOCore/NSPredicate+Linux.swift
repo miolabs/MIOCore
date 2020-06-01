@@ -7,6 +7,7 @@
 
 import Foundation
 
+/*
 #if os(Linux)
 
 extension NSPredicate
@@ -16,4 +17,6 @@ extension NSPredicate
     }
 }
 
+*/
+ 
 #endif
