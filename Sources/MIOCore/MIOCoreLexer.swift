@@ -6,21 +6,27 @@
 //
 
 import Foundation
-/*
+
+public struct MIOCoreLexerToken
+{
+    let type:Int
+    let value:String
+}
+
 public class MIOCoreLexer
 {
-    let input:String
+    var input:String
     var tokenTypes:[[String:Any]] = []
-    var tokens:[Any]?
+    var tokens:[MIOCoreLexerToken]!
     var tokenIndex = -1;
 
     var ignoreTokenTypes:[Int] = []
 
-    init(withString string:String) {
+    public init(withString string:String) {
         input = string
     }
 
-    func addTokenType(_ type:Int, regex:NSRegularExpression) {
+    public func addTokenType(_ type:Int, regex:NSRegularExpression) {
         var item:[String:Any] = [:]
         
         item["RegEx"] = regex
@@ -29,18 +35,13 @@ public class MIOCoreLexer
         tokenTypes.append(item)
     }
 
-    func ignoreTokenType(_ type:Int) {
+    public func ignoreTokenType(_ type:Int) {
         ignoreTokenTypes.append(type)
     }
 
-    func tokenize() {
-        //tokens = _tokenize()
-        tokenIndex = 0
-    }
-
-    func _tokenize() -> [Any]{
+    public func tokenize(){
         
-        var tokens:[Any] = []
+        tokens = []
         var foundToken = false
     
         repeat {
@@ -51,53 +52,60 @@ public class MIOCoreLexer
     
                 let matches = regex.matches(in: input, options: [], range: NSMakeRange(0, input.count))
                 if matches.count > 0 {
+                    let range = matches[0].range
+                    let start = input.index(input.startIndex, offsetBy: range.lowerBound)
+                    let end = input.index(input.startIndex, offsetBy: range.upperBound)
+                    
                     if ignoreTokenTypes.contains(type) == false {
-                        let match:[String:Any] = [:]
-                        match["Type"] = type
-                        match["Value"] = match[0].str
-                        tokens.push({ type: type, value: matches[0], matches : matches});
+                        let value = String(input[start..<end])
+                        
+                        let token = MIOCoreLexerToken(type: type, value: value)
+                        tokens.append(token)
                     }
-                    input = this.input.substring(matches[0].length);
+                    input.removeSubrange(start..<end)
                     foundToken = true
                     break
                 }
             }
             
             if (foundToken == false) {
-                throw new Error(`MIOCoreLexer: Token doesn't match any pattern. (${this.input})`);
+                //throw new Error(`MIOCoreLexer: Token doesn't match any pattern. (${this.input})`);
+                NSLog("MIOCoreLexer: Token doesn't match any pattern. \(input)")
             }
             
         } while (input.count > 0)
     
-        return tokens
+        tokenIndex = 0
     }
 
-    func nextToken(){
+    public func nextToken() -> MIOCoreLexerToken? {
 
-        if (this.tokenIndex >= this.tokens.length) {
-            return null;
+        if tokenIndex >= tokens.count {
+            return nil
         }
 
-        let token = this.tokens[this.tokenIndex];
-        this.tokenIndex++;
-
+        let token = tokens[tokenIndex]
+        tokenIndex += 1
+        return token
+        
         // Check if we have to ignore
-        let index = this.ignoreTokenTypes.indexOf(token.type);
-        return index == -1 ? token : this.nextToken();
+//        let index = this.ignoreTokenTypes.indexOf(token.type);
+//        return index == -1 ? token : this.nextToken();
     }
     
-    prevToken(){
+    public func prevToken() -> MIOCoreLexerToken? {
 
-        this.tokenIndex--;
-        if (this.tokenIndex < 0) {
-            return null;
+        tokenIndex -= 1
+        if tokenIndex < 0 {
+            return nil
         }
         
-        let token = this.tokens[this.tokenIndex];
+        let token = tokens[tokenIndex]
 
         // Check if we have to ignore
-        let index = this.ignoreTokenTypes.indexOf(token.type);
-        return index == -1 ? token : this.prevToken();
+//        let index = this.ignoreTokenTypes.indexOf(token.type);
+//        return index == -1 ? token : this.prevToken();
+        return token
     }
 }
-*/
+

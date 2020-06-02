@@ -7,6 +7,48 @@
 
 import Foundation
 
+public enum MIOPredicateTokenType: Int
+{
+    case identifier
+    
+    case uuidValue
+    case stringValue
+    case numberValue
+    case booleanValue
+    case nullValue
+    case propertyValue
+
+    case minorOrEqualComparator
+    case minorComparator
+    case majorOrEqualComparator
+    case majorComparator
+    case equalComparator
+    case distinctComparator
+    case containsComparator
+    case notContainsComparator
+    case inComparator
+    case notIntComparator
+
+    case bitwiseAND
+    case bitwiseOR
+
+    case plusOperation
+    case minusOperation
+    case multiplyOperation
+    case divisionOperation
+    
+    case openParenthesisSymbol
+    case closeParenthesisSymbol
+    case whitespace
+
+    case and
+    case or
+
+    case any
+    case all
+
+    case classValue
+}
 
 open class MIOPredicate: NSObject
 {
@@ -18,9 +60,24 @@ open class MIOPredicate: NSObject
     public init(format predicateFormat: String, arguments argList: CVaListPointer) {
         
     }
+        
+    var lexer:MIOCoreLexer!
     
     func parse(_ predicateFormat: String, arguments: [Any]?) {
+    
+        lexer = MIOCoreLexer(withString: predicateFormat)
         
+        // Values
+        lexer.addTokenType(MIOPredicateTokenType.uuidValue.rawValue, regex: try! NSRegularExpression(pattern: "/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i", options:[]))
+        lexer.addTokenType(MIOPredicateTokenType.stringValue.rawValue, regex: try! NSRegularExpression(pattern: "/^\"([^\"]*)\"|^'([^']*)'/", options:[]))
+        
+
+        
+        
+        // Identifiers - Has to be the last one
+        lexer.addTokenType(MIOPredicateTokenType.identifier.rawValue, regex: try! NSRegularExpression(pattern:"/^[a-zA-Z-_][a-zA-Z0-9-_\\.]", options:[]))
+
+        lexer.tokenize()
     }
     /*
     func tokenize(withFormat format:string){
