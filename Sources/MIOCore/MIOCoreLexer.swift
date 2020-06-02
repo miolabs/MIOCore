@@ -50,7 +50,7 @@ public class MIOCoreLexer
                 let regex = token["RegEx"] as! NSRegularExpression
                 let type = token["Type"] as! Int
     
-                let matches = regex.matches(in: input, options: [], range: NSMakeRange(0, input.count))
+                let matches = regex.matches(in: input, range: NSRange(input.startIndex..., in: input))
                 if matches.count > 0 {
                     let range = matches[0].range
                     let start = input.index(input.startIndex, offsetBy: range.lowerBound)
@@ -71,6 +71,7 @@ public class MIOCoreLexer
             if (foundToken == false) {
                 //throw new Error(`MIOCoreLexer: Token doesn't match any pattern. (${this.input})`);
                 NSLog("MIOCoreLexer: Token doesn't match any pattern. \(input)")
+                break
             }
             
         } while (input.count > 0)
