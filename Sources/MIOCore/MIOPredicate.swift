@@ -128,7 +128,7 @@ open class MIOPredicate: NSObject
             switch (token!.type) {
 
             case MIOPredicateTokenType.identifier.rawValue:
-                      let leftExpression = NSExpression(forKeyPath: token!.value)
+                      let leftExpression = MIOExpression(forKeyPath: token!.value)
                       let k = leftExpression.keyPath
                       let op = parseOperator()
                       let rightExpression = parseExpresion()
@@ -182,19 +182,19 @@ open class MIOPredicate: NSObject
       }
 
     
-      func parseExpresion() -> NSExpression {
+      func parseExpresion() -> MIOExpression {
 
         let token = lexer.nextToken()
         
         switch token!.type {
             
         case MIOPredicateTokenType.uuidValue.rawValue:
-            let ex = NSExpression(forConstantValue: token!.value)
+            let ex = MIOExpression(forConstantValue: token!.value)
             return ex
             
         case MIOPredicateTokenType.stringValue.rawValue:
             let v = String(token!.value.dropLast().dropFirst())
-            let ex = NSExpression(forConstantValue: v)
+            let ex = MIOExpression(forConstantValue: v)
             return ex
 
 /*        case MIOPredicateTokenType.numberValue.rawValue:
@@ -227,7 +227,7 @@ open class MIOPredicate: NSObject
             break
         }
         
-        return NSExpression()
+        return MIOExpression()
     }
       
     func parseOperator() -> NSComparisonPredicate.Operator {
