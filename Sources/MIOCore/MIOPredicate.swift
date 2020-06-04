@@ -114,190 +114,190 @@ open class MIOPredicate: NSObject
 
         lexer.tokenize()
         
-        parsePredicate()
+        //parsePredicate()
     }        
     
-    func parsePredicate(){
-
-          var token = lexer.nextToken()
-          var predicates = [Any]()
-          var exit = false
-
-          while (token != nil && exit == false) {
-              
-            switch (token!.type) {
-
-            case MIOPredicateTokenType.identifier.rawValue:
-                      let leftExpression = MIOExpression(forKeyPath: token!.value)
-                      let k = leftExpression.keyPath
-                      let op = parseOperator()
-                      let rightExpression = parseExpresion()
-                
-                      //let pi = NSComparisonPredicate(leftExpression: leftExpression, rightExpression: rightExpression, modifier: .direct, type: op, options: [])
-                      //predicates.append(pi)
-
-/*                  case MIOPredicateTokenType.AND:
-                      predicates.push(MIOPredicateOperator.andPredicateOperatorType());
-                      break;
-
-                  case MIOPredicateTokenType.OR:
-                      predicates.push(MIOPredicateOperator.orPredicateOperatorType());
-                      break;
-                      
-                  case MIOPredicateTokenType.ANY:
-                      this.lexer.nextToken();
-                      let anyPI = this.nextPredicateItem();
-                      anyPI.relationshipOperation = MIOPredicateRelationshipOperatorType.ANY;
-                      predicates.push(anyPI);
-                      break;
-
-                  case MIOPredicateTokenType.ALL:
-                      this.lexer.nextToken();
-                      let allPI = this.nextPredicateItem();
-                      anyPI.relationshipOperation = MIOPredicateRelationshipOperatorType.ALL;
-                      predicates.push(anyPI);
-                      break;
-
-                  case MIOPredicateTokenType.OpenParenthesisSymbol:
-                      let pg = new MIOPredicateGroup();
-                      pg.predicates = this.parsePredicates();
-                      predicates.push(pg);
-                      break;
-
-                  case MIOPredicateTokenType.CloseParenthesisSymbol:
-                      exit = true;
-                      break;*/
-
-                  default:
-                      //throw new Error(`MIOPredicate: Error. Unexpected token. (${token.value})`);
-                    break
-              }
-
-              if exit != true {
-                  token = lexer.nextToken()
-              }
-          }
-
-          //return predicates
-      }
-
-    
-      func parseExpresion() -> MIOExpression {
-
-        let token = lexer.nextToken()
-        
-        switch token!.type {
-            
-        case MIOPredicateTokenType.uuidValue.rawValue:
-            let ex = MIOExpression(forConstantValue: token!.value)
-            return ex
-            
-        case MIOPredicateTokenType.stringValue.rawValue:
-            let v = String(token!.value.dropLast().dropFirst())
-            let ex = MIOExpression(forConstantValue: v)
-            return ex
-
-/*        case MIOPredicateTokenType.numberValue.rawValue:
-            let ex = NSExpression(expressionType: .constantValue)
-            ex.constantValue = Decimal(token!.value)
-            return ex
-
-            case MIOPredicateTokenType.BooleanValue:
-                item.value = this.booleanFromString(token.value);
-                item.valueType = MIOPredicateItemValueType.Boolean;
-                break;
-
-            case MIOPredicateTokenType.NullValue:
-                item.value = this.nullFromString(token.value);
-                item.valueType = MIOPredicateItemValueType.Null;
-                break;
-
-            case MIOPredicateTokenType.Identifier:
-                item.value = token.value;
-                item.valueType = MIOPredicateItemValueType.Property;
-                break;
-
-            case MIOPredicateTokenType.Class:
-                item.value = this.nextPlaceHolderArgument();
-                item.valueType = MIOPredicateItemValueType.Class;
-                break;*/
-
-            default:
-                //throw new Error(`MIOPredicate: Error. Unexpected comparator. (${token.value})`);
-            break
-        }
-        
-        return MIOExpression()
-    }
-      
-    func parseOperator() -> NSComparisonPredicate.Operator {
-          
-        let token = lexer.nextToken()
-
-        switch token!.type {
-
-        case MIOPredicateTokenType.equalComparator.rawValue:
-            return NSComparisonPredicate.Operator.equalTo
-/*
-              case MIOPredicateTokenType.MajorComparator:
-                  item.comparator = MIOPredicateComparatorType.Greater;
-                  break;
-
-              case MIOPredicateTokenType.MajorOrEqualComparator:
-                  item.comparator = MIOPredicateComparatorType.GreaterOrEqual;
-                  break;
-
-              case MIOPredicateTokenType.MinorComparator:
-                  item.comparator = MIOPredicateComparatorType.Less;
-                  break;
-                  
-              case MIOPredicateTokenType.MinorOrEqualComparator:
-                  item.comparator = MIOPredicateComparatorType.LessOrEqual;
-                  break;
-
-              case MIOPredicateTokenType.DistinctComparator:
-                  item.comparator = MIOPredicateComparatorType.Distinct;
-                  break;
-
-              case MIOPredicateTokenType.ContainsComparator:
-                  item.comparator = MIOPredicateComparatorType.Contains;
-                  break;
-
-              case MIOPredicateTokenType.NotContainsComparator:
-                  item.comparator = MIOPredicateComparatorType.NotContains;
-                  break;
-
-              case MIOPredicateTokenType.InComparator:
-                  item.comparator = MIOPredicateComparatorType.In;
-                  break;
-
-              case MIOPredicateTokenType.BitwiseAND:
-                  item.bitwiseOperation = MIOPredicateBitwiseOperatorType.AND;
-                  item.bitwiseKey = item.key;
-                  item.key += " & ";
-                  token = this.lexer.nextToken();
-                  item.bitwiseValue = token.value;
-                  item.key += token.value;
-                  this.comparator(item);
-                  break;
-
-              case MIOPredicateTokenType.BitwiseOR:
-                  item.bitwiseOperation = MIOPredicateBitwiseOperatorType.OR;
-                  item.bitwiseKey = item.key;
-                  item.key += " & ";
-                  token = this.lexer.nextToken();
-                  item.bitwiseValue = token.value;
-                  item.key += token.value;
-                  this.comparator(item);
-                  break;
-      */
-              default:
-                  //throw new Error(`MIOPredicate: Error. Unexpected comparator. (${token.value})`);
-            break
-          }
-
-        return NSComparisonPredicate.Operator.equalTo
-      }
+//    func parsePredicate(){
+//
+//          var token = lexer.nextToken()
+//          var predicates = [Any]()
+//          var exit = false
+//
+//          while (token != nil && exit == false) {
+//
+//            switch (token!.type) {
+//
+//            case MIOPredicateTokenType.identifier.rawValue:
+//                      let leftExpression = MIOExpression(forKeyPath: token!.value)
+//                      let k = leftExpression.keyPath
+//                      let op = parseOperator()
+//                      let rightExpression = parseExpresion()
+//
+//                      //let pi = NSComparisonPredicate(leftExpression: leftExpression, rightExpression: rightExpression, modifier: .direct, type: op, options: [])
+//                      //predicates.append(pi)
+//
+///*                  case MIOPredicateTokenType.AND:
+//                      predicates.push(MIOPredicateOperator.andPredicateOperatorType());
+//                      break;
+//
+//                  case MIOPredicateTokenType.OR:
+//                      predicates.push(MIOPredicateOperator.orPredicateOperatorType());
+//                      break;
+//
+//                  case MIOPredicateTokenType.ANY:
+//                      this.lexer.nextToken();
+//                      let anyPI = this.nextPredicateItem();
+//                      anyPI.relationshipOperation = MIOPredicateRelationshipOperatorType.ANY;
+//                      predicates.push(anyPI);
+//                      break;
+//
+//                  case MIOPredicateTokenType.ALL:
+//                      this.lexer.nextToken();
+//                      let allPI = this.nextPredicateItem();
+//                      anyPI.relationshipOperation = MIOPredicateRelationshipOperatorType.ALL;
+//                      predicates.push(anyPI);
+//                      break;
+//
+//                  case MIOPredicateTokenType.OpenParenthesisSymbol:
+//                      let pg = new MIOPredicateGroup();
+//                      pg.predicates = this.parsePredicates();
+//                      predicates.push(pg);
+//                      break;
+//
+//                  case MIOPredicateTokenType.CloseParenthesisSymbol:
+//                      exit = true;
+//                      break;*/
+//
+//                  default:
+//                      //throw new Error(`MIOPredicate: Error. Unexpected token. (${token.value})`);
+//                    break
+//              }
+//
+//              if exit != true {
+//                  token = lexer.nextToken()
+//              }
+//          }
+//
+//          //return predicates
+//      }
+//
+//
+//      func parseExpresion() -> MIOExpression {
+//
+//        let token = lexer.nextToken()
+//
+//        switch token!.type {
+//
+//        case MIOPredicateTokenType.uuidValue.rawValue:
+//            let ex = MIOExpression(forConstantValue: token!.value)
+//            return ex
+//
+//        case MIOPredicateTokenType.stringValue.rawValue:
+//            let v = String(token!.value.dropLast().dropFirst())
+//            let ex = MIOExpression(forConstantValue: v)
+//            return ex
+//
+//        case MIOPredicateTokenType.numberValue.rawValue:
+//            let ex = NSExpression(expressionType: .constantValue)
+//            ex.constantValue = Decimal(token!.value)
+//            return ex
+//
+//            case MIOPredicateTokenType.BooleanValue:
+//                item.value = this.booleanFromString(token.value);
+//                item.valueType = MIOPredicateItemValueType.Boolean;
+//                break;
+//
+//            case MIOPredicateTokenType.NullValue:
+//                item.value = this.nullFromString(token.value);
+//                item.valueType = MIOPredicateItemValueType.Null;
+//                break;
+//
+//            case MIOPredicateTokenType.Identifier:
+//                item.value = token.value;
+//                item.valueType = MIOPredicateItemValueType.Property;
+//                break;
+//
+//            case MIOPredicateTokenType.Class:
+//                item.value = this.nextPlaceHolderArgument();
+//                item.valueType = MIOPredicateItemValueType.Class;
+//                break;
+//
+//            default:
+//                //throw new Error(`MIOPredicate: Error. Unexpected comparator. (${token.value})`);
+//            break
+//        }
+//
+//        return MIOExpression()
+//    }
+//
+//    func parseOperator() -> NSComparisonPredicate.Operator {
+//
+//        let token = lexer.nextToken()
+//
+//        switch token!.type {
+//
+//        case MIOPredicateTokenType.equalComparator.rawValue:
+//            return NSComparisonPredicate.Operator.equalTo
+///*
+//              case MIOPredicateTokenType.MajorComparator:
+//                  item.comparator = MIOPredicateComparatorType.Greater;
+//                  break;
+//
+//              case MIOPredicateTokenType.MajorOrEqualComparator:
+//                  item.comparator = MIOPredicateComparatorType.GreaterOrEqual;
+//                  break;
+//
+//              case MIOPredicateTokenType.MinorComparator:
+//                  item.comparator = MIOPredicateComparatorType.Less;
+//                  break;
+//
+//              case MIOPredicateTokenType.MinorOrEqualComparator:
+//                  item.comparator = MIOPredicateComparatorType.LessOrEqual;
+//                  break;
+//
+//              case MIOPredicateTokenType.DistinctComparator:
+//                  item.comparator = MIOPredicateComparatorType.Distinct;
+//                  break;
+//
+//              case MIOPredicateTokenType.ContainsComparator:
+//                  item.comparator = MIOPredicateComparatorType.Contains;
+//                  break;
+//
+//              case MIOPredicateTokenType.NotContainsComparator:
+//                  item.comparator = MIOPredicateComparatorType.NotContains;
+//                  break;
+//
+//              case MIOPredicateTokenType.InComparator:
+//                  item.comparator = MIOPredicateComparatorType.In;
+//                  break;
+//
+//              case MIOPredicateTokenType.BitwiseAND:
+//                  item.bitwiseOperation = MIOPredicateBitwiseOperatorType.AND;
+//                  item.bitwiseKey = item.key;
+//                  item.key += " & ";
+//                  token = this.lexer.nextToken();
+//                  item.bitwiseValue = token.value;
+//                  item.key += token.value;
+//                  this.comparator(item);
+//                  break;
+//
+//              case MIOPredicateTokenType.BitwiseOR:
+//                  item.bitwiseOperation = MIOPredicateBitwiseOperatorType.OR;
+//                  item.bitwiseKey = item.key;
+//                  item.key += " & ";
+//                  token = this.lexer.nextToken();
+//                  item.bitwiseValue = token.value;
+//                  item.key += token.value;
+//                  this.comparator(item);
+//                  break;
+//      */
+//              default:
+//                  //throw new Error(`MIOPredicate: Error. Unexpected comparator. (${token.value})`);
+//            break
+//          }
+//
+//        return NSComparisonPredicate.Operator.equalTo
+//      }
 
 /*
       private booleanFromString(value:string){
