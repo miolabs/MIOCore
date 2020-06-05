@@ -9,8 +9,8 @@ import Foundation
 
 public struct MIOCoreLexerToken
 {
-    let type:Int
-    let value:String
+    public let type:Int
+    public let value:String
 }
 
 public class MIOCoreLexer
