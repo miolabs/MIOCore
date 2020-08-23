@@ -35,7 +35,7 @@ public class XMLSerialization:NSObject, XMLParserDelegate
     
     var foundCharacters:String = ""
     
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         
         if currentElement != nil { elementStack.append(currentElement!) }
         
@@ -45,7 +45,7 @@ public class XMLSerialization:NSObject, XMLParserDelegate
         foundCharacters = ""
     }
     
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
                 
         if currentElement != nil {
 
@@ -74,7 +74,7 @@ public class XMLSerialization:NSObject, XMLParserDelegate
         //elementStack.popLast()
     }
     
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
+    public func parser(_ parser: XMLParser, foundCharacters string: String) {
         foundCharacters += string
     }
 }
