@@ -17,7 +17,7 @@ public class XMLSerialization:NSObject, XMLParserDelegate
     {
         let xs = XMLSerialization(with: data)
         xs.parse()
-        return xs.results!
+        return xs.results!        
     }
         
     let dataContents:Data

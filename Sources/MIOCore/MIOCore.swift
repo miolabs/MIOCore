@@ -14,3 +14,7 @@ public func _MIOCoreRegisterClass(type:AnyClass, forKey key:String) {
 public func _MIOCoreClassFromString(_ key:String) -> AnyClass? {
     return _mioCoreClassesByName[key]
 }
+
+public func MIOCORE_TEST(_ key:String) {
+    
+}
