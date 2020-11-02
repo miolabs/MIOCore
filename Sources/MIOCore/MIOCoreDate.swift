@@ -29,7 +29,7 @@ public func parse_date ( _ dateString: String ) -> Date? {
 }
 
 
-func format_date ( _ date: Date ) -> String {
+public func format_date ( _ date: Date ) -> String {
     let df = dateFormaterInGMT0()
 
     df.dateFormat = "yyyy-MM-dd"
