@@ -88,4 +88,9 @@ final class MIOCoreTests: XCTestCase {
         XCTAssertTrue( (application!["service_namespace"] as! String) == "/SAP/", "MaterialDocumentResponse['error']['innererror']['application']['service_namespace'] != /SAP/" )
         XCTAssertTrue( (application!["service_id"] as! String) == "API_MATERIAL_DOCUMENT", "MaterialDocumentResponse['error']['innererror']['application']['service_id'] != API_MATERIAL_DOCUMENT" )
     }
+    
+    
+    func testDate ( ) {
+        XCTAssertTrue( parse_date( "2020-11-12T13:04:58Z" ) != nil, "it should parse that format" ) ;
+    }
 }

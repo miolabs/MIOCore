@@ -22,8 +22,14 @@ public func parse_date ( _ dateString: String ) -> Date? {
     df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     if let ret = df.date( from: dateString ) { return ret }
 
-    df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    if let ret = df.date( from: dateString ) { return ret }
+    df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'" ;
+    if let date = df.date( from: dateString ) { return date }
+
+    let rm_ms    = String( dateString.split( separator: "." )[ 0 ] )
+      , last_try = rm_ms.replacingOccurrences( of: "T", with: " " )
+
+    df.dateFormat = "YYYY-MM-dd HH:mm:ss"
+    if let date = df.date(from: last_try ) { return date }
     
     return nil
 }
