@@ -20,7 +20,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "MIOCore",
-            dependencies: []),
+            dependencies: [],
+            cSettings: [.headerSearchPath("time")]
+        ),
         .testTarget(
             name: "MIOCoreTests",
             dependencies: ["MIOCore"]),
