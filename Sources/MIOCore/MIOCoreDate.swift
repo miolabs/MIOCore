@@ -84,7 +84,7 @@ public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
 public func MIOCoreDate(fromString dateString: String ) -> Date?
 {
     var date:Date?
-    autoreleasepool {
+    MIOCoreAutoReleasePool {
 
         var sometime = tm()
         let formatString = "%Y-%m-%d %H:%M:%S"
