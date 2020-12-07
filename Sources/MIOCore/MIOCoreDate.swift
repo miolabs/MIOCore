@@ -96,7 +96,7 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
         
 #if os(Linux)
         df = mcd_date_time_formatter_s()
-        if let ret = df.date(from: last_try ) { date = ret; return }
+        if let ret = df.date(from: dateString ) { date = ret; return }
 #else
         var sometime = tm()
         let formatString = "%Y-%m-%d %H:%M:%S"
