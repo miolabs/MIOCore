@@ -1,0 +1,4 @@
+module TimeLib {
+    umbrella header "timelib.h"
+    link "timelib"
+}
