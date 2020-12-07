@@ -7,6 +7,12 @@
 
 import Foundation
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+import Darwin
+#elseif os(Linux)
+import Glibc
+#endif
+
 public func parse_date ( _ dateString: String ) -> Date? {
     
 //    var date:Date?
