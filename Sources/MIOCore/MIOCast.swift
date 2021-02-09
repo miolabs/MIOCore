@@ -8,8 +8,8 @@
 import Foundation
 
 
-public func MIOCoreValueAsBool ( _ value: Any?) -> Bool {
-    if value == nil { return false }
+public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool? {
+    if value == nil { return def_value }
         
     if let asString = value as? String {
         let v = asString.lowercased()
@@ -22,7 +22,7 @@ public func MIOCoreValueAsBool ( _ value: Any?) -> Bool {
     if let asInt = value as? Int32 { return asInt == 1 }
     if let asInt = value as? Int64 { return asInt == 1 }
     
-    return false
+    return def_value
 }
 
 public func MIOCoreIntValue ( _ value: Any?, _ def_value: Int? = nil ) -> Int? {
