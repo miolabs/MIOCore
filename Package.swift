@@ -24,8 +24,8 @@ let package = Package(
         //.systemLibrary(name: "TimeLib", pkgConfig: "TimeLib"),
         .target(
             name: "MIOCore",
-            dependencies: [],
-            linkerSettings: [.linkedLibrary("xml2")]
+            dependencies: []
+           // linkerSettings: [.linkedLibrary("xml2")]
         ),
         .testTarget(
             name: "MIOCoreTests",
