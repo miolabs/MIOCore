@@ -28,7 +28,7 @@ public func MIOCoreInt64Value ( _ value: Any?, _ def_value: Int64? = nil ) -> In
     if let asInt    = value as? Int8   { return Int64(asInt) }
     if let asInt    = value as? Int16  { return Int64(asInt) }
     if let asInt    = value as? Int32  { return Int64(asInt) }
-    if let asInt    = value as? Int64  { return       asInt) }
+    if let asInt    = value as? Int64  { return       asInt  }
     if let asInt    = value as? Int    { return Int64(asInt) }
     if let asDouble = value as? Double { return Int64(asDouble) }
 
