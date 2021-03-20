@@ -10,6 +10,7 @@ import Foundation
 
 public func MIOCoreIntValue ( _ value: Any?, _ def_value: Int? = nil ) -> Int? {
     if let asString = value as? String { return Int(asString) }
+    if let asBool   = value as? Bool   { return Int(asBool ? 1 : 0 ) }
     if let asInt    = value as? Int8   { return Int(asInt) }
     if let asInt    = value as? Int16  { return Int(asInt) }
     if let asInt    = value as? Int32  { return Int(asInt) }
@@ -21,7 +22,7 @@ public func MIOCoreIntValue ( _ value: Any?, _ def_value: Int? = nil ) -> Int? {
 }
 
 
-public func MIOCoreIsIntValue ( _ value: Any?, _ def_value: Int? = nil ) -> Bool {
+public func MIOCoreIsIntValue ( _ value: Any? ) -> Bool {
     if MIOCoreIntValue(value) == nil { return false }
     return true
 }
