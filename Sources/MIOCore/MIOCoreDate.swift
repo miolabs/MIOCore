@@ -13,7 +13,7 @@ import Darwin
 import Glibc
 #endif
 
-public func parse_date ( _ dateString: String ) -> Date? {
+public func parse_date ( _ dateString: String? ) -> Date? {
     
 //    var date:Date?
 //    autoreleasepool {
@@ -44,7 +44,7 @@ public func parse_date ( _ dateString: String ) -> Date? {
 //
 //    return date
     
-    return MIOCoreDate(fromString: dateString)
+    return dateString == nil ? nil : MIOCoreDate(fromString: dateString!)
 }
 
 
