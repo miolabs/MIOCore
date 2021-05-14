@@ -9,7 +9,7 @@ import Foundation
 
 public protocol MIOErrorCode: Error
 {
-    var code: Int { get }
+    var code: Int32 { get }
 }
 
 // ..000: last 3 hex digits for errors
