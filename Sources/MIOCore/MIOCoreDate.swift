@@ -64,6 +64,11 @@ public func format_time ( _ date: Date ) -> String {
     return mcd_time_formatter().string( from: date )
 }
 
+public func format_date_time ( _ date: Date ) -> String {
+    return mcd_date_time_formatter().string( from: date )
+}
+
+
 public func parse_time ( _ time: String ) -> Date? {
     return mcd_time_formatter().date( from: time )
 }
