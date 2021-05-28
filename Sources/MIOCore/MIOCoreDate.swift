@@ -13,46 +13,23 @@ import Darwin
 import Glibc
 #endif
 
-public func parse_date ( _ dateString: String? ) -> Date? {
+public func parse_date ( _ dateString: String ) throws -> Date {
+    let ret = MIOCoreDate(fromString: dateString )
     
-//    var date:Date?
-//    autoreleasepool {
-//
-//        let df = dateFormaterInGMT0()
-//
-//        df.dateFormat = "yyyy-MM-dd"
-//        if let ret = df.date( from: dateString ) { date = ret; return }
-//
-//        df.dateFormat = "yyyy-MM-dd HH:mm"
-//        if let ret = df.date( from: dateString ) { date = ret; return }
-//
-//        df.dateFormat = "yyyy-MM-dd'T'HH:mm"
-//        if let ret = df.date( from: dateString ) { date = ret; return }
-//
-//        df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-//        if let ret = df.date( from: dateString ) { date = ret; return }
-//
-//        df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'" ;
-//        if let ret = df.date( from: dateString ) { date = ret; return }
-//
-//        let rm_ms    = String( dateString.split( separator: "." )[ 0 ] )
-//          , last_try = rm_ms.replacingOccurrences( of: "T", with: " " )
-//
-//        df.dateFormat = "YYYY-MM-dd HH:mm:ss"
-//        if let ret = df.date(from: last_try ) { date = ret; return }
-//    }
-//
-//    return date
+    if ret == nil {
+        throw MIOCoreError.general( "Count not parse date >>\(dateString)<<" )
+    }
     
+    return ret!
+}
+
+
+public func parse_date_or_nil ( _ dateString: String? ) -> Date? {
     return dateString == nil ? nil : MIOCoreDate(fromString: dateString!)
 }
 
 
 public func format_date ( _ date: Date ) -> String {
-//    let df = MIOCoreDateGMT0Formatter()
-//
-//    df.dateFormat = "yyyy-MM-dd"
-    
     return mcd_date_formatter().string( from: date )
 }
 
@@ -69,7 +46,17 @@ public func format_date_time ( _ date: Date ) -> String {
 }
 
 
-public func parse_time ( _ time: String ) -> Date? {
+public func parse_time ( _ time: String ) throws -> Date {
+    let ret = mcd_time_formatter().date( from: time )
+    
+    if ret == nil {
+        throw MIOCoreError.general( "Time >>\(time)<< could not be parsed" )
+    }
+    
+    return ret!
+}
+
+public func parse_time_or_nil ( _ time: String ) -> Date? {
     return mcd_time_formatter().date( from: time )
 }
 
