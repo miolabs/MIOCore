@@ -91,6 +91,19 @@ final class MIOCoreTests: XCTestCase {
     
     
     func testDate ( ) {
-        XCTAssertTrue( parse_date( "2020-11-12T13:04:58Z" ) != nil, "it should parse that format" ) ;
+        XCTAssertNotNil( try? parse_date( "2020-11-12T13:04:58Z" ), "it should parse that format" ) ;
+    }
+    
+    
+    func testEAN ( ) {
+        let ean13_no_prefix = MIOCoreGenerateEAN( type: .ean13, prefix: "", number: 4 )
+        XCTAssertTrue( ean13_no_prefix == "0000000000048", ean13_no_prefix )
+
+
+        let ean13 = MIOCoreGenerateEAN( type: .ean13, prefix: "113060", number: 4 )
+        XCTAssertTrue( ean13 == "1130600000045", ean13 )
+
+        let ean8 = MIOCoreGenerateEAN( type: .ean8, prefix: "103060", number: 4 )
+        XCTAssertTrue( ean8  == "10306046", ean8 )
     }
 }
