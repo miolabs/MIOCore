@@ -60,7 +60,7 @@ public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
 public func MIOCoreURLJSONRequest(_ request:URLRequest, completion: @escaping ([String:Any]?, Error?) -> Void) {
                     
     var r = request
-    r.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    r.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     MIOCoreURLDataRequest(r) {
         data, response, error in
@@ -91,7 +91,7 @@ public func MIOCoreURLJSONRequest(_ request:URLRequest, completion: @escaping ([
 public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
                     
     var r = request
-    r.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    r.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     let data = try MIOCoreURLDataRequest_sync(r)
     if data == nil { return nil }
