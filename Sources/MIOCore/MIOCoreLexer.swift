@@ -15,17 +15,15 @@ public struct MIOCoreLexerToken
 
 public class MIOCoreLexer
 {
-    var input:String
+    var input:String = ""
     var tokenTypes:[[String:Any]] = []
     var tokens:[MIOCoreLexerToken]!
     var tokenIndex = -1;
 
     var ignoreTokenTypes:[Int] = []
 
-    public init(withString string:String) {
-        input = string
-    }
-
+    public init() {}
+    
     public func addTokenType(_ type:Int, regex:NSRegularExpression) {
         var item:[String:Any] = [:]
         
@@ -39,8 +37,8 @@ public class MIOCoreLexer
         ignoreTokenTypes.append(type)
     }
 
-    public func tokenize(){
-        
+    public func tokenize(withString string:String){
+        input = string
         tokens = []
         var foundToken = false
     
