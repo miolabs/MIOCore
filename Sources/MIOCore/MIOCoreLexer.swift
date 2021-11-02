@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LoggerAPI
 
 public struct MIOCoreLexerToken
 {
@@ -15,7 +16,7 @@ public struct MIOCoreLexerToken
 
 public class MIOCoreLexer
 {
-    var input:String = ""
+    var inputString:String = ""
     var tokenTypes:[[String:Any]] = []
     var tokens:[MIOCoreLexerToken]!
     var tokenIndex = -1;
@@ -38,7 +39,8 @@ public class MIOCoreLexer
     }
 
     public func tokenize(withString string:String){
-        input = string
+        inputString = string
+        var input = string
         tokens = []
         var foundToken = false
     
@@ -68,7 +70,7 @@ public class MIOCoreLexer
             
             if (foundToken == false) {
                 //throw new Error(`MIOCoreLexer: Token doesn't match any pattern. (${this.input})`);
-                NSLog("MIOCoreLexer: Token doesn't match any pattern. \(input)")
+                Log.error("[MIOCoreLexer] Token doesn't match any pattern. \(inputString) - Remaining: \(input)")
                 break
             }
             
