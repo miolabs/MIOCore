@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LoggerAPI
+//import LoggerAPI
 
 public struct MIOCoreLexerToken
 {
@@ -70,7 +70,7 @@ public class MIOCoreLexer
             
             if (foundToken == false) {
                 //throw new Error(`MIOCoreLexer: Token doesn't match any pattern. (${this.input})`);
-                Log.error("[MIOCoreLexer] Token doesn't match any pattern. \(inputString) - Remaining: \(input)")
+                NSLog("[MIOCoreLexer] Token doesn't match any pattern. \(inputString) - Remaining: \(input)")
                 break
             }
             
