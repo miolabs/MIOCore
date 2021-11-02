@@ -43,29 +43,31 @@ public class MIOCoreLexer
         var input = string
         tokens = []
         var foundToken = false
-    
-        repeat {
-            foundToken = false
-            for token in tokenTypes {
-                let regex = token["RegEx"] as! NSRegularExpression
-                let type = token["Type"] as! Int
-    
-                let matches = regex.matches(in: input, range: NSRange(input.startIndex..., in: input))
-                if matches.count > 0 {
-                    let range = matches[0].range
-                    let start = input.index(input.startIndex, offsetBy: range.lowerBound)
-                    let end = input.index(input.startIndex, offsetBy: range.upperBound)
-                    
-                    if ignoreTokenTypes.contains(type) == false {
-                        let value = String(input[start..<end])
+
+        MIOCoreAutoReleasePool {
+        
+            repeat {
+                foundToken = false
+                for token in tokenTypes {
+                    let regex = token["RegEx"] as! NSRegularExpression
+                    let type = token["Type"] as! Int
                         
-                        let token = MIOCoreLexerToken(type: type, value: value)
-                        tokens.append(token)
+                    let matches = regex.matches(in: input, range: NSRange(input.startIndex..., in: input))
+                    if matches.count > 0 {
+                        let range = matches[0].range
+                        let start = input.index(input.startIndex, offsetBy: range.lowerBound)
+                        let end = input.index(input.startIndex, offsetBy: range.upperBound)
+                        
+                        if ignoreTokenTypes.contains(type) == false {
+                            let value = String(input[start..<end])
+                            
+                            let token = MIOCoreLexerToken(type: type, value: value)
+                            tokens.append(token)
+                        }
+                        input.removeSubrange(start..<end)
+                        foundToken = true
+                        break
                     }
-                    input.removeSubrange(start..<end)
-                    foundToken = true
-                    break
-                }
             }
             
             if (foundToken == false) {
@@ -74,7 +76,8 @@ public class MIOCoreLexer
                 break
             }
             
-        } while (input.count > 0)
+            } while (input.count > 0)
+        }
     
         tokenIndex = 0
     }
@@ -102,7 +105,7 @@ public class MIOCoreLexer
         }
         
         let token = tokens[tokenIndex]
-
+                
         // Check if we have to ignore
 //        let index = this.ignoreTokenTypes.indexOf(token.type);
 //        return index == -1 ? token : this.prevToken();
