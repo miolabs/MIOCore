@@ -96,8 +96,11 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
         if let ret = df.date(from: dateString ) { date = ret; return }
 #else
         var sometime = tm()
-        let formatString = "%Y-%m-%d %H:%M:%S"
-        if strptime_l(dateString, formatString, &sometime, nil) != nil {
+        let formatString = "%Y-%m-%d %H:%M:%S %z"
+        // We have to get just the seconds or the %z will not work as espected
+        // 2021-12-23 13:18:50.999294 ==> 2021-12-23 13:18:50
+        let parts = dateString.components(separatedBy: ".")
+        if strptime_l(parts[0]+" +0000", formatString, &sometime, nil) != nil {
             date = Date(timeIntervalSince1970: TimeInterval(mktime(&sometime)))
             return
         }
