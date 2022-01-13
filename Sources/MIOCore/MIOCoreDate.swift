@@ -17,7 +17,7 @@ public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
     
     if ret == nil {
-        throw MIOCoreError.general( "Count not parse date >>\(dateString)<<" )
+        throw MIOCoreError.general( "Could not parse date >>\(dateString)<<" )
     }
     
     return ret!
