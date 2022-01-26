@@ -91,20 +91,20 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
 
         var df:DateFormatter
         
-#if os(Linux)
-        df = mcd_date_time_formatter_s()
-        if let ret = df.date(from: dateString ) { date = ret; return }
-#else
-        var sometime = tm()
-        let formatString = "%Y-%m-%d %H:%M:%S %z"
-        // We have to get just the seconds or the %z will not work as espected
-        // 2021-12-23 13:18:50.999294 ==> 2021-12-23 13:18:50
-        let parts = dateString.components(separatedBy: ".")
-        if strptime_l(parts[0]+" +0000", formatString, &sometime, nil) != nil {
-            date = Date(timeIntervalSince1970: TimeInterval(mktime(&sometime)))
-            return
-        }
-#endif
+//#if os(Linux)
+//        df = mcd_date_time_formatter_s()
+//        if let ret = df.date(from: dateString ) { date = ret; return }
+//#else
+//        var sometime = tm()
+//        let formatString = "%Y-%m-%d %H:%M:%S %z"
+//        // We have to get just the seconds or the %z will not work as espected
+//        // 2021-12-23 13:18:50.999294 ==> 2021-12-23 13:18:50
+//        let parts = dateString.components(separatedBy: ".")
+//        if strptime_l(parts[0]+" +0000", formatString, &sometime, nil) != nil {
+//            date = Date(timeIntervalSince1970: TimeInterval(mktime(&sometime)))
+//            return
+//        }
+//#endif
         
         // Most probably case
         df = mcd_date_time_formatter_s()
@@ -127,10 +127,16 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
         if let ret = df.date( from: dateString ) { date = ret; return }
 
         let rm_ms    = String( dateString.split( separator: "." )[ 0 ] )
-          , last_try = rm_ms.replacingOccurrences( of: "T", with: " " )
+        var last_try = rm_ms.replacingOccurrences( of: "T", with: " " )
+        
+        if last_try.count > 19 { last_try = String( last_try[..<last_try.index(last_try.startIndex, offsetBy: 19)] ) }
 
         df = mcd_date_time_formatter_s()
         if let ret = df.date(from: last_try ) { date = ret; return }
+        
+        df = mcd_date_time_formatter_s()
+        if let ret = df.date(from: last_try ) { date = ret; return }
+
     }
 
     return date
