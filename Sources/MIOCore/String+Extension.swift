@@ -67,5 +67,14 @@ extension String {
 
         return result
     }
+    
+    public func cString() -> UnsafeMutablePointer<UInt8> {
+        var utf8 = Array(self.utf8)
+        utf8.append(0)  // adds null character
+        let count = utf8.count
+        let result = UnsafeMutableBufferPointer<UInt8>.allocate(capacity: count)
+        _ = result.initialize(from: utf8)
+        return result.baseAddress!
+    }
 
 }
