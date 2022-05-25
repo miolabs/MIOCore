@@ -151,6 +151,7 @@ func mcd_date_formatter() -> DateFormatter
     if _mcd_date_formatter == nil {
 //        let df = MIOCoreDateCreateGMT0Formatter()
         let df = DateFormatter()
+        df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd"
         _mcd_date_formatter = df
     }
@@ -164,6 +165,7 @@ func mcd_time_formatter() -> DateFormatter
     if _mcd_time_formatter == nil {
 //        let df = MIOCoreDateCreateGMT0Formatter()
         let df = DateFormatter()
+        df.locale = Locale.current
         df.dateFormat = "HH:mm"
         _mcd_time_formatter = df
     }
@@ -191,6 +193,7 @@ func mcd_date_time_formatter_t() -> DateFormatter
     if _mcd_date_time_formatter_t == nil {
 //        let df = MIOCoreDateCreateGMT0Formatter()
         let df = DateFormatter()
+        df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd'T'HH:mm"
         _mcd_date_time_formatter_t = df
     }
@@ -204,6 +207,7 @@ func mcd_date_time_formatter_t_s() -> DateFormatter
     if _mcd_date_time_formatter_t_s == nil {
 //        let df = MIOCoreDateCreateGMT0Formatter()
         let df = DateFormatter()
+        df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         _mcd_date_time_formatter_t_s = df
     }
@@ -217,6 +221,7 @@ func mcd_date_time_formatter_z() -> DateFormatter
     if _mcd_date_time_formatter_z == nil {
 //        let df = MIOCoreDateCreateGMT0Formatter()
         let df = DateFormatter()
+        df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         _mcd_date_time_formatter_z = df
     }
@@ -230,6 +235,7 @@ func mcd_date_time_formatter_s() -> DateFormatter
     if _mcd_date_time_formatter_s == nil {
 //        let df = MIOCoreDateCreateGMT0Formatter()
         let df = DateFormatter()
+        df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         _mcd_date_time_formatter_s = df
     }
