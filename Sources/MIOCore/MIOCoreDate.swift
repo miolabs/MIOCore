@@ -176,6 +176,7 @@ func mcd_date_time_formatter() -> DateFormatter
 {
     if _mcd_date_time_formatter == nil {
         let df = DateFormatter()
+        df.locale = Locale.current
 //        let df = MIOCoreDateCreateGMT0Formatter()
         df.dateFormat = "yyyy-MM-dd HH:mm"
         _mcd_date_time_formatter = df
