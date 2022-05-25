@@ -23,7 +23,9 @@ public func MIOCoreIntValue ( _ value: Any?, _ def_value: Int? = nil ) -> Int? {
     if let asInt    = value as? Int32  { return Int(asInt) }
     if let asInt    = value as? Int64  { return Int(asInt) }
     if let asInt    = value as? Int    { return     asInt  }
+    if let asFloat  = value as? Float  { return Int(asFloat) }
     if let asDouble = value as? Double { return Int(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.intValue }
 
     return def_value
 }
@@ -38,7 +40,9 @@ public func MIOCoreInt8Value ( _ value: Any?, _ def_value: Int8? = nil ) -> Int8
     if let asInt    = value as? Int32  { return Int8(asInt) }
     if let asInt    = value as? Int64  { return Int8(asInt) }
     if let asInt    = value as? Int    { return Int8(asInt) }
+    if let asFloat  = value as? Float  { return Int8(asFloat) }
     if let asDouble = value as? Double { return Int8(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.int8Value }
 
     return def_value
 }
@@ -52,7 +56,9 @@ public func MIOCoreInt16Value ( _ value: Any?, _ def_value: Int16? = nil ) -> In
     if let asInt    = value as? Int32  { return Int16(asInt) }
     if let asInt    = value as? Int64  { return Int16(asInt) }
     if let asInt    = value as? Int    { return Int16(asInt) }
+    if let asFloat  = value as? Float  { return Int16(asFloat) }
     if let asDouble = value as? Double { return Int16(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.int16Value }
 
     return def_value
 }
@@ -66,7 +72,9 @@ public func MIOCoreInt32Value ( _ value: Any?, _ def_value: Int32? = nil ) -> In
     if let asInt    = value as? Int32  { return       asInt  }
     if let asInt    = value as? Int64  { return Int32(asInt) }
     if let asInt    = value as? Int    { return Int32(asInt) }
+    if let asFloat  = value as? Float  { return Int32(asFloat) }
     if let asDouble = value as? Double { return Int32(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.int32Value }
 
     return def_value
 }
@@ -81,7 +89,9 @@ public func MIOCoreUInt32Value ( _ value: Any?, _ def_value: UInt32? = nil ) -> 
     if let asInt    = value as? UInt32 { return        asInt  }
     if let asInt    = value as? UInt64 { return UInt32(asInt) }
     if let asInt    = value as? UInt   { return UInt32(asInt) }
+    if let asFloat  = value as? Float  { return UInt32(asFloat) }
     if let asDouble = value as? Double { return UInt32(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.uint32Value }
 
     return def_value
 }
@@ -95,7 +105,9 @@ public func MIOCoreInt64Value ( _ value: Any?, _ def_value: Int64? = nil ) -> In
     if let asInt    = value as? Int32  { return Int64(asInt) }
     if let asInt    = value as? Int64  { return       asInt  }
     if let asInt    = value as? Int    { return Int64(asInt) }
+    if let asFloat  = value as? Float  { return Int64(asFloat) }
     if let asDouble = value as? Double { return Int64(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.int64Value }
 
     return def_value
 }
