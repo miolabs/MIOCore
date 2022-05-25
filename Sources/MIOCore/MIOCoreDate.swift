@@ -149,7 +149,8 @@ var _mcd_date_formatter:DateFormatter?
 func mcd_date_formatter() -> DateFormatter
 {
     if _mcd_date_formatter == nil {
-        let df = MIOCoreDateCreateGMT0Formatter()
+//        let df = MIOCoreDateCreateGMT0Formatter()
+        let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         _mcd_date_formatter = df
     }
@@ -161,7 +162,8 @@ var _mcd_time_formatter:DateFormatter?
 func mcd_time_formatter() -> DateFormatter
 {
     if _mcd_time_formatter == nil {
-        let df = MIOCoreDateCreateGMT0Formatter()
+//        let df = MIOCoreDateCreateGMT0Formatter()
+        let df = DateFormatter()
         df.dateFormat = "HH:mm"
         _mcd_time_formatter = df
     }
