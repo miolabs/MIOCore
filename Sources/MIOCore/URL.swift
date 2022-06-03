@@ -100,6 +100,15 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
     return json
 }
 
+extension URLRequest
+{
+    public init(urlString: String, method:String = "GET", body:Data? = nil) {
+        self.init(urlString: urlString)
+        httpMethod = method
+        httpBody = body
+    }
+}
+
 //public func MIOCoreURLFileRequest(_ request:URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
 //
 //    var r = request
