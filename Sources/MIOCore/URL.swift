@@ -102,8 +102,8 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
 
 extension URLRequest
 {
-    public init(urlString: String, method:String = "GET", body:Data? = nil) {
-        self.init(urlString: urlString)
+    public init(method:String = "GET", urlString: String, body:Data? = nil) {
+        self.init(url: URL(string:  urlString)!)
         httpMethod = method
         httpBody = body
     }
