@@ -78,3 +78,33 @@ extension String {
     }
 
 }
+
+extension String
+{
+    public func camelCaseToSnakeCase() -> String {
+
+        var result = ""
+        var prev_is_capital = false
+        for i in 0..<count {
+            let char = self[ index(startIndex, offsetBy: i) ]
+            let next_char = i + 1 < count ? self[ index(startIndex, offsetBy: i + 1) ] : nil
+            let next_is_non_capital = next_char?.isLowercase ?? false
+
+            if char.isUppercase && result.count > 0 && (!prev_is_capital || next_is_non_capital) {
+                result += "_"
+            }
+            prev_is_capital = char.isUppercase
+            result += String(char.lowercased())
+        }
+        
+        return result
+    }
+
+    
+    public func snakeCaseToCamelCase ( ) -> String {
+        return self.split(separator: "_").enumerated()
+                   .map{ (index,part) in
+                      index > 0 ? String( part ).capitalized : String( part ) }
+                   .joined()
+    }
+}
