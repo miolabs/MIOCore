@@ -45,6 +45,9 @@ func calculate_ean_crc ( _ code: String ) -> UInt32 {
         
         i += 1
     }
-        
-    return UInt32(10) - UInt32(( ( odd * 3 ) +  even) % 10)
+    
+    let crc = ( ( ( odd * 3 ) +  even) % 10 )
+    if crc == 0 { return UInt32( crc) }
+    
+    return UInt32(10) - UInt32( crc )
 }
