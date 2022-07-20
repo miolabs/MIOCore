@@ -134,8 +134,8 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
         df = mcd_date_time_formatter_s()
         if let ret = df.date(from: last_try ) { date = ret; return }
         
-        df = mcd_date_time_formatter_s()
-        if let ret = df.date(from: last_try ) { date = ret; return }
+        //df = mcd_date_time_formatter_s()
+        //if let ret = df.date(from: last_try ) { date = ret; return }
 
     }
 
