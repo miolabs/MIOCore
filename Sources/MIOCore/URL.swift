@@ -102,11 +102,21 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
 
 extension URLRequest
 {
-    public init(method:String = "GET", urlString: String, body:Data? = nil) {
+    public init( method:String = "GET", urlString: String, body:Data? = nil ) {
         self.init(url: URL(string:  urlString)!)
         httpMethod = method
         httpBody = body
     }
+}
+
+public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: String, body:[ String: Any ]? = nil, headers:[String:String]? = nil ) throws -> Any? {
+    
+    let data = body != nil ? try JSONSerialization.data(withJSONObject: body!, options: [] ) : nil
+    var r = URLRequest( method: method, urlString: urlString, body: data )
+    if headers != nil {
+        for (key, value) in headers! { r.addValue(value, forHTTPHeaderField: key) }
+    }
+    return try MIOCoreURLJSONRequest_sync( r ) as? [ String:Any ]
 }
 
 //public func MIOCoreURLFileRequest(_ request:URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
