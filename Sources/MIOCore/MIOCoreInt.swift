@@ -15,7 +15,7 @@ func MIOCoreIntRemovingStringFloatValue(_ string:String) -> String {
 }
 
 public func MIOCoreIntValue ( _ value: Any?, _ def_value: Int? = nil ) -> Int? {
-    if let asString = value as? String { return Int(MIOCoreIntRemovingStringFloatValue(asString)) }
+    if let asString = value as? String { return Int( MIOCoreIntRemovingStringFloatValue( asString ) ) ?? def_value }
     if let asBool   = value as? Bool   { return Int(asBool ? 1 : 0 ) }
     if let asChar   = value as? Character { return Int(String(asChar)) }
     if let asInt    = value as? Int8   { return Int(asInt) }

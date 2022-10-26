@@ -13,12 +13,12 @@ public enum EAN_TYPE: Int16 {
     case ean13 = 13
 }
 
-public func MIOCoreGenerateEAN ( type: EAN_TYPE , prefix: String, number: Int32 ) -> String {
+public func MIOCoreGenerateEAN ( type: EAN_TYPE , prefix: String, number: Int64 ) -> String {
     return generate_code_ean( type.rawValue, prefix, number )
 }
 
 
-func generate_code_ean ( _ length: Int16, _ prefix: String?, _ number: Int32 ) -> String {
+func generate_code_ean ( _ length: Int16, _ prefix: String?, _ number: Int64 ) -> String {
     var code = prefix ?? ""
     let number_str = "\(number)"
     let padding = Int(length) - 1 - number_str.count - code.count

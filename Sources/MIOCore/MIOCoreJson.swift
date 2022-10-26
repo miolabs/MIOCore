@@ -10,13 +10,24 @@ import Foundation
 
 public func MIOCoreJsonValue ( withJSONObject obj: Any, options opt: JSONSerialization.WritingOptions = [] )  throws -> Data {
     let safe_obj = MIOCoreSerializableJSON( obj )
-    
-    return try JSONSerialization.data( withJSONObject: safe_obj, options: opt )
+    do {
+        return try JSONSerialization.data( withJSONObject: safe_obj, options: opt )
+    }
+    catch {
+        print(error.localizedDescription)
+        throw error
+    }
 }
 
 
 public func MIOCoreJsonStringify ( withJSONObject obj: Any, options opt: JSONSerialization.WritingOptions = [] )  throws -> String? {
-    return String( data: try MIOCoreJsonValue(withJSONObject: obj, options: opt ), encoding: .utf8 )
+    do {
+        return String( data: try MIOCoreJsonValue(withJSONObject: obj, options: opt ), encoding: .utf8 )
+    }
+    catch {
+        print(error.localizedDescription)
+        throw error
+    }
 }
 
 
