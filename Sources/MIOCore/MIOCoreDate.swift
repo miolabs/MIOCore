@@ -46,6 +46,11 @@ public func format_date_time ( _ date: Date ) -> String {
 }
 
 
+public func format_date_time_t ( _ date: Date ) -> String {
+    return mcd_date_time_formatter_t().string( from: date )
+}
+
+
 public func parse_time ( _ time: String ) throws -> Date {
     let ret = mcd_time_formatter().date( from: time )
     
