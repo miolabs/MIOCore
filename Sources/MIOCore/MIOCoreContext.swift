@@ -7,12 +7,14 @@
 
 import Foundation
 
-@objc open class MIOCoreContext : NSObject {
+@objc
+open class MIOCoreContext : NSObject {
     
-    public var globals: [ String: Any ] = [:]
-                               
-    public init ( _ values: [String:Any] = [:] ) {
-        globals = values
-    }
+//    public var globals: [ String: Any ] = [:]
+//
+//    public init ( _ values: [String:Any] = [:] ) {
+//        globals = values
+//    }
+    
 }
     
