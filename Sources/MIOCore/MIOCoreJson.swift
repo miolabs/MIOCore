@@ -30,19 +30,18 @@ public func MIOCoreJsonStringify ( withJSONObject obj: Any, options opt: JSONSer
     }
 }
 
+let json_formatter = mcd_date_time_formatter_z( )
 
 public func MIOCoreSerializableJSON ( _ obj: Any ) -> Any {
     if let date = obj as? Date {
-        let formatter = mcd_date_time_formatter_z( )
-        
-        return formatter.string( from: date )
+        return json_formatter.string( from: date )
     } else if let uuid = obj as? UUID {
         return uuid.uuidString.uppercased()
     } else if let dict = obj as? [String:Any] {
         var clean_dict = [:] as [String:Any]
         
-        for key in dict.keys {
-            clean_dict[ key ] = MIOCoreSerializableJSON( dict[ key ]! )
+        for (key,value) in dict {
+            clean_dict[ key ] = MIOCoreSerializableJSON( value )
         }
         
         return clean_dict
