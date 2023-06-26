@@ -134,14 +134,25 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
         let rm_ms    = String( dateString.split( separator: "." )[ 0 ] )
         var last_try = rm_ms.replacingOccurrences( of: "T", with: " " )
         
-        if last_try.count > 19 { last_try = String( last_try[..<last_try.index(last_try.startIndex, offsetBy: 19)] ) }
+        if last_try.count > 19 {
+            last_try = String( last_try[..<last_try.index(last_try.startIndex, offsetBy: 19)] )
+            
+        }
 
         df = mcd_date_time_formatter_s()
         if let ret = df.date(from: last_try ) { date = ret; return }
         
         //df = mcd_date_time_formatter_s()
         //if let ret = df.date(from: last_try ) { date = ret; return }
-
+        
+        // Check for a timeshift
+        let r = last_try.index(last_try.startIndex, offsetBy: 11)..<last_try.index(last_try.startIndex, offsetBy: 13)
+        let hh = String( last_try[ r ] )
+        var h = MIOCoreIntValue( hh, 0 )!
+        h -= 1
+        last_try.replaceSubrange( r, with: String(format: "%02i", h ) )
+        
+        if let ret = df.date(from: last_try ) { date = ret; return }
     }
 
     return date
@@ -238,9 +249,10 @@ var _mcd_date_time_formatter_s:DateFormatter?
 func mcd_date_time_formatter_s() -> DateFormatter
 {
     if _mcd_date_time_formatter_s == nil {
-//        let df = MIOCoreDateCreateGMT0Formatter()
+//        let df = MIOCoreDateCreateGMT0Form atter()
         let df = DateFormatter()
-        df.locale = Locale.current
+//        df.locale = Locale.current
+        df.locale = Locale(identifier: "en_US_POSIX")
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         _mcd_date_time_formatter_s = df
     }
