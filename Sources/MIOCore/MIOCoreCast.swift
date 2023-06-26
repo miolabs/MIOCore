@@ -8,7 +8,8 @@
 import Foundation
 
 
-public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool? {
+public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
+{
     if value == nil { return def_value }
         
     if let asString = value as? String {
