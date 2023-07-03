@@ -114,7 +114,7 @@ public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: Stri
     let data = body != nil ? try MIOCoreJsonValue(withJSONObject: body!, options: [] ) : nil
     var r = URLRequest( method: method, urlString: urlString, body: data )
     if headers != nil {
-        for (key, value) in headers! { r.addValue(value, forHTTPHeaderField: key) }
+        for (key, value) in headers! { r.setValue(value, forHTTPHeaderField: key) }
     }
     return try MIOCoreURLJSONRequest_sync( r ) as? [ String:Any ]
 }
@@ -122,7 +122,7 @@ public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: Stri
 //public func MIOCoreURLFileRequest(_ request:URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
 //
 //    var r = request
-//    r.addValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+//    r.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
 //
 //    MIOCoreURLDataRequest(r, completion: completion)
 //}
