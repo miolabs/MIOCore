@@ -7,7 +7,6 @@
 
 import Foundation
 
-@objc
 open class MIOCoreContext : NSObject
 {
     
