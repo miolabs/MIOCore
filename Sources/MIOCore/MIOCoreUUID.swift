@@ -9,7 +9,7 @@ import Foundation
 
 public func MIOCoreUUIDValue ( _ value: Any?, _ def_value: UUID? = nil, optional: Bool = true ) throws -> UUID?
 {
-    if let str = value as? String { return UUID( uuidString: str ) }
+    if let str = value as? String { return UUID( uuidString: str ) ?? def_value }
     if let uuid = value as? UUID { return uuid }
     
     if optional == false {
