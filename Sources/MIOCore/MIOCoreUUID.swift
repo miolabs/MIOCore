@@ -13,7 +13,7 @@ public func MIOCoreUUIDValue ( _ value: Any?, _ def_value: UUID? = nil, optional
     if let str = value as? String { ret = UUID( uuidString: str ) }
     else if let uuid = value as? UUID { ret = uuid }
     
-    if ret == nil && optional == false {
+    if ret == nil && def_value == nil && optional == false {
         throw MIOCoreError.invalidParameterValue( "\(String(describing: value))" )
     }
     
