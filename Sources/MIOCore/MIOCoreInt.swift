@@ -53,11 +53,11 @@ public func MIOCoreInt16Value ( _ value: Any?, _ def_value: Int16? = nil ) -> In
     if let asChar   = value as? Character { return Int16(String(asChar)) }
     if let asInt    = value as? Int8   { return Int16(asInt) }
     if let asInt    = value as? Int16  { return       asInt  }
-    if let asInt    = value as? Int32  { return Int16(asInt) }
-    if let asInt    = value as? Int64  { return Int16(asInt) }
-    if let asInt    = value as? Int    { return Int16(asInt) }
-    if let asFloat  = value as? Float  { return Int16(asFloat) }
-    if let asDouble = value as? Double { return Int16(asDouble) }
+    if let asInt    = value as? Int32  { return NSNumber(value: asInt ).int16Value }
+    if let asInt    = value as? Int64  { return NSNumber(value: asInt ).int16Value }
+    if let asInt    = value as? Int    { return NSNumber(value: asInt ).int16Value }
+    if let asFloat  = value as? Float  { return NSNumber(value: asFloat ).int16Value }
+    if let asDouble = value as? Double { return NSNumber(value: asDouble ).int16Value }
     if let asNumber = value as? NSNumber { return asNumber.int16Value }
 
     return def_value
