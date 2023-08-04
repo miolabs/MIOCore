@@ -26,7 +26,7 @@ public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
     return def_value
 }
 
-public func MIOCoreDecimalValue ( _ value: Any?, _ def_value: Decimal? ) -> Decimal? {
+public func MIOCoreDecimalValue ( _ value: Any?, _ def_value: Decimal? = nil ) -> Decimal? {
     if value == nil { return def_value }
     
     if let asString  = value! as? String     { return Decimal( string: asString ) ?? def_value }
@@ -37,4 +37,37 @@ public func MIOCoreDecimalValue ( _ value: Any?, _ def_value: Decimal? ) -> Deci
     return def_value
 }
 
+public func MIOCoreDoubleValue ( _ value: Any?, _ def_value: Double? = nil ) -> Double? {
+    if let asInt     = value! as? Int8   { return Double(asInt) }
+    if let asInt     = value! as? Int16  { return Double(asInt) }
+    if let asInt     = value! as? Int32  { return Double(asInt) }
+    if let asInt     = value! as? Int64  { return Double(asInt) }
+    if let asInt     = value! as? Int    { return Double(asInt) }
+    if let asDecimal = value! as? Decimal{ return NSDecimalNumber(decimal: asDecimal).doubleValue }
+    if let asFloat   = value! as? Float  { return Double(asFloat) }
+    if let asDouble  = value! as? Double { return asDouble }
+    if let asString  = value! as? String {
+        let integer  = Double(asString)
+        if integer != nil { return integer! }
+    }
+    
+    return def_value
+}
 
+public func MIOCoreFloatValue ( _ value: Any?, _ def_value: Float? = nil ) -> Float? {
+    
+    if let asInt     = value! as? Int8   { return Float(asInt) }
+    if let asInt     = value! as? Int16  { return Float(asInt) }
+    if let asInt     = value! as? Int32  { return Float(asInt) }
+    if let asInt     = value! as? Int64  { return Float(asInt) }
+    if let asInt     = value! as? Int    { return Float(asInt) }
+    if let asDecimal = value! as? Decimal{ return NSDecimalNumber(decimal: asDecimal).floatValue }
+    if let asFloat   = value! as? Float  { return asFloat }
+    if let asDouble  = value! as? Double { return Float(asDouble) }
+    if let asString  = value! as? String {
+        let integer  = Float(asString)
+        if integer != nil { return integer! }
+    }
+ 
+    return def_value
+}
