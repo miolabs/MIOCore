@@ -11,6 +11,7 @@ import Foundation
 public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
 {
     if value == nil { return def_value }
+    if value is Bool { return value as? Bool }
         
     if let asString = value as? String {
         let v = asString.lowercased()
