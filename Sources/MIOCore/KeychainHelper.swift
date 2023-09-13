@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if os(iOS)
+
 import Foundation
 
-final public class KeychainHelper {
-    
+final public class KeychainHelper
+{
     static public let standard = KeychainHelper()
     private init() {}
     
@@ -114,3 +116,5 @@ extension KeychainHelper {
     }
     
 }
+
+#endif
