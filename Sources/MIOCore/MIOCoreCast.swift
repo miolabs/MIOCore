@@ -27,17 +27,6 @@ public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
     return def_value
 }
 
-public func MIOCoreDecimalValue ( _ value: Any?, _ def_value: Decimal? = nil ) -> Decimal? {
-    if value == nil { return def_value }
-    
-    if let asString  = value! as? String     { return Decimal( string: asString ) ?? def_value }
-    if let asDecimal = value! as? Decimal    { return asDecimal }
-    if let asDouble  = value! as? Double     { return Decimal( floatLiteral: asDouble ) }
-    if let asInt     = MIOCoreIntValue( value ) { return Decimal( integerLiteral: asInt ) }
-
-    return def_value
-}
-
 public func MIOCoreDoubleValue ( _ value: Any?, _ def_value: Double? = nil ) -> Double? {
     if let asInt     = value! as? Int8   { return Double(asInt) }
     if let asInt     = value! as? Int16  { return Double(asInt) }
