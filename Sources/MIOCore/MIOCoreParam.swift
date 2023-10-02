@@ -103,7 +103,7 @@ public func MIOCoreParamInt ( _ dict: [String:Any?], _ name: String, _ def_value
 
 
 public func MIOCoreParamDecimal ( _ dict: [String:Any?], _ name: String, _ def_value: Decimal? = nil ) throws -> Decimal? {
-    return try MIOCoreSafeParam( dict, name ){ value in MIOCoreDecimalValue( value, def_value ) }
+    return try MIOCoreSafeParam( dict, name ){ value in MCDecimalValue( value, def_value ) }
 }
 
 public func MIOCoreParamBool ( _ dict: [String:Any?], _ name: String, _ def_value: Bool? = nil ) throws -> Bool? {

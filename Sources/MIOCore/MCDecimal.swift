@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(*, deprecated, renamed: "MCDecimal", message: "Deprecated: change by MCDecimal instead")
+@available(*, deprecated, renamed: "MCDecimalValue", message: "Deprecated: change by MCDecimal instead")
 public func MIOCoreDecimalValue ( _ value: Any?, _ def_value: Decimal? = nil ) -> Decimal? { return MCDecimalValue(value, def_value) }
 
 public func MCDecimalValue ( _ value: Any?, _ def_value: Decimal? = nil ) -> Decimal?
