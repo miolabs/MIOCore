@@ -13,11 +13,10 @@ public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type
 
 open class MIOCoreContext : NSObject
 {
-    var _globals: [ String: Any ] = [:]
-    public var globals: [ String: Any ]  { get { _globals } }
+    open var globals: [ String: Any ] = [:]
 
     public init ( _ values: [String:Any] = [:] ) {
-        _globals = values
+        globals = values
     }
 }
     

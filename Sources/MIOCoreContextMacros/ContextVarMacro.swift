@@ -31,17 +31,17 @@ public struct ContextVarMacro: AccessorMacro
         return [
                """
                get {
-                  var v = _globals[ \(literal: key) ] as? \(type)
+                  var v = globals[ \(literal: key) ] as? \(type)
                   if v == nil {
                       v = \(type)()
-                      _globals[ \(literal: key) ] = v
+                      globals[ \(literal: key) ] = v
                   }
                   return v!
                }
                """,
                """
                set {
-                  _globals[ \(literal: key) ] = newValue
+                  globals[ \(literal: key) ] = newValue
                }
                """]
     }
