@@ -11,8 +11,8 @@ import SwiftSyntaxMacrosTestSupport
 import XCTest
 
 // Macro implementations build for the host, so the corresponding module is not available when cross-compiling. Cross-compiled tests may still make use of the macro itself in end-to-end tests.
-#if canImport(MIOCore_ContextMacros)
-import MIOCore_ContextMacros
+#if canImport(MIOCoreContextMacros)
+import MIOCoreContextMacros
 
 let testMacros: [String: Macro.Type] = [
     "ContextVar": ContextVarMacro.self,
@@ -21,7 +21,7 @@ let testMacros: [String: Macro.Type] = [
 
 final class MIOCoreContextTests: XCTestCase {
     func testMacro() throws {
-        #if canImport(MIOCore_ContextMacros)
+        #if canImport(MIOCoreContextMacros)
         assertMacroExpansion(
             """
             @ContextVar var user:User
@@ -29,15 +29,38 @@ final class MIOCoreContextTests: XCTestCase {
             expandedSource: """
             var user:User {
                 get {
-                   var v = _globals[ "_user_key_" ] as? User
-                   if v == nil { 
+                   var v = globals[ "_user_key_" ] as? User
+                   if v == nil {
                        v = User()
-                       _globals[ "_user_key_" ] = v
+                       globals[ "_user_key_" ] = v
                    }
                    return v!
                 }
                 set {
-                   _globals[ "_user_key_" ] = newValue
+                   globals[ "_user_key_" ] = newValue
+                }
+            }
+            """,
+            macros: testMacros
+        )
+        #else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+        #endif
+    }
+
+    func testOptionalMacro() throws {
+        #if canImport(MIOCoreContextMacros)
+        assertMacroExpansion(
+            """
+            @ContextVar var user:User?
+            """,
+            expandedSource: """
+            var user:User? {
+                get {
+                   return globals[ "_user_key_" ] as? User
+                }
+                set {
+                   globals[ "_user_key_" ] = newValue
                 }
             }
             """,

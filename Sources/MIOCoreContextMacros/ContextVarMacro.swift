@@ -18,17 +18,25 @@ public struct ContextVarMacro: AccessorMacro
         in context: some SwiftSyntaxMacros.MacroExpansionContext
     ) throws -> [SwiftSyntax.AccessorDeclSyntax] {
         
-        guard let varDecl = declaration.as(VariableDeclSyntax.self),
-          let binding = varDecl.bindings.first,
-          let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier,
-          binding.accessorBlock == nil,
-          let type = binding.typeAnnotation?.type
-        else {
-          return []
-        }
-        
+        guard let varDecl = declaration.as(VariableDeclSyntax.self) else { return [] }
+        guard let binding = varDecl.bindings.first else { return [] }
+        guard let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier else { return [] }
+        guard let type = binding.typeAnnotation?.type else { return [] }
+
         let key = "_\(identifier.text.lowercased())_key_"
-        return [
+        
+        var get_str:SwiftSyntax.AccessorDeclSyntax
+        
+        if let optional = type.as(OptionalTypeSyntax.self) {
+            get_str =
+               """
+               get {
+                  return globals[ \(literal: key) ] as? \(optional.wrappedType)
+               }
+               """
+        }
+        else {
+            get_str =
                """
                get {
                   var v = globals[ \(literal: key) ] as? \(type)
@@ -38,11 +46,17 @@ public struct ContextVarMacro: AccessorMacro
                   }
                   return v!
                }
-               """,
                """
-               set {
-                  globals[ \(literal: key) ] = newValue
-               }
-               """]
+        }
+        
+        return [
+            get_str,
+            """
+            set {
+               globals[ \(literal: key) ] = newValue
+            }
+            """
+        ]
+
     }
 }

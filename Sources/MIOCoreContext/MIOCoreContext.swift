@@ -11,7 +11,12 @@ import Foundation
 @attached(accessor)
 public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type: "ContextVarMacro" )
 
-open class MIOCoreContext : NSObject
+public protocol MIOCoreContextProtocol
+{
+    var globals: [ String: Any ] { get }
+}
+
+open class MIOCoreContext : NSObject, MIOCoreContextProtocol
 {
     open var globals: [ String: Any ] = [:]
 
