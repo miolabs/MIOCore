@@ -5,6 +5,7 @@
 //  Created by Javier Segura Perez on 16/11/23.
 //
 
+#if swift(<5.9)
 
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
@@ -72,3 +73,5 @@ final class MIOCoreContextTests: XCTestCase {
     }
 
 }
+
+#endif

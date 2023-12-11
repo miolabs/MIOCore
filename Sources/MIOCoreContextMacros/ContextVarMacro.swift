@@ -5,6 +5,8 @@
 //  Created by Javier Segura Perez on 16/11/23.
 //
 
+#if MACRO_SUPPORTED
+
 import SwiftCompilerPlugin
 import SwiftSyntax
 import SwiftSyntaxBuilder
@@ -60,3 +62,5 @@ public struct ContextVarMacro: AccessorMacro
 
     }
 }
+
+#endif
