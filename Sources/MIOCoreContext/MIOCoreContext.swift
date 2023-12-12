@@ -1,6 +1,6 @@
 //
 //
-//  MIOCoreContextMacros.swift
+//  MIOCoreContext.swift
 //
 //
 //  Created by Javier Segura Perez on 16/11/23.
@@ -9,8 +9,10 @@
 import Foundation
 
 #if MACRO_SUPPORTED
-@attached(accessor)
-public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type: "ContextVarMacro" )
+
+//@attached(accessor)
+//public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type: "ContextVarMacro" )
+
 #endif
 
 public protocol MIOCoreContextProtocol
