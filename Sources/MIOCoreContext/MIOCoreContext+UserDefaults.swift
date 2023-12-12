@@ -5,6 +5,8 @@
 //  Created by Javier Segura Perez on 22/11/23.
 //
 
+#if MACRO_SUPPORTED
+
 import Foundation
 
 @propertyWrapper
@@ -41,3 +43,4 @@ public struct ContextUserDefaultOptionalVar<Value>
     }
 }
 
+#endif
