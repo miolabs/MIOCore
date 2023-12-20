@@ -24,5 +24,3 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
         globals = values
     }
 }
-    
-
