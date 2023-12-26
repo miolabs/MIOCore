@@ -8,9 +8,6 @@
 
 import Foundation
 
-@attached(accessor)
-public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type: "ContextVarMacro" )
-
 public protocol MIOCoreContextProtocol
 {
     var globals: [ String: Any ] { get }
