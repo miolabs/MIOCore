@@ -8,13 +8,6 @@
 
 import Foundation
 
-#if MACRO_SUPPORTED
-
-//@attached(accessor)
-//public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type: "ContextVarMacro" )
-
-#endif
-
 public protocol MIOCoreContextProtocol
 {
     var globals: [ String: Any ] { get }
@@ -28,5 +21,3 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
         globals = values
     }
 }
-    
-
