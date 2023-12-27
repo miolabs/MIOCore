@@ -5,6 +5,8 @@
 //  Created by Javier Segura Perez on 22/11/23.
 //
 
+#if !os(Linux)
+
 import Foundation
 
 @propertyWrapper
@@ -40,3 +42,5 @@ public struct ContextUserDefaultOptionalVar<Value>
         self.default_value = defaultValue
     }
 }
+
+#endif
