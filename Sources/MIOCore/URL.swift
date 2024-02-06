@@ -96,7 +96,7 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
     let data = try MIOCoreURLDataRequest_sync(r)
     if data == nil { return nil }
     
-    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any]
+    let json = try JSONSerialization.jsonObject(with: data!, options: [])
     return json
 }
 
