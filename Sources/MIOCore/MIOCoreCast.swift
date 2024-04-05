@@ -15,7 +15,7 @@ public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
         
     if let asString = value as? String {
         let v = asString.lowercased()
-        return (v == "true" || v == "yes")
+        return (v == "true" || v == "yes" || v == "1")
     }
     
     if let asInt = value as? Int   { return asInt == 1 }
