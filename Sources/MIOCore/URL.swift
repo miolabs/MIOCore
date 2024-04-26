@@ -23,8 +23,10 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 //        sessionConfig.timeoutIntervalForRequest = 30.0
 //        sessionConfig.timeoutIntervalForResource = 60.0
 //        let session = URLSession(configuration: sessionConfig)
+    let config = URLSessionConfiguration.ephemeral
+    let session = URLSession( configuration: config )
     
-    let task = URLSession.shared.dataTask(with: request, completionHandler: {
+    let task = session.dataTask(with: request, completionHandler: {
         data, response, error in
         
         if error != nil {
