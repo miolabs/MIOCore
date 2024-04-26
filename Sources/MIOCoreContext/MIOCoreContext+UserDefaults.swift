@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if !os(Linux)
 @propertyWrapper
 public struct ContextUserDefaultVar<Value>
 {
@@ -41,3 +42,4 @@ public struct ContextUserDefaultOptionalVar<Value>
     }
 }
 
+#endif
