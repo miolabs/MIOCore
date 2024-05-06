@@ -14,7 +14,7 @@ let main_core_queue = DispatchQueue(label: "com.miolabs.core.main" )
 public func MIOCoreQueue ( label key: String, prefix:String = "com.miolabs.core" ) -> DispatchQueue {
     var queue:DispatchQueue? = nil
     
-    main_core_queue.sync {
+    main_core_queue.sync( flags: .barrier ) {
         if !g_mc_queue.keys.contains( key ) {
             g_mc_queue[ key ] = DispatchQueue(label: "\(prefix).\(key)" )
         }

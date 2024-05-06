@@ -41,7 +41,7 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 
 public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     
-    let config = URLSessionConfiguration.default
+    let config = URLSessionConfiguration.ephemeral
     config.requestCachePolicy = .reloadIgnoringLocalCacheData
     config.urlCache = nil
 
