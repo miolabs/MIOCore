@@ -1,11 +1,13 @@
 //
-//  File.swift
-//  
+//  URL.swift
+//
 //
 //  Created by Javier Segura Perez on 17/10/21.
 //
 
 import Foundation
+
+#if !os(WASI)
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -42,8 +44,8 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     
     let config = URLSessionConfiguration.ephemeral
-    config.requestCachePolicy = .reloadIgnoringLocalCacheData
-    config.urlCache = nil
+//    config.requestCachePolicy = .reloadIgnoringLocalCacheData
+//    config.urlCache = nil
 
     let session = URLSession.init(configuration: config)
     
@@ -128,3 +130,4 @@ public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: Stri
 //
 //    MIOCoreURLDataRequest(r, completion: completion)
 //}
+#endif

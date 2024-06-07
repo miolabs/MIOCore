@@ -7,13 +7,15 @@
 
 import Foundation
 
+#if !os(WASI)
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
 
 
-extension URLSession {
-                
+extension URLSession
+{                
     public func synchronousDataTask(with request: URLRequest) -> (Data?, URLResponse?, Error?) {
         var data: Data?
         var response: URLResponse?
@@ -36,3 +38,4 @@ extension URLSession {
     }
 }
 
+#endif

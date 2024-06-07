@@ -7,6 +7,8 @@
 
 import Foundation
 
+#if !os(WASI)
+
 var g_mc_queue: [ String: DispatchQueue ] = [:]
 var g_mc_queue_status: [ String: Bool ] = [:]
 
@@ -44,3 +46,5 @@ public func MIOCoreQueueSetStatus ( value:Bool, label key: String, prefix:String
         g_mc_queue_status[ "\(prefix).\(key)" ] = value
     }
 }
+
+#endif

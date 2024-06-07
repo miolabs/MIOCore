@@ -7,9 +7,9 @@
 
 import Foundation
 
-
 extension String {
     
+    /*
     public func replacing (_ replace_string:String, with new_string:String) -> String {
         var ret: String = ""
         var cmp: Bool = false
@@ -50,6 +50,7 @@ extension String {
         return ret
     }
     
+     */
     public func replacing(withParams params:[String:Any]?) -> String {
         
         if params == nil { return self }
