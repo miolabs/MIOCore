@@ -44,6 +44,7 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     
     let config = URLSessionConfiguration.ephemeral
+    config.timeoutIntervalForRequest = 240
 //    config.requestCachePolicy = .reloadIgnoringLocalCacheData
 //    config.urlCache = nil
 
@@ -52,8 +53,9 @@ public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     let (data, _, error) = session.synchronousDataTask(with: request)
                      
     if error != nil {
-        print("ERROR MIOCoreURLDataRequest_sync: error!.localizedDescription")
+        print("ERROR MIOCoreURLDataRequest_sync: \(error!.localizedDescription)")
         print("ERROR Request: \(request)")
+        print("ERROR Body: \(request.httpBody ?? Data())")
         throw error!
     }
     
