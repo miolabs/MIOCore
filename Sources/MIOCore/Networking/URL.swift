@@ -44,7 +44,7 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     
     let config = URLSessionConfiguration.ephemeral
-    config.timeoutIntervalForRequest = 240
+    config.timeoutIntervalForRequest = 240    
 //    config.requestCachePolicy = .reloadIgnoringLocalCacheData
 //    config.urlCache = nil
 
@@ -109,10 +109,11 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
 
 extension URLRequest
 {
-    public init( method:String = "GET", urlString: String, body:Data? = nil ) {
+    public init( method:String = "GET", urlString: String, body:Data? = nil, mimeType:String? = nil ) {
         self.init(url: URL(string:  urlString)!)
         httpMethod = method
         httpBody = body
+        if mimeType != nil { setValue( mimeType!, forHTTPHeaderField: "Content-Type" ) }
     }
 }
 
