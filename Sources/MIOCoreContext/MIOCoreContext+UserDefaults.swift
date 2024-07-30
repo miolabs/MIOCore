@@ -9,6 +9,9 @@
 
 import Foundation
 
+// #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS) || os(visionOS)
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+
 @propertyWrapper
 public struct ContextUserDefaultVar<Value>
 {

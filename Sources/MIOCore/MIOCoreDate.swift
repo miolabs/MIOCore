@@ -1,17 +1,19 @@
 //
-//  File.swift
-//  
+//  MIOCoreDate.swift
+//
 //
 //  Created by David Trallero on 05/10/2020.
 //
 
 import Foundation
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
-import Darwin
-#elseif os(Linux)
-import Glibc
-#endif
+//#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+//import Darwin
+//#elseif os(Linux)
+//import Glibc
+//#elseif os(WASI)
+//import WASILibc
+//#endif
 
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )

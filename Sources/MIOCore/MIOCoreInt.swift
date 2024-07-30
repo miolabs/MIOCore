@@ -63,6 +63,24 @@ public func MIOCoreInt16Value ( _ value: Any?, _ def_value: Int16? = nil ) -> In
     return def_value
 }
 
+public func MCUInt16Value ( _ value: Any?, _ def_value: UInt16? = nil ) -> UInt16? {
+    if let asString = value as? String { return UInt16(MIOCoreIntRemovingStringFloatValue(asString)) }
+    if let asBool   = value as? Bool   { return UInt16(asBool ? 1 : 0 ) }
+    if let asChar   = value as? Character { return UInt16(String(asChar)) }
+    if let asInt    = value as? UInt8   { return UInt16(asInt) }
+    if let asInt    = value as? UInt16  { return       asInt  }
+    if let asInt    = value as? UInt32 { return UInt16( clamping: asInt ) }
+    if let asInt    = value as? UInt64 { return UInt16( clamping: asInt ) }
+    if let asInt    = value as? UInt   { return UInt16( clamping: asInt ) }
+    if let asInt    = value as? Int   { return UInt16( clamping: asInt ) }
+    if let asFloat  = value as? Float  { return UInt16( asFloat ) }
+    if let asDouble = value as? Double { return UInt16( asDouble ) }
+    if let asNumber = value as? NSNumber { return asNumber.uint16Value }
+
+    return def_value
+}
+
+
 public func MIOCoreInt32Value ( _ value: Any?, _ def_value: Int32? = nil ) -> Int32? {
     if let asString = value as? String { return Int32(MIOCoreIntRemovingStringFloatValue(asString)) }
     if let asBool   = value as? Bool   { return Int32(asBool ? 1 : 0 ) }
