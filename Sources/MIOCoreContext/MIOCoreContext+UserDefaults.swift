@@ -5,12 +5,10 @@
 //  Created by Javier Segura Perez on 22/11/23.
 //
 
-#if !os(Linux)
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS) || os(visionOS)
 
 import Foundation
 
-// #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS) || os(visionOS)
-#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 
 @propertyWrapper
 public struct ContextUserDefaultVar<Value>
