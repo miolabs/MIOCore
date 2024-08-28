@@ -99,9 +99,12 @@ public func MCDateGMT0Format( _ date: Date ) -> String {
 }
 
 public func MCTimeGMT0Format( _ date: Date ) -> String {
-    var formatter = ISO8601DateFormatter()
-    formatter.formatOptions = [ .withTime ]
-    return formatter.string(from:  date )
+    let df = DateFormatter()
+//    df.locale = Locale(identifier: "en_US_POSIX")
+    df.timeZone = TimeZone(secondsFromGMT: 0)
+    df.dateFormat = "HH:mm"
+    return df.string( from: date )
+
 }
 
 
