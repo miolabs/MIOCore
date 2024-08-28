@@ -7,13 +7,6 @@
 
 import Foundation
 
-//#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
-//import Darwin
-//#elseif os(Linux)
-//import Glibc
-//#elseif os(WASI)
-//import WASILibc
-//#endif
 
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
@@ -27,7 +20,7 @@ public func parse_date ( _ dateString: String ) throws -> Date {
 
 
 public func parse_date_or_nil ( _ dateString: String? ) -> Date? {
-    return dateString == nil ? nil : MIOCoreDate(fromString: dateString!)
+    return dateString == nil ? nil : MCDateGMT0Parser( dateString! )
 }
 
 
@@ -89,7 +82,30 @@ public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
     df.timeZone = TimeZone(secondsFromGMT: 0)
     return df
 }
+
+public func MCDateGMT0Parser( _ string: String ) -> Date? {
+    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: true).parse( string ) { return d }
+    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: false).parse( string ) { return d }
+    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: true).dateTimeSeparator(.space).parse( string ) { return d }
+    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: false).dateTimeSeparator(.space).parse( string ) { return d }
+    if let d = try? Date.ISO8601FormatStyle().year().month().day().parse( string ) { return d }
+    return nil
+}
  
+public func MCDateGMT0Format( _ date: Date ) -> String {
+    return date.formatted(.iso8601
+        .year()
+        .month()
+        .day() )
+//    return MIOCoreDateGMT0Formatter().string( from: date )
+}
+
+public func MCTimeGMT0Format( _ date: Date ) -> String {
+    return date.formatted(.iso8601
+        .time(includingFractionalSeconds: false) )
+//    return MIOCoreDateGMT0Formatter().string( from: date )
+}
+
 
 public func MIOCoreDate(fromString dateString: String ) -> Date?
 {
@@ -97,22 +113,7 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
     MIOCoreAutoReleasePool {
 
         var df:DateFormatter
-        
-//#if os(Linux)
-//        df = mcd_date_time_formatter_s()
-//        if let ret = df.date(from: dateString ) { date = ret; return }
-//#else
-//        var sometime = tm()
-//        let formatString = "%Y-%m-%d %H:%M:%S %z"
-//        // We have to get just the seconds or the %z will not work as espected
-//        // 2021-12-23 13:18:50.999294 ==> 2021-12-23 13:18:50
-//        let parts = dateString.components(separatedBy: ".")
-//        if strptime_l(parts[0]+" +0000", formatString, &sometime, nil) != nil {
-//            date = Date(timeIntervalSince1970: TimeInterval(mktime(&sometime)))
-//            return
-//        }
-//#endif
-        
+                
         // Most probably case
         df = mcd_date_time_formatter_s()
         if let ret = df.date(from: dateString ) { date = ret; return }
