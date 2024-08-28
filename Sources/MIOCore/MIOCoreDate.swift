@@ -84,26 +84,24 @@ public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
 }
 
 public func MCDateGMT0Parser( _ string: String ) -> Date? {
-    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: true).parse( string ) { return d }
-    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: false).parse( string ) { return d }
-    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: true).dateTimeSeparator(.space).parse( string ) { return d }
-    if let d = try? Date.ISO8601FormatStyle().year().month().day().time(includingFractionalSeconds: false).dateTimeSeparator(.space).parse( string ) { return d }
-    if let d = try? Date.ISO8601FormatStyle().year().month().day().parse( string ) { return d }
+    var formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [ .withYear, .withMonth, .withDay, .withDashSeparatorInDate, .withTime, .withColonSeparatorInTime, .withSpaceBetweenDateAndTime ]
+    if let d = formatter.date(from: string ) { return d }
+    formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate ]
+    if let d = formatter.date(from: string ) { return d }
     return nil
 }
  
 public func MCDateGMT0Format( _ date: Date ) -> String {
-    return date.formatted(.iso8601
-        .year()
-        .month()
-        .day() )
-//    return MIOCoreDateGMT0Formatter().string( from: date )
+    var formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate]
+    return formatter.string(from:  date )
 }
 
 public func MCTimeGMT0Format( _ date: Date ) -> String {
-    return date.formatted(.iso8601
-        .time(includingFractionalSeconds: false) )
-//    return MIOCoreDateGMT0Formatter().string( from: date )
+    var formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [ .withTime ]
+    return formatter.string(from:  date )
 }
 
 
