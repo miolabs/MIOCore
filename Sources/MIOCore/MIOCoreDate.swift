@@ -84,7 +84,7 @@ public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
 }
 
 public func MCDateGMT0Parser( _ string: String ) -> Date? {
-    var formatter = ISO8601DateFormatter()
+    let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [ .withYear, .withMonth, .withDay, .withDashSeparatorInDate, .withTime, .withColonSeparatorInTime, .withSpaceBetweenDateAndTime ]
     if let d = formatter.date(from: string ) { return d }
     formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate ]
@@ -93,7 +93,7 @@ public func MCDateGMT0Parser( _ string: String ) -> Date? {
 }
  
 public func MCDateGMT0Format( _ date: Date ) -> String {
-    var formatter = ISO8601DateFormatter()
+    let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate]
     return formatter.string(from:  date )
 }
