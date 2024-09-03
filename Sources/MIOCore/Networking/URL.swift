@@ -1,11 +1,13 @@
 //
-//  File.swift
-//  
+//  URL.swift
+//
 //
 //  Created by Javier Segura Perez on 17/10/21.
 //
 
 import Foundation
+
+#if !os(WASI)
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -23,8 +25,10 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 //        sessionConfig.timeoutIntervalForRequest = 30.0
 //        sessionConfig.timeoutIntervalForResource = 60.0
 //        let session = URLSession(configuration: sessionConfig)
+    let config = URLSessionConfiguration.ephemeral
+    let session = URLSession( configuration: config )
     
-    let task = URLSession.shared.dataTask(with: request, completionHandler: {
+    let task = session.dataTask(with: request, completionHandler: {
         data, response, error in
         
         if error != nil {
@@ -39,16 +43,19 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 
 public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     
-    let config = URLSessionConfiguration.default
-    config.requestCachePolicy = .reloadIgnoringLocalCacheData
-    config.urlCache = nil
+    let config = URLSessionConfiguration.ephemeral
+    config.timeoutIntervalForRequest = 240    
+//    config.requestCachePolicy = .reloadIgnoringLocalCacheData
+//    config.urlCache = nil
 
     let session = URLSession.init(configuration: config)
     
     let (data, _, error) = session.synchronousDataTask(with: request)
                      
     if error != nil {
-        print(error!.localizedDescription)
+        print("ERROR MIOCoreURLDataRequest_sync: \(error!.localizedDescription)")
+        print("ERROR Request: \(request)")
+        print("ERROR Body: \(request.httpBody ?? Data())")
         throw error!
     }
     
@@ -96,16 +103,17 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
     let data = try MIOCoreURLDataRequest_sync(r)
     if data == nil { return nil }
     
-    let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any]
+    let json = try JSONSerialization.jsonObject(with: data!, options: [])
     return json
 }
 
 extension URLRequest
 {
-    public init( method:String = "GET", urlString: String, body:Data? = nil ) {
+    public init( method:String = "GET", urlString: String, body:Data? = nil, mimeType:String? = nil ) {
         self.init(url: URL(string:  urlString)!)
         httpMethod = method
         httpBody = body
+        if mimeType != nil { setValue( mimeType!, forHTTPHeaderField: "Content-Type" ) }
     }
 }
 
@@ -126,3 +134,4 @@ public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: Stri
 //
 //    MIOCoreURLDataRequest(r, completion: completion)
 //}
+#endif

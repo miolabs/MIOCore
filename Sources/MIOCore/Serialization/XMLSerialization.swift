@@ -11,24 +11,32 @@ import Foundation
 import FoundationXML
 #endif
 
+enum XMLSerializationError : Error
+{
+    case unknown
+}
+
 public class XMLSerialization:NSObject, XMLParserDelegate
 {
     static public func xmlObject(with data:Data, options:[Any]) throws -> Any
     {
-        let xs = XMLSerialization(with: data)
-        xs.parse()
-        return xs.results!        
+        let xs = XMLSerialization( with: data )
+        try xs.parse()
+        return xs.results!
     }
         
     let dataContents:Data
     init(with data:Data){
         dataContents = data
     }
-    
-    func parse() {
-        let parser = XMLParser(data: dataContents)
+    var error:Error? = nil
+    func parse() throws {
+        let parser = XMLParser( data: dataContents )
         parser.delegate = self
-        parser.parse()
+        if parser.parse() == false {
+            if error != nil { throw error! }
+        }
+        else { throw XMLSerializationError.unknown }
     }
     
     public var results:Any?
@@ -79,5 +87,9 @@ public class XMLSerialization:NSObject, XMLParserDelegate
     
     public func parser(_ parser: XMLParser, foundCharacters string: String) {
         foundCharacters += string
+    }
+    
+    public func parser(_ parser: XMLParser, parseErrorOccurred parseError: any Error) {
+        error = parseError
     }
 }

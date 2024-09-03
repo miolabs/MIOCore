@@ -5,7 +5,10 @@
 //  Created by Javier Segura Perez on 22/11/23.
 //
 
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS) || os(visionOS)
+
 import Foundation
+
 
 @propertyWrapper
 public struct ContextUserDefaultVar<Value>
@@ -41,3 +44,4 @@ public struct ContextUserDefaultOptionalVar<Value>
     }
 }
 
+#endif

@@ -1,17 +1,12 @@
 //
-//  File.swift
-//  
+//  MIOCoreDate.swift
+//
 //
 //  Created by David Trallero on 05/10/2020.
 //
 
 import Foundation
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
-import Darwin
-#elseif os(Linux)
-import Glibc
-#endif
 
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
@@ -25,7 +20,7 @@ public func parse_date ( _ dateString: String ) throws -> Date {
 
 
 public func parse_date_or_nil ( _ dateString: String? ) -> Date? {
-    return dateString == nil ? nil : MIOCoreDate(fromString: dateString!)
+    return dateString == nil ? nil : MCDateGMT0Parser( dateString! )
 }
 
 
@@ -87,7 +82,31 @@ public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
     df.timeZone = TimeZone(secondsFromGMT: 0)
     return df
 }
+
+public func MCDateGMT0Parser( _ string: String ) -> Date? {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [ .withYear, .withMonth, .withDay, .withDashSeparatorInDate, .withTime, .withColonSeparatorInTime, .withSpaceBetweenDateAndTime ]
+    if let d = formatter.date(from: string ) { return d }
+    formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate ]
+    if let d = formatter.date(from: string ) { return d }
+    return nil
+}
  
+public func MCDateGMT0Format( _ date: Date ) -> String {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate]
+    return formatter.string(from:  date )
+}
+
+public func MCTimeGMT0Format( _ date: Date ) -> String {
+    let df = DateFormatter()
+//    df.locale = Locale(identifier: "en_US_POSIX")
+    df.timeZone = TimeZone(secondsFromGMT: 0)
+    df.dateFormat = "HH:mm"
+    return df.string( from: date )
+
+}
+
 
 public func MIOCoreDate(fromString dateString: String ) -> Date?
 {
@@ -95,22 +114,7 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
     MIOCoreAutoReleasePool {
 
         var df:DateFormatter
-        
-//#if os(Linux)
-//        df = mcd_date_time_formatter_s()
-//        if let ret = df.date(from: dateString ) { date = ret; return }
-//#else
-//        var sometime = tm()
-//        let formatString = "%Y-%m-%d %H:%M:%S %z"
-//        // We have to get just the seconds or the %z will not work as espected
-//        // 2021-12-23 13:18:50.999294 ==> 2021-12-23 13:18:50
-//        let parts = dateString.components(separatedBy: ".")
-//        if strptime_l(parts[0]+" +0000", formatString, &sometime, nil) != nil {
-//            date = Date(timeIntervalSince1970: TimeInterval(mktime(&sometime)))
-//            return
-//        }
-//#endif
-        
+                
         // Most probably case
         df = mcd_date_time_formatter_s()
         if let ret = df.date(from: dateString ) { date = ret; return }
