@@ -8,12 +8,8 @@
 
 import Foundation
 
-#if MACRO_SUPPORTED
-
 //@attached(accessor)
 //public macro ContextVar() = #externalMacro( module: "MIOCoreContextMacros", type: "ContextVarMacro" )
-
-#endif
 
 public protocol MIOCoreContextProtocol
 {
