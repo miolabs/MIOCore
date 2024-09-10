@@ -9,9 +9,10 @@ let package = Package(
     platforms: [.iOS(.v12), .macOS(.v12)],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
+        .library( name: "MIOCoreLogger", targets: [ "MIOCoreLogger" ] ),
         .library( name: "MIOCore", targets: [ "MIOCore" ] ),
         .library( name: "MIOCoreContext", targets: [ "MIOCoreContext" ] ),
-        .library( name: "MIOCoreLogger", targets: [ "MIOCoreLogger" ] ),
+        .library( name: "MIOCoreRPC", targets: [ "MIOCoreRPC" ] ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -23,9 +24,10 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         //.systemLibrary(name: "TimeLib", pkgConfig: "TimeLib"),
-        .target( name: "MIOCore", dependencies: [] ),
-        .target( name: "MIOCoreContext", dependencies: [] ),
         .target( name: "MIOCoreLogger", dependencies: [.product(name: "Logging", package: "swift-log")] ),
+        .target( name: "MIOCore", dependencies: ["MIOCoreLogger"] ),
+        .target( name: "MIOCoreContext", dependencies: ["MIOCoreLogger"] ),
+        .target( name: "MIOCoreRPC", dependencies: ["MIOCoreContext"] ),
         .testTarget(
             name: "MIOCoreTests",
             dependencies: ["MIOCore"]

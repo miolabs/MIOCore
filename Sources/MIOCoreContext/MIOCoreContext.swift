@@ -18,9 +18,23 @@ public protocol MIOCoreContextProtocol
 
 open class MIOCoreContext : NSObject, MIOCoreContextProtocol
 {
-    open var globals: [ String: Any ] = [:]
+    private let lock = NSLock()
+    private var _globals:[ String: Any ]
+    
+    public var globals: [ String: Any ] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _globals
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _globals = newValue
+        }
+    }
 
     public init ( _ values: [String:Any] = [:] ) {
-        globals = values
+        _globals = values
     }
 }
