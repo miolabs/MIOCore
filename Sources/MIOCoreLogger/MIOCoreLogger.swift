@@ -48,7 +48,11 @@ let _logger = MIOCoreLogger()
 
 public func Log( level:Logger.Level = .info, _ message:Logger.Message )
 {
-    Task.detached {
-        await _logger.log( level: level, message )
+    if #available(iOS 13.0, *) {
+        Task.detached {
+            await _logger.log( level: level, message )
+        }
+    } else {
+        // Fallback on earlier versions
     }
 }
