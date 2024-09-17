@@ -8,6 +8,7 @@
 import Foundation
 import Logging
 
+@available(iOS 13.0.0, *)
 actor MIOCoreLogger
 {
     var _logger:Logger
@@ -44,6 +45,7 @@ actor MIOCoreLogger
         
 }
 
+@available(iOS 13.0.0, *)
 let _logger = MIOCoreLogger()
 
 public func Log( level:Logger.Level = .info, _ message:Logger.Message )

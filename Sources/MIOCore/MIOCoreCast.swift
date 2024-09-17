@@ -10,19 +10,18 @@ import Foundation
 
 public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
 {
-    if value == nil { return def_value }
-    if value is Bool { return value as? Bool }
+    if value == nil || value is NSNull { return def_value }
+    if let as_bool = value as? Bool { return as_bool }
         
-    if let asString = value as? String {
-        let v = asString.lowercased()
-        return (v == "true" || v == "yes" || v == "1")
+    if let as_string = ( value as? String )?.lowercased() {
+        return (as_string == "true" || as_string == "yes" || as_string == "1")
     }
     
-    if let asInt = value as? Int   { return asInt == 1 }
-    if let asInt = value as? Int8  { return asInt == 1 }
-    if let asInt = value as? Int16 { return asInt == 1 }
-    if let asInt = value as? Int32 { return asInt == 1 }
-    if let asInt = value as? Int64 { return asInt == 1 }
+    if let as_int = value as? Int   { return as_int == 1 }
+    if let as_int = value as? Int8  { return as_int == 1 }
+    if let as_int = value as? Int16 { return as_int == 1 }
+    if let as_int = value as? Int32 { return as_int == 1 }
+    if let as_int = value as? Int64 { return as_int == 1 }
     
     return def_value
 }
