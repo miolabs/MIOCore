@@ -14,6 +14,9 @@ import Foundation
 public protocol MIOCoreContextProtocol
 {
     var globals: [ String: Any ] { get }
+    
+    func setGlobalValue ( _ value: Any, forKey key: String )
+    func removeGlobalValue ( forKey key: String )
 }
 
 open class MIOCoreContext : NSObject, MIOCoreContextProtocol
@@ -36,5 +39,19 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
 
     public init ( _ values: [String:Any] = [:] ) {
         _globals = values
+    }
+    
+    public func setGlobalValue ( _ value: Any, forKey key: String )
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        _globals[key] = value
+    }
+    
+    public func removeGlobalValue ( forKey key: String )
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        _globals.removeValue( forKey: key )
     }
 }
