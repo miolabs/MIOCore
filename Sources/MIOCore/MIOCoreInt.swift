@@ -132,6 +132,10 @@ public func MIOCoreInt64Value ( _ value: Any?, _ def_value: Int64? = nil ) -> In
 
 
 public func MIOCoreIsIntValue ( _ value: Any? ) -> Bool {
-    if MIOCoreIntValue(value) == nil { return false }
-    return true
+    if value is Int8  { return true }
+    if value is Int16 { return true }
+    if value is Int32 { return true }
+    if value is Int64 { return true }
+    if value is Int   { return true }
+    return false
 }
