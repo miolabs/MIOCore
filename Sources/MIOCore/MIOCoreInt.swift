@@ -130,6 +130,26 @@ public func MIOCoreInt64Value ( _ value: Any?, _ def_value: Int64? = nil ) -> In
     return def_value
 }
 
+public func MIOCoreUInt64Value ( _ value: Any?, _ def_value: UInt64? = nil ) -> UInt64? {
+    if let asString = value as? String { return UInt64(MIOCoreIntRemovingStringFloatValue(asString)) }
+    if let asBool   = value as? Bool   { return UInt64(asBool ? 1 : 0 ) }
+    if let asInt    = value as? Int8   { return UInt64(asInt) }
+    if let asInt    = value as? Int16  { return UInt64(asInt) }
+    if let asInt    = value as? Int32  { return UInt64(asInt) }
+    if let asInt    = value as? Int64  { return UInt64(asInt) }
+    if let asInt    = value as? UInt   { return UInt64(asInt) }
+    if let asInt    = value as? UInt8  { return UInt64(asInt) }
+    if let asInt    = value as? UInt16 { return UInt64(asInt) }
+    if let asInt    = value as? UInt32 { return UInt64(asInt) }
+    if let asInt    = value as? UInt64 { return        asInt  }
+    if let asInt    = value as? UInt   { return UInt64(asInt) }
+    if let asFloat  = value as? Float  { return UInt64(asFloat) }
+    if let asDouble = value as? Double { return UInt64(asDouble) }
+    if let asNumber = value as? NSNumber { return asNumber.uint64Value }
+
+    return def_value
+}
+
 
 public func MIOCoreIsIntValue ( _ value: Any? ) -> Bool {
     if value is Int8  { return true }
