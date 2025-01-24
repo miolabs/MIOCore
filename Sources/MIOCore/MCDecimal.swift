@@ -14,11 +14,11 @@ public func MCDecimalValue ( _ value: Any?, _ def_value: Decimal? = nil ) -> Dec
 {
     if value == nil { return def_value }
     
-    if let asString  = value! as? String     { return Decimal( string: asString ) ?? def_value }
-    if let asDecimal = value! as? Decimal    { return asDecimal }
-    if let asDouble  = value! as? Double     { return Decimal( floatLiteral: asDouble ) }
+    if let asDecimal = value! as? Decimal { return asDecimal }
+    if let asDouble  = value! as? Double  { return Decimal( floatLiteral: asDouble ) }
     if let asInt     = MIOCoreIntValue( value ) { return Decimal( integerLiteral: asInt ) }
-
+    if let asString  = value! as? String  { return Decimal( string: asString ) ?? def_value }
+        
     return def_value
 }
 
