@@ -16,7 +16,7 @@ import FoundationNetworking
 
 extension URLSession
 {
-    public func synchronousDataTask(with request: URLRequest) -> (Data?, URLResponse?, Error?) {
+    nonisolated public func synchronousDataTask(with request: URLRequest) -> (Data?, URLResponse?, Error?) {
         var data: Data?
         var response: URLResponse?
         var error: Error?
