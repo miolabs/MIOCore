@@ -18,7 +18,7 @@ public final class MCLogger
     {
         var logger = Logger( label: label )
         
-        let log_level = MCEnvironmentVar("\(label).log-level")
+        let log_level = MCEnvironmentVar("\(label).log-level")?.lowercased()
         
         let level:Logger.Level = switch log_level {
         case "trace": .trace
