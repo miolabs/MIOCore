@@ -24,8 +24,8 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         //.systemLibrary(name: "TimeLib", pkgConfig: "TimeLib"),
-        .target( name: "MIOCoreLogger", dependencies: [.product(name: "Logging", package: "swift-log")] ),
-        .target( name: "MIOCore", dependencies: ["MIOCoreLogger"] ),
+        .target( name: "MIOCore", dependencies: [] ),
+        .target( name: "MIOCoreLogger", dependencies: [ "MIOCore", .product(name: "Logging", package: "swift-log"), ] ),
         .target( name: "MIOCoreContext", dependencies: ["MIOCoreLogger"] ),
         .target( name: "MIOCoreRPC", dependencies: ["MIOCoreContext"] ),
         .testTarget(

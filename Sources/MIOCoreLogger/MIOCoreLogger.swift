@@ -7,54 +7,45 @@
 
 import Foundation
 import Logging
+import MIOCore
 
 @available(iOS 13.0.0, *)
-actor MIOCoreLogger
+public final class MCLogger
 {
-    var _logger:Logger
+    let _logger:Logger
     
-    init()
+    public init( label: String = "com.miolabs.core.logger" )
     {
-        _logger = Logger( label: "com.miolabs.core.logger" )
+        var logger = Logger( label: label )
         
-        var log_level = "info"
+        let log_level = MCEnvironmentVar("\(label).log-level")
         
-        if let value = getenv( "MC_LOGGER_LEVEL") {
-            log_level = String(utf8String: value)!
+        let level:Logger.Level = switch log_level {
+        case "trace": .trace
+        case "debug": .debug
+        case "info" : .info
+        case "notice": .notice
+        case "warning" : .warning
+        case "error": .error
+        case "critical": .critical
+        default: .info
         }
         
-        var level:Logger.Level = .info
-        switch log_level {
-        case "trace": level = .trace
-        case "debug": level = .debug
-        case "info" : level = .info
-        case "notice": level = .notice
-        case "warning" : level = .warning
-        case "error": level = .error
-        case "critical": level = .critical
-        default: break
-        }
+        logger.logLevel = level
+        _logger = logger
         
-        _logger.logLevel = level
-        _logger.log(level: .debug, "Setting log level: \(level)")
+        _logger.log(level: .debug, "Setting LOG with level: \(level)")
     }
     
-    func log( level: Logger.Level, _ message: Logger.Message ) {
+    public func log( level: Logger.Level, _ message: Logger.Message ) {
         _logger.log(level: level, message )
     }
-        
-}
-
-@available(iOS 13.0.0, *)
-let _logger = MIOCoreLogger()
-
-public func Log( level:Logger.Level = .info, _ message:Logger.Message )
-{
-    if #available(iOS 13.0, *) {
-        Task.detached {
-            await _logger.log( level: level, message )
-        }
-    } else {
-        // Fallback on earlier versions
-    }
+    
+    public func trace(_ message: Logger.Message) { log(level: .trace, message) }
+    public func debug(_ message: Logger.Message) { log(level: .debug, message) }
+    public func info(_ message: Logger.Message) { log(level: .info, message) }
+    public func notice(_ message: Logger.Message) { log(level: .notice, message) }
+    public func warning(_ message: Logger.Message) { log(level: .warning, message) }
+    public func error(_ message: Logger.Message) { log(level: .error, message) }
+    public func critical(_ message: Logger.Message) { log(level: .critical, message) }
 }
