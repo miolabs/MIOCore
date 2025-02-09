@@ -50,3 +50,10 @@ public final class MCLogger
     public func critical(_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .critical, message, file: file, function: function, line: line ) }
 }
 
+extension MCLogger
+{
+    public func newModuleLogger( module: String, file: String = #fileID, function: String = #function, line: UInt = #line ) -> MCLogger {
+        return MCLogger( label: self._logger.label + ".\(module)", file: file, function: function, line: line )
+    }
+}
+
