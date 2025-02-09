@@ -14,7 +14,7 @@ public final class MCLogger
 {
     let _logger:Logger
     
-    public init( label: String = "com.miolabs.core.logger" )
+    public init( label: String = "com.miolabs.core.logger", file: String = #fileID, function: String = #function, line: UInt = #line )
     {
         var logger = Logger( label: label )
         
@@ -34,18 +34,19 @@ public final class MCLogger
         logger.logLevel = level
         _logger = logger
         
-        _logger.log(level: .debug, "Setting LOG with level: \(level)")
+        _logger.log(level: .debug, "Setting logger level: \(level)", file: file, function: function, line: line )
     }
     
-    public func log( level: Logger.Level, _ message: Logger.Message ) {
-        _logger.log(level: level, message )
+    public func log( level: Logger.Level, _ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line ) {
+        _logger.log(level: level, message, file: file, function: function, line: line  )
     }
     
-    public func trace(_ message: Logger.Message) { log(level: .trace, message) }
-    public func debug(_ message: Logger.Message) { log(level: .debug, message) }
-    public func info(_ message: Logger.Message) { log(level: .info, message) }
-    public func notice(_ message: Logger.Message) { log(level: .notice, message) }
-    public func warning(_ message: Logger.Message) { log(level: .warning, message) }
-    public func error(_ message: Logger.Message) { log(level: .error, message) }
-    public func critical(_ message: Logger.Message) { log(level: .critical, message) }
+    public func trace   (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .trace   , message, file: file, function: function, line: line ) }
+    public func debug   (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .debug   , message, file: file, function: function, line: line ) }
+    public func info    (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .info    , message, file: file, function: function, line: line ) }
+    public func notice  (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .notice  , message, file: file, function: function, line: line ) }
+    public func warning (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .warning , message, file: file, function: function, line: line ) }
+    public func error   (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .error   , message, file: file, function: function, line: line ) }
+    public func critical(_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .critical, message, file: file, function: function, line: line ) }
 }
+
