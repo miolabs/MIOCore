@@ -37,17 +37,17 @@ public final class MCLogger
         _logger.log(level: .debug, "Setting logger level: \(level)", file: file, function: function, line: line )
     }
     
-    public func log( level: Logger.Level, _ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line ) {
-        _logger.log(level: level, message, file: file, function: function, line: line  )
+    public func log( level: Logger.Level, _ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line ) {
+        _logger.log( level: level, message(), file: file, function: function, line: line )
     }
     
-    public func trace   (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .trace   , message, file: file, function: function, line: line ) }
-    public func debug   (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .debug   , message, file: file, function: function, line: line ) }
-    public func info    (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .info    , message, file: file, function: function, line: line ) }
-    public func notice  (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .notice  , message, file: file, function: function, line: line ) }
-    public func warning (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .warning , message, file: file, function: function, line: line ) }
-    public func error   (_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .error   , message, file: file, function: function, line: line ) }
-    public func critical(_ message: Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .critical, message, file: file, function: function, line: line ) }
+    public func trace   (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .trace  , message(), file: file, function: function, line: line ) }
+    public func debug   (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .debug   , message(), file: file, function: function, line: line ) }
+    public func info    (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .info    , message(), file: file, function: function, line: line ) }
+    public func notice  (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .notice  , message(), file: file, function: function, line: line ) }
+    public func warning (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .warning , message(), file: file, function: function, line: line ) }
+    public func error   (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .error   , message(), file: file, function: function, line: line ) }
+    public func critical(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .critical, message(), file: file, function: function, line: line ) }
 }
 
 @available(iOS 13.0.0, *)
