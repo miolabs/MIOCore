@@ -71,8 +71,8 @@ final class MCLogger
         var log_level:String? = nil
         var components = label.split(separator: ".")
         while components.isEmpty == false {
-            let module = components.joined( separator: "." )
-            log_level = MCEnvironmentVar("\(module).LogLevel")?.lowercased()
+            let module = ( components.joined( separator: "." ) + ".LogLevel" ).lowercased( )
+            log_level = MCEnvironmentVar( module )?.lowercased()
             if log_level != nil { break }
             components = components.dropLast()
         }
