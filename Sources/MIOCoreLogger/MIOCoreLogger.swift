@@ -43,7 +43,7 @@ public final class Log
         if logger == nil {
             _log_queue.sync {
                 if loggers[ path ] != nil { return }
-                logger = MCLogger( label: path )
+                logger = MCLogger( label: path, file: file, function: function, line: line )
                 loggers[ path ] = logger
             }
             logger = loggers[ path ]
@@ -66,7 +66,7 @@ final class MCLogger
 {
     let _logger:Logger
     
-    public init( label:String )
+    public init( label:String, file: String = #fileID, function: String = #function, line: UInt = #line )
     {
         var log_level:String? = nil
         var components = label.split(separator: ".")
@@ -92,7 +92,7 @@ final class MCLogger
         l.logLevel = level
         
         _logger = l
-        _logger.log(level: .debug, "Setting logger level: \(level)" )
+        _logger.log(level: .debug, "Setting logger level: \(level)", file: file, function: function, line: line )
     }
     
     public func log( level: Logger.Level, _ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line ) {
