@@ -39,14 +39,14 @@ public final class Log
                         
         let path = remove_extension( file ).replacingOccurrences(of: "/", with: "." )
         
-        var logger = loggers[ path ]
+        var logger:MCLogger? = nil
         if logger == nil {
             _log_queue.sync {
-                if loggers[ path ] != nil { return }
+                logger = loggers[ path ]
+                if logger != nil { return }
                 logger = MCLogger( label: path, file: file, function: function, line: line )
                 loggers[ path ] = logger
             }
-            logger = loggers[ path ]
         }
 
         logger!.log( level: level, message(), file: file, function: function, line: line )

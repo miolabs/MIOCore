@@ -10,12 +10,17 @@ import Foundation
 
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
-    
+            
     if ret == nil {
         throw MIOCoreError.general( "Could not parse date >>\(dateString)<<" )
     }
     
+    #if DEBUG
+    return ret!.addingTimeInterval( 60 * 60 )
+    #else
     return ret!
+    #endif
+    
 }
 
 
