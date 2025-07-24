@@ -12,7 +12,6 @@ let package = Package(
         .library( name: "MIOCoreLogger", targets: [ "MIOCoreLogger" ] ),
         .library( name: "MIOCore", targets: [ "MIOCore" ] ),
         .library( name: "MIOCoreContext", targets: [ "MIOCoreContext" ] ),
-        .library( name: "MIOCoreRPC", targets: [ "MIOCoreRPC" ] ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -27,7 +26,6 @@ let package = Package(
         .target( name: "MIOCore", dependencies: [] ),
         .target( name: "MIOCoreLogger", dependencies: [ "MIOCore", .product(name: "Logging", package: "swift-log"), ] ),
         .target( name: "MIOCoreContext", dependencies: ["MIOCoreLogger"] ),
-        .target( name: "MIOCoreRPC", dependencies: ["MIOCoreContext"] ),
         .testTarget(
             name: "MIOCoreTests",
             dependencies: ["MIOCore"]
