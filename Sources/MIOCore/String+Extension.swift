@@ -112,7 +112,20 @@ extension String
 
 
 extension String {
-    subscript(idx: Int) -> String {
+    public subscript(idx: Int) -> String {
         String(self[index(startIndex, offsetBy: idx)])
     }
+        
+    public subscript (bounds: CountableRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start..<end])
+    }
+
+    public subscript (bounds: CountableClosedRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start...end])
+    }
+    
 }
