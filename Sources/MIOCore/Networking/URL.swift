@@ -120,6 +120,12 @@ extension URLRequest
 public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: String, body:[ String: Any ]? = nil, headers:[String:String]? = nil ) throws -> Any? {
     
     let data = body != nil ? try MIOCoreJsonValue(withJSONObject: body!, options: [] ) : nil
+    return try MIOCoreURLJSONRequestExecute(method: method, urlString: urlString, body: data, headers: headers)
+}
+
+public func MIOCoreURLJSONRequestExecute( method:String = "GET", urlString: String, body:Data? = nil, headers:[String:String]? = nil ) throws -> Any? {
+    
+    let data = body
     var r = URLRequest( method: method, urlString: urlString, body: data )
     if headers != nil {
         for (key, value) in headers! { r.setValue(value, forHTTPHeaderField: key) }
