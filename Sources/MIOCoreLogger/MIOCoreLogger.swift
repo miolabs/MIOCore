@@ -52,6 +52,17 @@ public final class Log
         logger!.log( level: level, message(), file: file, function: function, line: line )
     }
     
+    static public func newCustomLogger(_ label:String, file: String = #fileID, function: String = #function, line: UInt = #line) -> Logger {
+        var logger:MCLogger? = nil
+        _log_queue.sync {
+            logger = loggers[ label ]
+            if logger != nil { return }
+            logger = MCLogger( label: label, file: file, function: function, line: line )
+            loggers[ label ] = logger
+        }
+        return logger!._logger
+    }
+    
     static public func trace   (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .trace  , message(), file: file, function: function, line: line ) }
     static public func debug   (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .debug   , message(), file: file, function: function, line: line ) }
     static public func info    (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .info    , message(), file: file, function: function, line: line ) }
