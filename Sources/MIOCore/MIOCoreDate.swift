@@ -97,7 +97,7 @@ public func MCDateGMT0Parser( _ string: String ) -> Date?
     
     var options: ISO8601DateFormatter.Options = [.withYear, .withMonth, .withDay, .withDashSeparatorInDate]
         
-    if string.count == 8 {
+    if string.count == 10 {
         formatter.formatOptions = options
         return formatter.date(from: date_str )
     }
