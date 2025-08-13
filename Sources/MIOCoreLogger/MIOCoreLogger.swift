@@ -84,7 +84,6 @@ final class MCLogger
         while components.isEmpty == false {
             let module = ( components.joined( separator: "_" ) + "_LogLevel" ).lowercased( )
             log_level = MCEnvironmentVar( module )?.lowercased()
-            print( "Checking env var: \(module) -> \(log_level ?? "nil")" )
             if log_level != nil { break }
             components = components.dropLast()
         }
