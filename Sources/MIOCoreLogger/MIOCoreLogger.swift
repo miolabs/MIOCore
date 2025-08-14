@@ -41,7 +41,7 @@ public final class Log
         
         var logger:MCLogger? = nil
         if logger == nil {
-            _log_queue.sync {
+            _log_queue.sync( flags: .barrier ) {
                 logger = loggers[ path ]
                 if logger != nil { return }
                 logger = MCLogger( label: path, file: file, function: function, line: line )
@@ -49,17 +49,19 @@ public final class Log
             }
         }
 
+        Log.debug( "Logger: \(String(describing: logger)) \(level): \(message())")
         logger!.log( level: level, message(), file: file, function: function, line: line )
     }
     
     static public func newCustomLogger(_ label:String, file: String = #fileID, function: String = #function, line: UInt = #line) -> Logger {
         var logger:MCLogger? = nil
-        _log_queue.sync {
+        _log_queue.sync ( flags: .barrier ){
             logger = loggers[ label ]
             if logger != nil { return }
             logger = MCLogger( label: label, file: file, function: function, line: line )
             loggers[ label ] = logger
         }
+        Log.debug( "Logger: \(String(describing: logger)) \(label): \(label)")
         return logger!._logger
     }
     
@@ -80,7 +82,7 @@ final class MCLogger
     public init( label:String, file: String = #fileID, function: String = #function, line: UInt = #line )
     {
         var log_level:String? = nil
-        var components = label.split(separator: ".")
+        var components = label.split(separator: "_")
         while components.isEmpty == false {
             let module = ( components.joined( separator: "_" ) + "_LogLevel" ).lowercased( )
             log_level = MCEnvironmentVar( module )?.lowercased()
