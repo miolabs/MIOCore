@@ -20,7 +20,7 @@ extension String
     }
 }
 
-let _log_queue = DispatchQueue(label: "com.miolabs.log-queue")
+let _log_queue = DispatchQueue(label: "com.miolabs.log-queue", attributes: .concurrent)
 
 @available(iOS 13.0.0, *)
 public final class Log
@@ -38,31 +38,46 @@ public final class Log
         }
                         
         let path = remove_extension( file ).replacingOccurrences(of: "/", with: "." )
+                
+        // Fast path: concurrent read
+        var existing: MCLogger?
+        _log_queue.sync { existing = loggers[path] }
         
-        var logger:MCLogger? = nil
-        if logger == nil {
-            _log_queue.sync( flags: .barrier ) {
-                logger = loggers[ path ]
-                if logger != nil { return }
-                logger = MCLogger( label: path, file: file, function: function, line: line )
-                loggers[ path ] = logger
-            }
+        if let logger = existing {
+            logger.log(level: level, message(), file: file, function: function, line: line)
+            return
+        }
+        
+        // Slow path: create & publish with barrier write
+        let created = MCLogger(label: path, file: file, function: function, line: line)
+        _log_queue.sync(flags: .barrier) {
+            if loggers[path] == nil { loggers[path] = created }
         }
 
-        Log.debug( "Logger: \(String(describing: logger)) \(level): \(message())")
-        logger!.log( level: level, message(), file: file, function: function, line: line )
+        // Use whichever instance ended up in the cache
+        var finalLogger: MCLogger?
+        _log_queue.sync {
+            finalLogger = loggers[path]
+        }
+        guard let logger = finalLogger else { return }
+        logger.log( level: level, message(), file: file, function: function, line: line )
     }
     
     static public func newCustomLogger(_ label:String, file: String = #fileID, function: String = #function, line: UInt = #line) -> Logger {
-        var logger:MCLogger? = nil
-        _log_queue.sync ( flags: .barrier ){
-            logger = loggers[ label ]
-            if logger != nil { return }
-            logger = MCLogger( label: label, file: file, function: function, line: line )
-            loggers[ label ] = logger
+        // Look up (read)
+        var existing: MCLogger?
+        _log_queue.sync {
+            existing = loggers[label]
         }
-        Log.debug( "Logger: \(String(describing: logger)) \(label): \(label)")
-        return logger!._logger
+        if let logger = existing { return logger._logger }
+        
+        // Create & publish (write)
+        let created = MCLogger(label: label, file: file, function: function, line: line)
+        _log_queue.sync(flags: .barrier) {
+            if loggers[label] == nil { loggers[label] = created }
+        }
+        
+        return created._logger
     }
     
     static public func trace   (_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log( level: .trace  , message(), file: file, function: function, line: line ) }
