@@ -88,7 +88,7 @@ final class LoggerRegistry {
     // Main logging function with lazy message; short-circuits by level without evaluating the message
     func log(
         level: Logger.Level,
-        _ message: @autoclosure @Sendable () -> Logger.Message,
+        _ message: @autoclosure () -> Logger.Message,
         file: String = #fileID,
         function: String = #function,
         line: UInt = #line
@@ -115,19 +115,19 @@ let loggers = LoggerRegistry.shared
 public final class Log
 {
     static func log(level: Logger.Level,
-                    _ message: @autoclosure @Sendable () -> Logger.Message,
+                    _ message: @autoclosure () -> Logger.Message,
                     file: String = #fileID,
                     function: String = #function,
                     line: UInt = #line) {
         loggers.log(level: level, message(), file: file, function: function, line: line)
     }
 
-    static public func trace(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .trace, message(), file: file, function: function, line: line) }
-    static public func debug(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .debug, message(), file: file, function: function, line: line) }
-    static public func info(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .info, message(), file: file, function: function, line: line) }
-    static public func notice(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .notice, message(), file: file, function: function, line: line) }
-    static public func warning(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .warning, message(), file: file, function: function, line: line) }
-    static public func error(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .error, message(), file: file, function: function, line: line) }
-    static public func critical(_ message: @autoclosure @Sendable () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .critical, message(), file: file, function: function, line: line) }
+    static public func trace(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .trace, message(), file: file, function: function, line: line) }
+    static public func debug(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .debug, message(), file: file, function: function, line: line) }
+    static public func info(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .info, message(), file: file, function: function, line: line) }
+    static public func notice(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .notice, message(), file: file, function: function, line: line) }
+    static public func warning(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .warning, message(), file: file, function: function, line: line) }
+    static public func error(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .error, message(), file: file, function: function, line: line) }
+    static public func critical(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .critical, message(), file: file, function: function, line: line) }
 }
 
