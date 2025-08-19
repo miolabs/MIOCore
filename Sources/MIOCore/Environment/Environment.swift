@@ -8,6 +8,8 @@
 import Foundation
 
 public func MCEnvironmentVar(_ name: String) -> String? {
-    guard let rawValue = getenv(name) else { return nil }
-    return String(utf8String: rawValue)
+    // Use ProcessInfo to avoid holding raw C pointers from getenv (safer on Linux).
+    let env = ProcessInfo.processInfo.environment
+    guard let value = env["HOST_URL"], value.isEmpty == false else { return nil }
+    return value
 }
