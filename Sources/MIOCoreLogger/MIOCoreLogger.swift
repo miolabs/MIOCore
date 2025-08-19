@@ -34,13 +34,14 @@ final class LoggerRegistry {
     
     // Normalize file path: drop extension and convert path separators to dots, e.g. Sources/Foo/Bar.swift -> Sources.Foo.Bar
     private func normalizedLabel(from file: String) -> String {
+        var path = file
         // remove last extension if any
         if let dotIndex = file.utf8.lastIndex(of: UInt8(ascii: ".")) {
             let noExt = String(file[..<dotIndex])
-            return noExt.replacingOccurrences(of: "/", with: ".")
+            path = noExt
         }
     
-        return file.replacingOccurrences(of: "/", with: ".")
+        return path.replacingOccurrences(of: "/", with: "_")
     }
 
     // Resolve log level from environment variables, walking label components like: Module_Sub_A_B_LogLevel
@@ -52,26 +53,24 @@ final class LoggerRegistry {
             let key = (probe.joined(separator: "_") + "_LogLevel").lowercased()
             if let v = MCEnvironmentVar(key)?.lowercased() { levelStr = v; break }
             probe = probe.dropLast()
-            
-            switch levelStr {
-            case "trace"   : return .trace
-            case "debug"   : return .debug
-            case "info"    : return .info
-            case "notice"  : return .notice
-            case "warning" : return .warning
-            case "error"   : return .error
-            case "critical": return .critical
-            default        : return .info
-            }
         }
         
-        return .info
-    }
-    
+        switch levelStr {
+        case "trace"   : return .trace
+        case "debug"   : return .debug
+        case "info"    : return .info
+        case "notice"  : return .notice
+        case "warning" : return .warning
+        case "error"   : return .error
+        case "critical": return .critical
+        default        : return .info
+        }
+    }    
     
     private func makeEntry(label: String) -> Entry {
         let lvl = configuredLevel(for: label)
         var l = Logger(label: label)
+        l.logLevel = lvl
         return Entry(logger: l, level: lvl)
     }
     
