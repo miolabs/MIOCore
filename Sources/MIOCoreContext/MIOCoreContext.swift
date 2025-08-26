@@ -17,12 +17,14 @@ public protocol MIOCoreContextProtocol
     
     func setGlobalValue ( _ value: Any, forKey key: String )
     func removeGlobalValue ( forKey key: String )
+    func sendableValues() -> [String:(any Sendable)]
 }
 
 open class MIOCoreContext : NSObject, MIOCoreContextProtocol
 {
     private let lock = NSLock()
-    private var _globals:[ String: Any ]
+    private var _globals:[ String: Any ] = [:]
+    private var _sendable_globals:[ String:(any Sendable)] = [:]
     
     public var globals: [ String: Any ] {
         get {
@@ -38,7 +40,10 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
     }
 
     public init ( _ values: [String:Any] = [:] ) {
-        _globals = values
+        super.init( )
+        for (key, value) in values {
+            setGlobalValue( value, forKey: key )
+        }
     }
     
     public func setGlobalValue ( _ value: Any, forKey key: String )
@@ -48,10 +53,26 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
         _globals[key] = value
     }
     
+    public func setGlobalValue ( _ value: any Sendable, forKey key: String )
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        _globals[key] = value
+        _sendable_globals[key] = value
+    }
+
+    
     public func removeGlobalValue ( forKey key: String )
     {
         lock.lock()
         defer { lock.unlock() }
         _globals.removeValue( forKey: key )
+        _sendable_globals.removeValue(forKey: key)
+    }
+    
+    public func sendableValues() -> [String:(any Sendable)] {
+        lock.lock()
+        defer { lock.unlock() }
+        return _sendable_globals
     }
 }
