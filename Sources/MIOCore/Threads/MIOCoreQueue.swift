@@ -12,29 +12,29 @@ import Foundation
 var g_mc_queue: [ String: DispatchQueue ] = [:]
 var g_mc_queue_status: [ String: Bool ] = [:]
 
-let main_core_queue = DispatchQueue(label: "com.miolabs.core.main" )
+let main_core_queue = DispatchQueue(label: "com.miolabs.core.main", attributes: .concurrent )
 
 public func MIOCoreQueue ( label key: String, prefix:String = "com.miolabs.core" ) -> DispatchQueue 
 {
-    var queue:DispatchQueue? = nil
-    
-    main_core_queue.sync( flags: .barrier ) {
-        if !g_mc_queue.keys.contains( key ) {
-            g_mc_queue[ key ] = DispatchQueue(label: "\(prefix).\(key)" )
-        }
-        
-        queue = g_mc_queue[ key ]
+    // Makes faster read if the queue exists
+    var queue:DispatchQueue? = main_core_queue.sync( ) {
+        return g_mc_queue[ key ]
     }
     
+    if let q = queue { return q }
+    
+    main_core_queue.sync( flags: .barrier ) {
+        g_mc_queue[ key ] = DispatchQueue(label: "\(prefix).\(key)" )
+    }
+        
+    queue = g_mc_queue[ key ]
     return queue!
 }
 
 public func MIOCoreQueueStatus ( label key: String, prefix:String = "com.miolabs.core" ) -> Bool
 {
-    var status = false
-    
-    main_core_queue.sync( flags: .barrier ) {
-        status = g_mc_queue_status[ "\(prefix).\(key)" ] ?? false
+    let status = main_core_queue.sync( ) {
+        return g_mc_queue_status[ "\(prefix).\(key)" ] ?? false
     }
     
     return status
