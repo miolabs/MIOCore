@@ -47,11 +47,11 @@ final class LoggerRegistry {
     // Resolve log level from environment variables, walking label components like: Module_Sub_A_B_LogLevel
     private func configuredLevel(for label: String) -> Logger.Level {
         var levelStr: String? = nil
-        let components = label.split(separator: "_")
+        let components = label.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "_")
         var probe = components
         while probe.isEmpty == false {
             let key = (probe.joined(separator: "_") + "_LogLevel").lowercased()
-            if let v = MCEnvironmentVar(key)?.lowercased() { levelStr = v; break }
+            if let v = MCEnvironmentVar(key)?.lowercased() { levelStr = v.trimmingCharacters(in: .whitespacesAndNewlines); break }
             probe = probe.dropLast()
         }
         

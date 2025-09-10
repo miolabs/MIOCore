@@ -70,7 +70,7 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
         _sendable_globals.removeValue(forKey: key)
     }
     
-    public func sendableValues() -> [String:(any Sendable)] {
+    open func sendableValues() -> [String:(any Sendable)] {
         lock.lock()
         defer { lock.unlock() }
         return _sendable_globals

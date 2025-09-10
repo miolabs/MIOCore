@@ -7,6 +7,14 @@
 
 import Foundation
 
+// Thread-local DateFormatter cache to ensure thread safety
+private func threadFormatter(_ key: String, factory: () -> DateFormatter) -> DateFormatter {
+    let dict = Thread.current.threadDictionary
+    if let df = dict[key] as? DateFormatter { return df }
+    let df = factory()
+    dict[key] = df
+    return df
+}
 
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
@@ -71,14 +79,8 @@ public func dateFormaterInGMT0 ( ) -> DateFormatter {
     return MIOCoreDateGMT0Formatter()
 }
 
-var _MIOCoreDateFormatterInGMT0:DateFormatter?
-public func MIOCoreDateGMT0Formatter() -> DateFormatter
-{
-    if _MIOCoreDateFormatterInGMT0 == nil {
-        _MIOCoreDateFormatterInGMT0 = MIOCoreDateCreateGMT0Formatter()
-    }
-    
-    return _MIOCoreDateFormatterInGMT0!
+public func MIOCoreDateGMT0Formatter() -> DateFormatter {
+    return threadFormatter("MIOCoreDateGMT0Formatter") { MIOCoreDateCreateGMT0Formatter() }
 }
 
 public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
@@ -183,103 +185,65 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
 
 public func MIOCoreDateTDateTimeFormatter() -> DateFormatter { return mcd_date_time_formatter_t_s() }
 
-var _mcd_date_formatter:DateFormatter?
-func mcd_date_formatter() -> DateFormatter
-{
-    if _mcd_date_formatter == nil {
-//        let df = MIOCoreDateCreateGMT0Formatter()
+func mcd_date_formatter() -> DateFormatter {
+    return threadFormatter("mcd_date_formatter") {
         let df = DateFormatter()
         df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd"
-        _mcd_date_formatter = df
+        return df
     }
-    
-    return _mcd_date_formatter!
 }
 
-var _mcd_time_formatter:DateFormatter?
-func mcd_time_formatter() -> DateFormatter
-{
-    if _mcd_time_formatter == nil {
-//        let df = MIOCoreDateCreateGMT0Formatter()
+func mcd_time_formatter() -> DateFormatter {
+    return threadFormatter("mcd_time_formatter") {
         let df = DateFormatter()
         df.locale = Locale.current
         df.dateFormat = "HH:mm"
-        _mcd_time_formatter = df
+        return df
     }
-    
-    return _mcd_time_formatter!
 }
 
-var _mcd_date_time_formatter:DateFormatter?
-func mcd_date_time_formatter() -> DateFormatter
-{
-    if _mcd_date_time_formatter == nil {
+func mcd_date_time_formatter() -> DateFormatter {
+    return threadFormatter("mcd_date_time_formatter") {
         let df = DateFormatter()
         df.locale = Locale.current
-//        let df = MIOCoreDateCreateGMT0Formatter()
         df.dateFormat = "yyyy-MM-dd HH:mm"
-        _mcd_date_time_formatter = df
+        return df
     }
-    
-    return _mcd_date_time_formatter!
 }
 
-var _mcd_date_time_formatter_t:DateFormatter?
-func mcd_date_time_formatter_t() -> DateFormatter
-{
-    if _mcd_date_time_formatter_t == nil {
-//        let df = MIOCoreDateCreateGMT0Formatter()
+func mcd_date_time_formatter_t() -> DateFormatter {
+    return threadFormatter("mcd_date_time_formatter_t") {
         let df = DateFormatter()
         df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd'T'HH:mm"
-        _mcd_date_time_formatter_t = df
+        return df
     }
-    
-    return _mcd_date_time_formatter_t!
 }
 
-var _mcd_date_time_formatter_t_s:DateFormatter?
-func mcd_date_time_formatter_t_s() -> DateFormatter
-{
-    if _mcd_date_time_formatter_t_s == nil {
-//        let df = MIOCoreDateCreateGMT0Formatter()
+func mcd_date_time_formatter_t_s() -> DateFormatter {
+    return threadFormatter("mcd_date_time_formatter_t_s") {
         let df = DateFormatter()
         df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        _mcd_date_time_formatter_t_s = df
+        return df
     }
-    
-    return _mcd_date_time_formatter_t_s!
 }
 
-var _mcd_date_time_formatter_z:DateFormatter?
-func mcd_date_time_formatter_z() -> DateFormatter
-{
-    if _mcd_date_time_formatter_z == nil {
-//        let df = MIOCoreDateCreateGMT0Formatter()
+func mcd_date_time_formatter_z() -> DateFormatter {
+    return threadFormatter("mcd_date_time_formatter_z") {
         let df = DateFormatter()
         df.locale = Locale.current
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        _mcd_date_time_formatter_z = df
+        return df
     }
-    
-    return _mcd_date_time_formatter_z!
 }
 
-var _mcd_date_time_formatter_s:DateFormatter?
-func mcd_date_time_formatter_s() -> DateFormatter
-{
-    if _mcd_date_time_formatter_s == nil {
-//        let df = MIOCoreDateCreateGMT0Form atter()
+func mcd_date_time_formatter_s() -> DateFormatter {
+    return threadFormatter("mcd_date_time_formatter_s") {
         let df = DateFormatter()
-//        df.locale = Locale.current
         df.locale = Locale(identifier: "en_US_POSIX")
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        _mcd_date_time_formatter_s = df
+        return df
     }
-    
-    return _mcd_date_time_formatter_s!
 }
-
-
