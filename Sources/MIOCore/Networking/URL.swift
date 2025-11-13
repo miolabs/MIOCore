@@ -98,7 +98,10 @@ public func MIOCoreURLJSONRequest(_ request:URLRequest, completion: @escaping ([
 public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
                     
     var r = request
-    r.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    if r.value(forHTTPHeaderField: "Content-Type") == nil {
+        r.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    }
     
     let data = try MIOCoreURLDataRequest_sync(r)
     if data == nil { return nil }
@@ -109,11 +112,14 @@ public func MIOCoreURLJSONRequest_sync( _ request:URLRequest ) throws -> Any? {
 
 extension URLRequest
 {
-    public init( method:String = "GET", urlString: String, body:Data? = nil, mimeType:String? = nil ) {
+    public init( method:String = "GET", urlString: String, body:Data? = nil, headers:[String:String]? = nil, mimeType:String? = nil ) {
         self.init(url: URL(string:  urlString)!)
         httpMethod = method
         httpBody = body
         if mimeType != nil { setValue( mimeType!, forHTTPHeaderField: "Content-Type" ) }
+        if headers != nil {
+            for (key, value) in headers! { setValue(value, forHTTPHeaderField: key) }
+        }
     }
 }
 

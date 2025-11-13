@@ -45,7 +45,7 @@ open class MIOCoreContext : NSObject, MIOCoreContextProtocol
             setGlobalValue( value, forKey: key )
         }
     }
-    
+        
     public func setGlobalValue ( _ value: Any, forKey key: String )
     {
         lock.lock()
