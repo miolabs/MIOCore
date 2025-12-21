@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  MIOCoreQueue.swift
+//
 //
 //  Created by Javier Segura Perez on 28/8/23.
 //
@@ -43,7 +43,20 @@ public func MIOCoreQueueStatus ( label key: String, prefix:String = "com.miolabs
 public func MIOCoreQueueSetStatus ( value:Bool, label key: String, prefix:String = "com.miolabs.core" )
 {
     main_core_queue.sync( flags: .barrier ) {
-        g_mc_queue_status[ "\(prefix).\(key)" ] = value
+        if value {
+            g_mc_queue_status[ "\(prefix).\(key)" ] = true
+        } else {
+            // Job complete - clean up both queue and status
+            g_mc_queue_status.removeValue(forKey: "\(prefix).\(key)")
+            g_mc_queue.removeValue(forKey: key)
+        }
+    }
+}
+
+/// Returns the current cache sizes for monitoring
+public func MIOCoreQueueCacheStats() -> (queues: Int, statuses: Int) {
+    return main_core_queue.sync {
+        return (g_mc_queue.count, g_mc_queue_status.count)
     }
 }
 
