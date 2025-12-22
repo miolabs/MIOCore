@@ -27,6 +27,7 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (D
 //        let session = URLSession(configuration: sessionConfig)
     let config = URLSessionConfiguration.ephemeral
     let session = URLSession( configuration: config )
+    defer { session.invalidateAndCancel() }
     
     let task = session.dataTask(with: request, completionHandler: {
         data, response, error in
@@ -49,6 +50,7 @@ public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
 //    config.urlCache = nil
 
     let session = URLSession.init(configuration: config)
+    defer { session.invalidateAndCancel() }
     
     let (data, _, error) = session.synchronousDataTask(with: request)
                      
