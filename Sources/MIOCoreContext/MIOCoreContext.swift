@@ -13,14 +13,14 @@ import Foundation
 
 public protocol MIOCoreContextProtocol
 {
-    var globals: [ String: Any ] { get }
+    var globals: [ String: Any ] { get set }
     
-    func setGlobalValue ( _ value: Any, forKey key: String )
-    func removeGlobalValue ( forKey key: String )
-    func sendableValues() -> [String:(any Sendable)]
+//    func setGlobalValue ( _ value: Any, forKey key: String )
+//    func removeGlobalValue ( forKey key: String )
+//    func sendableValues() -> [String:(any Sendable)]
 }
 
-open class MIOCoreContext : NSObject, MIOCoreContextProtocol
+nonisolated open class MIOCoreContext : NSObject, MIOCoreContextProtocol
 {
     private let lock = NSLock()
     private var _globals:[ String: Any ] = [:]

@@ -25,7 +25,7 @@ let package = Package(
         //.systemLibrary(name: "TimeLib", pkgConfig: "TimeLib"),
         .target( name: "MIOCore", dependencies: [] ),
         .target( name: "MIOCoreLogger", dependencies: [ "MIOCore", .product(name: "Logging", package: "swift-log"), ] ),
-        .target( name: "MIOCoreContext", dependencies: ["MIOCoreLogger"] ),
+        .target( name: "MIOCoreContext", dependencies: [ "MIOCore", "MIOCoreLogger"] ),
         .testTarget(
             name: "MIOCoreTests",
             dependencies: ["MIOCore"]
