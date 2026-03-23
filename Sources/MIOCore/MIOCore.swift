@@ -5,14 +5,19 @@
 
 import Foundation
 
-var _mioCoreClassesByName:[String:AnyClass] = [:]
+private let _mioCoreClassesLock = NSLock()
+private nonisolated(unsafe) var _mioCoreClassesByName: [String: AnyClass] = [:]
 
 public func _MIOCoreRegisterClass( type:AnyClass, forKey key:String ) {
-    _mioCoreClassesByName[key] = type
+    _mioCoreClassesLock.withLock {
+        _mioCoreClassesByName[key] = type
+    }
 }
 
 public func _MIOCoreClassFromString( _ key:String ) -> AnyClass? {
-    return _mioCoreClassesByName[key]
+    _mioCoreClassesLock.withLock {
+        _mioCoreClassesByName[key]
+    }
 }
 
 #if os(Linux) || os(WASI)

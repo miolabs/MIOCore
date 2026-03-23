@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import Logging
 import MIOCore
+@_exported import Logging
+
 
 extension String
 {
@@ -22,7 +23,7 @@ extension String
 
 
 // Thread-safe, non-actor registry with tiny per-file cache
-final class LoggerRegistry {
+final class LoggerRegistry: @unchecked Sendable {
     struct Entry { var logger: Logger; var level: Logger.Level }
 
     static let shared = LoggerRegistry()

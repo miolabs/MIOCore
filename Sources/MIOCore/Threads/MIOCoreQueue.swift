@@ -9,8 +9,8 @@ import Foundation
 
 #if !os(WASI)
 
-var g_mc_queue: [ String: DispatchQueue ] = [:]
-var g_mc_queue_status: [ String: Bool ] = [:]
+nonisolated(unsafe) fileprivate var g_mc_queue: [ String: DispatchQueue ] = [:]
+nonisolated(unsafe) fileprivate var g_mc_queue_status: [ String: Bool ] = [:]
 
 let main_core_queue = DispatchQueue(label: "com.miolabs.core.main", attributes: .concurrent )
 

@@ -13,7 +13,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @Sendable @escaping (Data?, URLResponse?, Error?) -> Void) {
     
 //        let config = URLSessionConfiguration.default
 //        config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -66,7 +66,7 @@ public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
     return data
 }
 
-public func MIOCoreURLJSONRequest(_ request:URLRequest, completion: @escaping ([String:Any]?, Error?) -> Void) {
+public func MIOCoreURLJSONRequest(_ request:URLRequest, completion: @Sendable @escaping ([String:Any]?, Error?) -> Void) {
                     
     var r = request
     r.setValue("application/json", forHTTPHeaderField: "Content-Type")

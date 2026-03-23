@@ -24,7 +24,7 @@
 
 import Foundation
 
-final public class KeychainHelper
+final public class KeychainHelper: Sendable
 {
     static public let standard = KeychainHelper()
     private init() {}
