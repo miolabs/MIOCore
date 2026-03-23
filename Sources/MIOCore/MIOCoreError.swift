@@ -12,7 +12,7 @@ public enum MIOCoreError: Error
 {
     case general( _ msg: String, functionName: String = #function)
     case invalidParameter(_ parameterName: String, functionName: String = #function)
-    case invalidParameterValue(_ parameterName: String, _ value: Any = #function)
+    case invalidParameterValue(_ parameterName: String, _ value: any Sendable = #function)
 }
 
 
