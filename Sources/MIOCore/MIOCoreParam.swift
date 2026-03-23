@@ -115,7 +115,7 @@ public func MIOCoreParamSelect<T: Equatable> ( _ dict: [String:Any?], _ name: St
   let value: T = try MIOCoreParam( dict, name )
   
   if !accepted_values.contains( value ) {
-    throw MIOCoreError.invalidParameterValue( name, value )
+    throw MIOCoreError.invalidParameterValue( name, "\(value)" )
   }
   
   return value
