@@ -14,7 +14,9 @@ nonisolated(unsafe) fileprivate var g_mc_queue_status: [ String: Bool ] = [:]
 
 let main_core_queue = DispatchQueue(label: "com.miolabs.core.main", attributes: .concurrent )
 
-public func MIOCoreQueue ( label key: String, prefix:String = "com.miolabs.core" ) -> DispatchQueue 
+public func MIOCoreQueueRunningInfo( ) -> [String] { return g_mc_queue.map { "\($0.key):\($0.value)" } }
+
+public func MIOCoreQueue ( label key: String, prefix:String = "com.miolabs.core" ) -> DispatchQueue
 {
     // Makes faster read if the queue exists
     var queue:DispatchQueue? = main_core_queue.sync( ) {
