@@ -32,7 +32,7 @@ public func MIOCoreQueue ( label key: String, prefix:String = "com.miolabs.core"
     queue = g_mc_queue[ key ]
     return queue!
 }
-
+/*
 public func MIOCoreQueueStatus ( label key: String, prefix:String = "com.miolabs.core" ) -> Bool
 {
     let status = main_core_queue.sync( ) {
@@ -41,8 +41,9 @@ public func MIOCoreQueueStatus ( label key: String, prefix:String = "com.miolabs
     
     return status
 }
+*/
 
-public func MIOCoreQueueSetStatus ( value:Bool, label key: String, prefix:String = "com.miolabs.core" )
+fileprivate func MIOCoreQueueSetStatus ( value:Bool, label key: String, prefix:String = "com.miolabs.core" )
 {
     main_core_queue.sync( flags: .barrier ) {
         if value {
