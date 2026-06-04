@@ -71,7 +71,7 @@ final public class KeychainHelper: Sendable
         return (result as? Data)
     }
     
-    func delete(service: String, account: String) {
+    public func delete(service: String, account: String) {
         
         let query = [
             kSecAttrService: service,
@@ -114,7 +114,6 @@ extension KeychainHelper {
             return nil
         }
     }
-    
 }
 
 #endif
