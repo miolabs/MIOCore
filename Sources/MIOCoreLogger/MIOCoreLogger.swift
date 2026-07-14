@@ -28,7 +28,17 @@ final class LoggerRegistry: @unchecked Sendable {
 
     static let shared = LoggerRegistry()
 
+#if os(WASI)
+    // WASI is single-threaded: no Dispatch available, execute bodies inline
+    private struct QueueShim {
+        enum Flags { case barrier }
+        func sync<T>(execute body: () -> T) -> T { body() }
+        func sync<T>(flags: Flags, execute body: () -> T) -> T { body() }
+    }
+    private let q = QueueShim()
+#else
     private let q = DispatchQueue(label: "com.duallink.logger.registry", attributes: .concurrent)
+#endif
     private var cache: [String: Entry] = [:]
         
     private init() {}

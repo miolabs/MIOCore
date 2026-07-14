@@ -8,6 +8,16 @@
 import Foundation
 
 // Thread-local DateFormatter cache to ensure thread safety
+#if os(WASI)
+// WASI is single-threaded: a plain global cache is safe
+nonisolated(unsafe) private var _wasiFormatterCache: [String: Formatter] = [:]
+private func threadFormatter(_ key: String, factory: () -> Formatter) -> Formatter {
+    if let df = _wasiFormatterCache[key] { return df }
+    let df = factory()
+    _wasiFormatterCache[key] = df
+    return df
+}
+#else
 private func threadFormatter(_ key: String, factory: () -> Formatter) -> Formatter {
     let dict = Thread.current.threadDictionary
     if let df = dict[key] as? Formatter { return df }
@@ -15,6 +25,7 @@ private func threadFormatter(_ key: String, factory: () -> Formatter) -> Formatt
     dict[key] = df
     return df
 }
+#endif
 
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
@@ -159,27 +170,30 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
         df = mcd_date_time_formatter_z()
         if let ret = df.date( from: dateString ) { date = ret; return }
 
-        let rm_ms    = String( dateString.split( separator: "." )[ 0 ] )
-        var last_try = rm_ms.replacingOccurrences( of: "T", with: " " )
-        
+        // Last-resort attempts slice fixed character ranges — guard the length
+        // so an unparseable short string returns nil instead of trapping.
+        guard let rm_ms = dateString.split( separator: "." ).first else { return }
+        var last_try = String( rm_ms ).replacingOccurrences( of: "T", with: " " )
+
         if last_try.count > 19 {
             last_try = String( last_try[..<last_try.index(last_try.startIndex, offsetBy: 19)] )
-            
+
         }
 
         df = mcd_date_time_formatter_s()
         if let ret = df.date(from: last_try ) { date = ret; return }
-        
+
         //df = mcd_date_time_formatter_s()
         //if let ret = df.date(from: last_try ) { date = ret; return }
-        
+
         // Check for a timeshift
+        guard last_try.count >= 13 else { return }
         let r = last_try.index(last_try.startIndex, offsetBy: 11)..<last_try.index(last_try.startIndex, offsetBy: 13)
         let hh = String( last_try[ r ] )
         var h = MIOCoreIntValue( hh, 0 )!
         h -= 1
         last_try.replaceSubrange( r, with: String(format: "%02i", h ) )
-        
+
         if let ret = df.date(from: last_try ) { date = ret; return }
     }
 
