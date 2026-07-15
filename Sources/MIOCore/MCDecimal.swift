@@ -14,8 +14,15 @@ public func MCDecimalValue ( _ value: Any?, _ def_value: Decimal? = nil ) -> Dec
 {
     if value == nil { return def_value }
     
+    if let asDecimal = value! as? NSDecimalNumber { return asDecimal.decimalValue }
+    if let asDouble  = value! as? Double  {
+        // Decimal(floatLiteral:) carries the Double's binary noise into the mantissa
+        // (-3182.7 -> -3182.6999999999999791, >64 bits). The shortest round-trip
+        // string representation yields a clean, compact Decimal.
+        if asDouble.isFinite == false { return Decimal.nan }
+        return Decimal( string: "\(asDouble)" ) ?? Decimal( asDouble )
+    }
     if let asDecimal = value! as? Decimal { return asDecimal }
-    if let asDouble  = value! as? Double  { return Decimal( floatLiteral: asDouble ) }
     if MIOCoreIsIntValue( value ) { return Decimal( integerLiteral: MIOCoreIntValue( value )! ) }
     if let asString  = value! as? String  { return Decimal( string: asString ) ?? def_value }
         
