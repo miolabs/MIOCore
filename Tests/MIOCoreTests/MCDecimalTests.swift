@@ -36,6 +36,14 @@ final class MCDecimalTests: XCTestCase {
     // Regression: the exact Decimal from the DLPaymentServer debugger session.
     // NSDecimalNumber integer accessors return garbage (50664) for mantissas that
     // need more than 64 bits; MIOCoreInt*Value must round to scale 0 first.
+    //
+    // Darwin only, and not by choice: reproducing the bug needs that specific mantissa,
+    // which means Decimal's memberwise internal initialiser. swift-corelibs-foundation
+    // does not expose it, so on Linux this does not compile rather than merely fail —
+    // which is why it has to be #if'd out instead of skipped at runtime. Constructing the
+    // value from a string would not do: the bug depends on the mantissa being long, and a
+    // parsed literal may compact it away.
+    #if canImport(Darwin)
     func testIntValueFromOversizedMantissa() throws {
         let dirty = Decimal(_exponent: -14, _length: 5, _isNegative: 1, _isCompact: 1, _reserved: 0,
                             _mantissa: (32559, 37467, 14303, 47536, 1, 0, 0, 0)) // -318269.99999999999791
@@ -46,4 +54,5 @@ final class MCDecimalTests: XCTestCase {
         // Plain NSNumber semantics unchanged: truncation, no rounding
         XCTAssertEqual( MIOCoreIntValue( NSNumber( value: 3.9 ) ), 3 )
     }
+    #endif
 }
