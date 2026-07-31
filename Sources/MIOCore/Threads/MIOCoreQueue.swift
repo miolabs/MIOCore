@@ -14,8 +14,20 @@ nonisolated(unsafe) fileprivate var g_mc_queue_status: [ String: Bool ] = [:]
 
 let main_core_queue = DispatchQueue(label: "com.miolabs.core.main", attributes: .concurrent )
 
+/// Returns a snapshot of the queue-status registry as `"fullKey:held"` strings, for debugging.
+///
+/// - Returns: One entry per tracked status key.
 public func MIOCoreQueueRunningInfo( ) -> [String] { return g_mc_queue_status.map { "\($0.key):\($0.value)" } }
 
+/// Returns a named, cached serial `DispatchQueue`, creating it on first use.
+///
+/// Queues are memoized by `label`, so repeated calls with the same label return the same instance.
+/// Lookup/creation is coordinated through an internal concurrent queue for thread safety.
+///
+/// - Parameters:
+///   - key: The queue label (memoization key).
+///   - prefix: A reverse-DNS prefix for the underlying queue's label. Defaults to `"com.miolabs.core"`.
+/// - Returns: The cached (or newly created) serial queue.
 public func MIOCoreQueue ( label key: String, prefix:String = "com.miolabs.core" ) -> DispatchQueue
 {
     // Makes faster read if the queue exists

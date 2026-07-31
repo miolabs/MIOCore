@@ -8,11 +8,28 @@
 import Foundation
 
 
+/// The EAN barcode standard to generate, whose raw value is its total digit count.
 public enum EAN_TYPE: Int16 {
+    /// EAN-8: 8 digits total.
     case ean8  = 8
+    /// EAN-13: 13 digits total.
     case ean13 = 13
 }
 
+/// Generates a complete EAN barcode string, computing and appending the check digit.
+///
+/// Left-pads `number` with zeros so that `prefix` + number + check digit fills the width required by
+/// `type`.
+///
+/// ```swift
+/// let code = MIOCoreGenerateEAN(type: .ean13, prefix: "840", number: 1234567)
+/// ```
+///
+/// - Parameters:
+///   - type: The EAN standard (``EAN_TYPE/ean8`` or ``EAN_TYPE/ean13``).
+///   - prefix: A leading prefix (e.g. a country/company code); may be empty.
+///   - number: The item number that fills the remaining digits.
+/// - Returns: The full barcode string including its trailing check digit.
 public func MIOCoreGenerateEAN ( type: EAN_TYPE , prefix: String, number: Int64 ) -> String {
     return generate_code_ean( type.rawValue, prefix, number )
 }

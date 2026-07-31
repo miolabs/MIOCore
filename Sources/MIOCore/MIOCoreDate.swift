@@ -27,6 +27,14 @@ private func threadFormatter(_ key: String, factory: () -> Formatter) -> Formatt
 }
 #endif
 
+/// Parses a date string into a `Date`, throwing if it cannot be understood.
+///
+/// Delegates to ``MIOCoreDate(fromString:)``, which tries the family of date/time formats it
+/// recognizes (`yyyy-MM-dd`, `yyyy-MM-dd HH:mm[:ss]`, the `'T'` and `'Z'` ISO variants, …).
+///
+/// - Parameter dateString: The textual date to parse.
+/// - Returns: The parsed `Date`.
+/// - Throws: ``MIOCoreError/general(_:functionName:)`` if no known format matches.
 public func parse_date ( _ dateString: String ) throws -> Date {
     let ret = MIOCoreDate(fromString: dateString )
             
@@ -44,33 +52,63 @@ public func parse_date ( _ dateString: String ) throws -> Date {
 }
 
 
+/// Parses an optional date string in GMT0, returning `nil` instead of throwing on failure.
+///
+/// The non-throwing companion to ``parse_date(_:)``; a `nil` input or an unparseable string both
+/// yield `nil`. Parsing goes through ``MCDateGMT0Parser(_:)`` (ISO8601, GMT0).
+///
+/// - Parameter dateString: The textual date to parse, or `nil`.
+/// - Returns: The parsed `Date`, or `nil`.
 public func parse_date_or_nil ( _ dateString: String? ) -> Date? {
     return dateString == nil ? nil : MCDateGMT0Parser( dateString! )
 }
 
 
+/// Formats a `Date` as a `yyyy-MM-dd` day string.
+///
+/// - Parameter date: The date to format.
+/// - Returns: The date rendered as `yyyy-MM-dd`.
 public func format_date ( _ date: Date ) -> String {
     return mcd_date_formatter().string( from: date )
 }
 
 
+/// Formats a `Date` as an `HH:mm` time-of-day string.
+///
+/// - Parameter date: The date whose time component to format.
+/// - Returns: The time rendered as `HH:mm`.
 public func format_time ( _ date: Date ) -> String {
 //    let df = MIOCoreDateGMT0Formatter()
 //    df.dateFormat = "HH:mm"
-    
+
     return mcd_time_formatter().string( from: date )
 }
 
+/// Formats a `Date` as a `yyyy-MM-dd HH:mm` date-and-time string (space separator).
+///
+/// - Parameter date: The date to format.
+/// - Returns: The date rendered as `yyyy-MM-dd HH:mm`.
 public func format_date_time ( _ date: Date ) -> String {
     return mcd_date_time_formatter().string( from: date )
 }
 
 
+/// Formats a `Date` as a `yyyy-MM-dd'T'HH:mm` string (ISO-style `T` separator).
+///
+/// The `T`-separated counterpart of ``format_date_time(_:)``.
+///
+/// - Parameter date: The date to format.
+/// - Returns: The date rendered as `yyyy-MM-dd'T'HH:mm`.
 public func format_date_time_t ( _ date: Date ) -> String {
     return mcd_date_time_formatter_t().string( from: date )
 }
 
 
+/// Parses an `HH:mm` time string into a `Date`, throwing if it cannot be understood.
+///
+/// - Parameter time: The textual time to parse (`HH:mm`).
+/// - Returns: The parsed `Date` (on the formatter's reference day).
+/// - Throws: ``MIOCoreError/general(_:functionName:)`` if the string cannot be parsed.
 public func parse_time ( _ time: String ) throws -> Date {
     let ret = mcd_time_formatter().date( from: time )
     
@@ -81,23 +119,52 @@ public func parse_time ( _ time: String ) throws -> Date {
     return ret!
 }
 
+/// Parses an `HH:mm` time string, returning `nil` instead of throwing on failure.
+///
+/// The non-throwing companion to ``parse_time(_:)``.
+///
+/// - Parameter time: The textual time to parse (`HH:mm`).
+/// - Returns: The parsed `Date`, or `nil` if it cannot be parsed.
 public func parse_time_or_nil ( _ time: String ) -> Date? {
     return mcd_time_formatter().date( from: time )
 }
 
 
+/// Returns a `DateFormatter` configured for the GMT0 time zone.
+///
+/// Convenience alias for ``MIOCoreDateGMT0Formatter()``.
+///
+/// - Returns: A thread-cached GMT0 `DateFormatter`.
 public func dateFormaterInGMT0 ( ) -> DateFormatter {
     return MIOCoreDateGMT0Formatter()
 }
 
+/// Returns a thread-cached `DateFormatter` fixed to `en_US_POSIX` and the GMT0 time zone.
+///
+/// Formatters are expensive and not thread-safe, so one instance is cached per thread. Use this for
+/// stable, locale-independent formatting that behaves identically on Apple platforms and Linux.
+///
+/// - Returns: The per-thread GMT0 `DateFormatter`.
 public func MIOCoreDateGMT0Formatter() -> DateFormatter {
     return threadFormatter("MIOCoreDateGMT0Formatter") { MIOCoreDateCreateGMT0Formatter() } as! DateFormatter
 }
 
+/// Returns a thread-cached `ISO8601DateFormatter` with internet date-time and fractional seconds.
+///
+/// Configured with `[.withInternetDateTime, .withFractionalSeconds]`, the format used for
+/// timestamps exchanged with the server and DB.
+///
+/// - Returns: The per-thread ISO8601 formatter.
 public func MIOCoreISO8601Formatter() -> ISO8601DateFormatter {
     return threadFormatter("MIOCoreISO8601Formatter") { mcd_date_time_formatter_iso() } as! ISO8601DateFormatter
 }
 
+/// Creates a fresh `DateFormatter` fixed to `en_US_POSIX` and GMT0.
+///
+/// Unlike ``MIOCoreDateGMT0Formatter()``, this allocates a new instance each call, use it when you
+/// need to set a custom `dateFormat` without mutating the shared per-thread formatter.
+///
+/// - Returns: A newly created GMT0 `DateFormatter`.
 public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
 {
     let df = DateFormatter()
@@ -106,6 +173,14 @@ public func MIOCoreDateCreateGMT0Formatter() -> DateFormatter
     return df
 }
 
+/// Parses an ISO8601 date/date-time string as GMT0, adapting options to the string's shape.
+///
+/// Handles a bare `yyyy-MM-dd` (length 10), a space- or `T`-separated date-time, and a minute-only
+/// time (length 16, to which `:00` seconds are appended) by toggling `ISO8601DateFormatter.Options`
+/// accordingly.
+///
+/// - Parameter string: The ISO8601 date or date-time string.
+/// - Returns: The parsed `Date`, or `nil` if it does not match.
 public func MCDateGMT0Parser( _ string: String ) -> Date?
 {
     let formatter = ISO8601DateFormatter()
@@ -127,12 +202,24 @@ public func MCDateGMT0Parser( _ string: String ) -> Date?
     return formatter.date(from: date_str )
 }
  
+/// Formats a `Date` as a `yyyy-MM-dd` day string in GMT0 (stable across platforms).
+///
+/// ```swift
+/// let s = MCDateGMT0Format(date)   // e.g. "2026-07-30"
+/// ```
+///
+/// - Parameter date: The date to format.
+/// - Returns: The GMT0 day string.
 public func MCDateGMT0Format( _ date: Date ) -> String {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [ .withYear,  .withMonth, .withDay, .withDashSeparatorInDate]
     return formatter.string(from:  date )
 }
 
+/// Formats a `Date` as an `HH:mm` time-of-day string in GMT0.
+///
+/// - Parameter date: The date whose time component to format.
+/// - Returns: The GMT0 `HH:mm` string.
 public func MCTimeGMT0Format( _ date: Date ) -> String {
     let df = DateFormatter()
 //    df.locale = Locale(identifier: "en_US_POSIX")
@@ -143,6 +230,15 @@ public func MCTimeGMT0Format( _ date: Date ) -> String {
 }
 
 
+/// Parses a date string by trying every date/time format this library recognizes, returning `nil` on failure.
+///
+/// Attempts, in likelihood order: `yyyy-MM-dd HH:mm:ss` (POSIX), `yyyy-MM-dd`, `yyyy-MM-dd HH:mm`,
+/// and the `'T'`/`'T'…ss`/`'Z'` ISO variants. As a last resort it strips fractional seconds, trims to
+/// 19 characters, and even retries with a one-hour shift, all length-guarded so a short, unparseable
+/// string returns `nil` rather than trapping. This is the engine behind ``parse_date(_:)``.
+///
+/// - Parameter dateString: The textual date to parse.
+/// - Returns: The parsed `Date`, or `nil` if no format matches.
 public func MIOCoreDate(fromString dateString: String ) -> Date?
 {
     var date:Date?
@@ -201,6 +297,9 @@ public func MIOCoreDate(fromString dateString: String ) -> Date?
 
 }
 
+/// Returns a thread-cached `DateFormatter` for the `yyyy-MM-dd'T'HH:mm:ss` pattern.
+///
+/// - Returns: The per-thread `T`-separated date-time formatter (with seconds).
 public func MIOCoreDateTDateTimeFormatter() -> DateFormatter { return mcd_date_time_formatter_t_s() }
 
 func mcd_date_formatter() -> DateFormatter {
@@ -279,6 +378,19 @@ func mcd_date_time_formatter_s() -> DateFormatter {
 
 extension ISO8601DateFormatter
 {
+    /// Parses an ISO8601 timestamp preserving **microsecond** precision.
+    ///
+    /// `ISO8601DateFormatter` only understands milliseconds, so this reads the sub-second digits
+    /// itself: it pads/truncates the fraction to 6 places, converts to microseconds, and adds them
+    /// onto the milliseconds-resolution `Date`. Falls back to the millisecond value when there is no
+    /// fractional component.
+    ///
+    /// ```swift
+    /// let d = MIOCoreISO8601Formatter().microsecondsDate(from: "2026-07-30T10:00:00.123456Z")
+    /// ```
+    ///
+    /// - Parameter dateString: The ISO8601 timestamp to parse.
+    /// - Returns: The `Date` with microsecond precision, or `nil` if the base string cannot be parsed.
     public func microsecondsDate(from dateString: String) -> Date? {
         guard let millisecondsDate = date(from: dateString) else { return nil }
         guard let fractionIndex = dateString.lastIndex(of: ".") else { return millisecondsDate }

@@ -8,6 +8,23 @@
 import Foundation
 
 
+/// Converts any value to a `Bool` when it can.
+///
+/// Accepts a real `Bool`, the case-insensitive strings `"true"`, `"yes"`, or `"1"`, or any integer
+/// (where `1` is `true`). Anything else, including `nil` and `NSNull`, falls back to `def_value`.
+/// This never throws.
+///
+/// ```swift
+/// MIOCoreBoolValue("yes")        // true
+/// MIOCoreBoolValue(1)            // true
+/// MIOCoreBoolValue("nope")       // nil
+/// MIOCoreBoolValue(nil, false)   // false  (default used)
+/// ```
+///
+/// - Parameters:
+///   - value: The dynamic value to convert (typically from a JSON body or DB row).
+///   - def_value: The value returned when `value` is `nil`/`NSNull`/unconvertible. Defaults to `nil`.
+/// - Returns: The coerced `Bool`, or `def_value` when conversion is not possible.
 public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
 {
     if value == nil || value is NSNull { return def_value }
@@ -26,6 +43,18 @@ public func MIOCoreBoolValue ( _ value: Any?, _ def_value: Bool? = nil) -> Bool?
     return def_value
 }
 
+/// Converts any value to a `Double` when it can.
+///
+/// Accepts any integer type, `Decimal`, `Float`, `Double`, or a numeric `String`. Anything else
+/// falls back to `def_value`. This never throws.
+///
+/// > For currency use ``MCDecimalValue(_:_:)`` instead, binary floating point cannot represent
+/// > decimal money exactly.
+///
+/// - Parameters:
+///   - value: The dynamic value to convert.
+///   - def_value: The value returned when `value` is unconvertible. Defaults to `nil`.
+/// - Returns: The coerced `Double`, or `def_value` when conversion is not possible.
 public func MIOCoreDoubleValue ( _ value: Any?, _ def_value: Double? = nil ) -> Double? {
     if let asInt     = value! as? Int8   { return Double(asInt) }
     if let asInt     = value! as? Int16  { return Double(asInt) }
@@ -43,6 +72,16 @@ public func MIOCoreDoubleValue ( _ value: Any?, _ def_value: Double? = nil ) -> 
     return def_value
 }
 
+/// Converts any value to a `Float` when it can.
+///
+/// The single-precision counterpart of ``MIOCoreDoubleValue(_:_:)``: accepts any integer type,
+/// `Decimal`, `Float`, `Double`, or a numeric `String`, and falls back to `def_value` otherwise.
+/// This never throws.
+///
+/// - Parameters:
+///   - value: The dynamic value to convert.
+///   - def_value: The value returned when `value` is unconvertible. Defaults to `nil`.
+/// - Returns: The coerced `Float`, or `def_value` when conversion is not possible.
 public func MIOCoreFloatValue ( _ value: Any?, _ def_value: Float? = nil ) -> Float? {
     
     if let asInt     = value! as? Int8   { return Float(asInt) }
