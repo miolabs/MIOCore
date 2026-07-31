@@ -51,6 +51,17 @@ extension String {
     }
     
      */
+    /// Substitutes `{{key}}` placeholders in the string with values from a parameter dictionary.
+    ///
+    /// Each key is matched as `{{key}}` (double braces). Only `String` values are substituted; a
+    /// `nil` dictionary returns the receiver unchanged.
+    ///
+    /// ```swift
+    /// "Hi {{name}}".replacing(withParams: ["name": "Ana"])   // "Hi Ana"
+    /// ```
+    ///
+    /// - Parameter params: The placeholder → replacement map, or `nil` to leave the string as is.
+    /// - Returns: The string with all matched placeholders replaced.
     public func replacing(withParams params:[String:Any]?) -> String {
         
         if params == nil { return self }
@@ -69,6 +80,13 @@ extension String {
         return result
     }
     
+    /// Returns a heap-allocated, null-terminated UTF-8 C string for interop with C APIs.
+    ///
+    /// Used by the DB drivers that bridge to C libraries (e.g. libpq).
+    ///
+    /// - Important: The caller owns the returned buffer and is responsible for freeing it; it is not
+    ///   released automatically.
+    /// - Returns: A pointer to a newly allocated, null-terminated UTF-8 byte buffer.
     public func cString() -> UnsafeMutablePointer<UInt8> {
         var utf8 = Array(self.utf8)
         utf8.append(0)  // adds null character
@@ -82,6 +100,15 @@ extension String {
 
 extension String
 {
+    /// Converts a `camelCase` identifier to `snake_case`.
+    ///
+    /// Used to map Swift property names to database column / JSON key conventions.
+    ///
+    /// ```swift
+    /// "helloWorld".camelCaseToSnakeCase()   // "hello_world"
+    /// ```
+    ///
+    /// - Returns: The snake-cased string.
     public func camelCaseToSnakeCase() -> String {
 
         var result = ""
@@ -102,6 +129,15 @@ extension String
     }
 
     
+    /// Converts a `snake_case` identifier to `camelCase`.
+    ///
+    /// The inverse of ``camelCaseToSnakeCase()``.
+    ///
+    /// ```swift
+    /// "hello_world".snakeCaseToCamelCase()   // "helloWorld"
+    /// ```
+    ///
+    /// - Returns: The camel-cased string.
     public func snakeCaseToCamelCase ( ) -> String {
         return self.split(separator: "_").enumerated()
                    .map{ (index,part) in
@@ -112,16 +148,30 @@ extension String
 
 
 extension String {
+    /// Returns the character at an integer offset as a single-character `String`.
+    ///
+    /// A convenience over `String.Index` arithmetic.
+    ///
+    /// - Parameter idx: The zero-based character offset. Must be within bounds.
+    /// - Returns: The character at `idx` as a `String`.
     public subscript(idx: Int) -> String {
         String(self[index(startIndex, offsetBy: idx)])
     }
-        
+
+    /// Returns the substring for a half-open integer range (`lower..<upper`).
+    ///
+    /// - Parameter bounds: The half-open range of character offsets. Must be within bounds.
+    /// - Returns: The substring as a `String`.
     public subscript (bounds: CountableRange<Int>) -> String {
         let start = index(startIndex, offsetBy: bounds.lowerBound)
         let end = index(startIndex, offsetBy: bounds.upperBound)
         return String(self[start..<end])
     }
 
+    /// Returns the substring for a closed integer range (`lower...upper`).
+    ///
+    /// - Parameter bounds: The closed range of character offsets. Must be within bounds.
+    /// - Returns: The substring as a `String`.
     public subscript (bounds: CountableClosedRange<Int>) -> String {
         let start = index(startIndex, offsetBy: bounds.lowerBound)
         let end = index(startIndex, offsetBy: bounds.upperBound)

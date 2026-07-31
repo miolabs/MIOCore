@@ -122,6 +122,20 @@ final class LoggerRegistry: @unchecked Sendable {
 
 let loggers = LoggerRegistry.shared
 
+/// A leveled logging front door, a thin, uniform wrapper over swift-log.
+///
+/// Application and library code logs through `Log` instead of `print`, so output is consistent and
+/// level-filtered. Each call captures `#fileID`/`#function`/`#line` automatically, and
+/// the message is an `@autoclosure`, it is only built when the level is enabled, so disabled log
+/// statements cost nothing. The logger label is derived from the calling file, and its level can be
+/// set per module/path via environment variables (e.g. `MyModule_LogLevel=debug`).
+///
+/// ```swift
+/// import MIOCoreLogger
+///
+/// Log.info("Server listening on :\(port)")
+/// Log.error("Render failed: \(error.localizedDescription)")
+/// ```
 public final class Log
 {
     static func log(level: Logger.Level,
@@ -132,12 +146,19 @@ public final class Log
         loggers.log(level: level, message, file: file, function: function, line: line)
     }
 
+    /// Logs a message at the `trace` level (most verbose).
     static public func trace(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .trace, message, file: file, function: function, line: line) }
+    /// Logs a message at the `debug` level.
     static public func debug(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .debug, message, file: file, function: function, line: line) }
+    /// Logs a message at the `info` level (the default threshold).
     static public func info(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .info, message, file: file, function: function, line: line) }
+    /// Logs a message at the `notice` level.
     static public func notice(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .notice, message, file: file, function: function, line: line) }
+    /// Logs a message at the `warning` level.
     static public func warning(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .warning, message, file: file, function: function, line: line) }
+    /// Logs a message at the `error` level.
     static public func error(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .error, message, file: file, function: function, line: line) }
+    /// Logs a message at the `critical` level (most severe).
     static public func critical(_ message: @autoclosure () -> Logger.Message, file: String = #fileID, function: String = #function, line: UInt = #line) { log(level: .critical, message, file: file, function: function, line: line) }
 }
 
