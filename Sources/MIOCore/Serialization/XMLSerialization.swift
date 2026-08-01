@@ -51,8 +51,8 @@ public class XMLSerialization:NSObject, XMLParserDelegate
         parser.delegate = self
         if parser.parse() == false {
             if error != nil { throw error! }
+            throw XMLSerializationError.unknown
         }
-        else { throw XMLSerializationError.unknown }
     }
     
     /// The parsed result tree, available after parsing completes.
