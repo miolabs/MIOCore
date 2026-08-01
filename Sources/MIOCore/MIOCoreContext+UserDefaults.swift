@@ -1,8 +1,7 @@
 //
 //  MIOCoreContext+UserDefaults.swift
 //
-//
-//  Created by Javier Segura Perez on 22/11/23.
+//  Created by MIO Research Labs on 22/11/2023.
 //
 
 #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS) || os(visionOS)

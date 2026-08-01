@@ -1,8 +1,7 @@
 //
 //  MIOCoreDate.swift
 //
-//
-//  Created by David Trallero on 05/10/2020.
+//  Created by MIO Research Labs on 05/10/2020.
 //
 
 import Foundation

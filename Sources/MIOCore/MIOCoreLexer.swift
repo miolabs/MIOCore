@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  MIOCoreLexer.swift
 //
-//  Created by Javier Segura Perez on 01/06/2020.
+//  Created by MIO Research Labs on 01/06/2020.
 //
 
 import Foundation

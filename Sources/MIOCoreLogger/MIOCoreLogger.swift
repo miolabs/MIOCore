@@ -1,8 +1,7 @@
 //
-//  MIOCoreLog.swift
-//  MIOCore
+//  MIOCoreLogger.swift
 //
-//  Created by Javier Segura Perez on 17/8/24.
+//  Created by MIO Research Labs on 17/08/2024.
 //
 
 import Foundation

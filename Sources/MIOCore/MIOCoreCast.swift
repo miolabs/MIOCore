@@ -1,8 +1,7 @@
 //
 //  MIOCoreCast.swift
-//  
 //
-//  Created by David Trallero on 23/10/2020.
+//  Created by MIO Research Labs on 23/10/2020.
 //
 
 import Foundation

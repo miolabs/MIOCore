@@ -1,8 +1,7 @@
 //
 //  Environment.swift
-//  MIOCore
 //
-//  Created by Javier Segura Perez on 6/2/25.
+//  Created by MIO Research Labs on 06/02/2025.
 //
 
 import Foundation

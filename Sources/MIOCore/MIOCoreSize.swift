@@ -1,8 +1,7 @@
 //
 //  MIOCoreSize.swift
-//  
 //
-//  Created by Javier Segura Perez on 15/2/22.
+//  Created by MIO Research Labs on 15/02/2022.
 //
 
 import Foundation
