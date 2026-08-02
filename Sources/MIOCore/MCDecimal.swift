@@ -1,8 +1,7 @@
 //
 //  MCDecimal.swift
-//  
 //
-//  Created by Javier Segura Perez on 19/9/23.
+//  Created by MIO Research Labs on 19/09/2023.
 //
 
 import Foundation

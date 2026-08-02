@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  MIOCoreJson.swift
 //
-//  Created by David Trallero on 21/9/22.
+//  Created by MIO Research Labs on 21/09/2022.
 //
 
 import Foundation

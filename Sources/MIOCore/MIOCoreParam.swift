@@ -1,8 +1,7 @@
 //
 //  MIOCoreParam.swift
 //
-//
-//  Created by David Trallero on 24/07/2020.
+//  Created by MIO Research Labs on 24/07/2020.
 //
 
 

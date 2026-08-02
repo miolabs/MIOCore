@@ -1,8 +1,7 @@
 //
 //  XMLSerialization.swift
-//  
 //
-//  Created by Javier Segura Perez on 23/08/2020.
+//  Created by MIO Research Labs on 23/08/2020.
 //
 
 import Foundation

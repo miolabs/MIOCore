@@ -1,9 +1,7 @@
 //
-//
 //  MIOCoreContext.swift
 //
-//
-//  Created by Javier Segura Perez on 16/11/23.
+//  Created by MIO Research Labs on 16/11/2023.
 //
 
 import Foundation

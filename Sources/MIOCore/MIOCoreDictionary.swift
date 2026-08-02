@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  MIOCoreDictionary.swift
 //
-//  Created by Javier Segura Perez on 28/12/20.
+//  Created by MIO Research Labs on 28/12/2020.
 //
 
 import Foundation

@@ -1,9 +1,7 @@
 //
 //  Multipart.swift
 //
-//
-//  Created by Javier Segura Perez on 7/6/24.
-//  https://theswiftdev.com/easy-multipart-file-upload-for-swift/
+//  Created by MIO Research Labs on 07/06/2024.
 //
 
 import Foundation

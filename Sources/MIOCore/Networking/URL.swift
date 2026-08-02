@@ -1,8 +1,7 @@
 //
 //  URL.swift
 //
-//
-//  Created by Javier Segura Perez on 17/10/21.
+//  Created by MIO Research Labs on 17/10/2021.
 //
 
 import Foundation

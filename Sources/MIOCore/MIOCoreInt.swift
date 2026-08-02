@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  MIOCoreInt.swift
 //
-//  Created by Javier Segura Perez on 19/3/21.
+//  Created by MIO Research Labs on 19/03/2021.
 //
 
 import Foundation

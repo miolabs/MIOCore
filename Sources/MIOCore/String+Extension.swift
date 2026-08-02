@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  String+Extension.swift
 //
-//  Created by David Trallero on 31/03/2021.
+//  Created by MIO Research Labs on 31/03/2021.
 //
 
 import Foundation

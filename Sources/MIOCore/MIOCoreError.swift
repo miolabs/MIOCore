@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  MIOCoreError.swift
 //
-//  Created by David Trallero on 28/05/2021.
+//  Created by MIO Research Labs on 28/05/2021.
 //
 
 import Foundation

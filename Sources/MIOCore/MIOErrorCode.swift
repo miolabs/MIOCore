@@ -1,7 +1,7 @@
 //
 //  MIOErrorCode.swift
 //
-//  Created by David Trallero on 24/09/2020.
+//  Created by MIO Research Labs on 24/09/2020.
 //
 
 import Foundation

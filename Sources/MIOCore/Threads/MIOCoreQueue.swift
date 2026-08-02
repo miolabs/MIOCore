@@ -1,8 +1,7 @@
 //
 //  MIOCoreQueue.swift
 //
-//
-//  Created by Javier Segura Perez on 28/8/23.
+//  Created by MIO Research Labs on 28/08/2023.
 //
 
 import Foundation

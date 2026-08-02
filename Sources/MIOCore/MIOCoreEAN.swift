@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  MIOCoreEAN.swift
 //
-//  Created by David Trallero on 21/06/2021.
+//  Created by MIO Research Labs on 21/06/2021.
 //
 
 import Foundation

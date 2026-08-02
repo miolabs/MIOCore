@@ -1,8 +1,7 @@
 //
 //  MIOCoreUUID.swift
-//  
 //
-//  Created by Javier Segura Perez on 26/6/23.
+//  Created by MIO Research Labs on 26/06/2023.
 //
 
 import Foundation
