@@ -1,8 +1,7 @@
 //
 //  URLSession+Extension.swift
-//  
 //
-//  Created by Javier Segura Perez on 17/10/21.
+//  Created by MIO Research Labs on 17/10/2021.
 //
 
 import Foundation
@@ -16,6 +15,17 @@ import FoundationNetworking
 
 extension URLSession
 {
+    /// Runs a data task **synchronously**, blocking the caller until it finishes or times out.
+    ///
+    /// Waits on a semaphore bounded by a hard wall-clock `timeout`, necessary because
+    /// `URLRequest.timeoutInterval` is unreliable on Linux's FoundationNetworking, which could
+    /// otherwise block the thread forever. On timeout the underlying task is cancelled and an
+    /// `NSURLErrorTimedOut` error is returned. Backs ``MIOCoreURLDataRequest_sync(_:)``.
+    ///
+    /// - Parameters:
+    ///   - request: The request to send.
+    ///   - timeout: The maximum time to block, in seconds. Defaults to `10`.
+    /// - Returns: A tuple of the response `Data`, `URLResponse`, and `Error` (any may be `nil`).
     nonisolated public func synchronousDataTask(with request: URLRequest, timeout: TimeInterval = 10) -> (Data?, URLResponse?, Error?) {
         nonisolated(unsafe) var data: Data?
         nonisolated(unsafe) var response: URLResponse?
@@ -53,6 +63,16 @@ extension URLSession
         return (data, response, error)
     }
     
+    /// Runs an upload task **synchronously**, blocking the caller until it finishes or times out.
+    ///
+    /// The upload counterpart of ``synchronousDataTask(with:timeout:)``, same semaphore-bounded wait
+    /// and timeout behavior, but sends `data` as the upload body.
+    ///
+    /// - Parameters:
+    ///   - request: The request to send.
+    ///   - data: The body data to upload.
+    ///   - timeout: The maximum time to block, in seconds. Defaults to `10`.
+    /// - Returns: A tuple of the response `Data`, `URLResponse`, and `Error` (any may be `nil`).
     public func synchronousUploadTask(with request: URLRequest, data:Data?, timeout: TimeInterval = 10) -> (Data?, URLResponse?, Error?) {
         nonisolated(unsafe) var resultData: Data?
         nonisolated(unsafe) var response: URLResponse?
