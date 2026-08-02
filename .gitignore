@@ -8,3 +8,5 @@ Package.resolved
 
 # scratch path for running the suite in a Linux container
 .build-linux/
+build/
+
