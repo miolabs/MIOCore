@@ -7,33 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		87FDF7E42F7536ED00785AF4 /* XMLSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7C92F7536ED00785AF4 /* XMLSerialization.swift */; };
-		87FDF7E52F7536ED00785AF4 /* MIOCoreJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D72F7536ED00785AF4 /* MIOCoreJson.swift */; };
-		87FDF7E72F7536ED00785AF4 /* MIOCoreEAN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D42F7536ED00785AF4 /* MIOCoreEAN.swift */; };
-		87FDF7E92F7536ED00785AF4 /* MIOCoreQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7CB2F7536ED00785AF4 /* MIOCoreQueue.swift */; };
-		87FDF7EC2F7536ED00785AF4 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7C32F7536ED00785AF4 /* Environment.swift */; };
-		87FDF7ED2F7536ED00785AF4 /* MIOCoreSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7DA2F7536ED00785AF4 /* MIOCoreSize.swift */; };
-		87FDF7EE2F7536ED00785AF4 /* MCDecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7CD2F7536ED00785AF4 /* MCDecimal.swift */; };
-		87FDF7EF2F7536ED00785AF4 /* MIOCoreDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D22F7536ED00785AF4 /* MIOCoreDate.swift */; };
-		87FDF7F02F7536ED00785AF4 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7DD2F7536ED00785AF4 /* String+Extension.swift */; };
-		87FDF7F12F7536ED00785AF4 /* MIOCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7CE2F7536ED00785AF4 /* MIOCore.swift */; };
-		87FDF7F22F7536ED00785AF4 /* Multipart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7C52F7536ED00785AF4 /* Multipart.swift */; };
-		87FDF7F32F7536ED00785AF4 /* MIOCoreParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D92F7536ED00785AF4 /* MIOCoreParam.swift */; };
-		87FDF7F42F7536ED00785AF4 /* MIOCoreLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D82F7536ED00785AF4 /* MIOCoreLexer.swift */; };
-		87FDF7F52F7536ED00785AF4 /* MIOCoreCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7CF2F7536ED00785AF4 /* MIOCoreCast.swift */; };
-		87FDF7F72F7536ED00785AF4 /* MIOCoreInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D62F7536ED00785AF4 /* MIOCoreInt.swift */; };
-		87FDF7F82F7536ED00785AF4 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7C12F7536ED00785AF4 /* KeychainHelper.swift */; };
-		87FDF7F92F7536ED00785AF4 /* MIOCoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D52F7536ED00785AF4 /* MIOCoreError.swift */; };
-		87FDF7FA2F7536ED00785AF4 /* MIOErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7DC2F7536ED00785AF4 /* MIOErrorCode.swift */; };
-		87FDF7FB2F7536ED00785AF4 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7C62F7536ED00785AF4 /* URL.swift */; };
-		87FDF7FC2F7536ED00785AF4 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7C72F7536ED00785AF4 /* URLSession+Extension.swift */; };
-		87FDF7FD2F7536ED00785AF4 /* MIOCoreUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7DB2F7536ED00785AF4 /* MIOCoreUUID.swift */; };
-		87FDF7FE2F7536ED00785AF4 /* MIOCoreDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7D32F7536ED00785AF4 /* MIOCoreDictionary.swift */; };
 		87FDF80D2F75374600785AF4 /* MIOCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FDF7B72F75361F00785AF4 /* MIOCore.framework */; };
 		87FDF8142F75376900785AF4 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 87FDF8132F75376900785AF4 /* Logging */; };
-		87FDF8332F753EF700785AF4 /* MIOCoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF7E22F7536ED00785AF4 /* MIOCoreLogger.swift */; };
-		87FDF8382F7542B400785AF4 /* MIOCoreContext+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF8372F7542B400785AF4 /* MIOCoreContext+UserDefaults.swift */; };
-		87FDF8392F7542B400785AF4 /* MIOCoreContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FDF8362F7542B400785AF4 /* MIOCoreContext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,34 +23,24 @@
 
 /* Begin PBXFileReference section */
 		87FDF7B72F75361F00785AF4 /* MIOCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MIOCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		87FDF7C12F7536ED00785AF4 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
-		87FDF7C32F7536ED00785AF4 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		87FDF7C52F7536ED00785AF4 /* Multipart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Multipart.swift; sourceTree = "<group>"; };
-		87FDF7C62F7536ED00785AF4 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
-		87FDF7C72F7536ED00785AF4 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
-		87FDF7C92F7536ED00785AF4 /* XMLSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLSerialization.swift; sourceTree = "<group>"; };
-		87FDF7CB2F7536ED00785AF4 /* MIOCoreQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreQueue.swift; sourceTree = "<group>"; };
-		87FDF7CD2F7536ED00785AF4 /* MCDecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDecimal.swift; sourceTree = "<group>"; };
-		87FDF7CE2F7536ED00785AF4 /* MIOCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCore.swift; sourceTree = "<group>"; };
-		87FDF7CF2F7536ED00785AF4 /* MIOCoreCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreCast.swift; sourceTree = "<group>"; };
-		87FDF7D22F7536ED00785AF4 /* MIOCoreDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreDate.swift; sourceTree = "<group>"; };
-		87FDF7D32F7536ED00785AF4 /* MIOCoreDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreDictionary.swift; sourceTree = "<group>"; };
-		87FDF7D42F7536ED00785AF4 /* MIOCoreEAN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreEAN.swift; sourceTree = "<group>"; };
-		87FDF7D52F7536ED00785AF4 /* MIOCoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreError.swift; sourceTree = "<group>"; };
-		87FDF7D62F7536ED00785AF4 /* MIOCoreInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreInt.swift; sourceTree = "<group>"; };
-		87FDF7D72F7536ED00785AF4 /* MIOCoreJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreJson.swift; sourceTree = "<group>"; };
-		87FDF7D82F7536ED00785AF4 /* MIOCoreLexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreLexer.swift; sourceTree = "<group>"; };
-		87FDF7D92F7536ED00785AF4 /* MIOCoreParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreParam.swift; sourceTree = "<group>"; };
-		87FDF7DA2F7536ED00785AF4 /* MIOCoreSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreSize.swift; sourceTree = "<group>"; };
-		87FDF7DB2F7536ED00785AF4 /* MIOCoreUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreUUID.swift; sourceTree = "<group>"; };
-		87FDF7DC2F7536ED00785AF4 /* MIOErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOErrorCode.swift; sourceTree = "<group>"; };
-		87FDF7DD2F7536ED00785AF4 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		87FDF7E22F7536ED00785AF4 /* MIOCoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreLogger.swift; sourceTree = "<group>"; };
 		87FDF7FF2F7536FE00785AF4 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		87FDF8052F75374000785AF4 /* MIOCoreLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MIOCoreLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		87FDF8362F7542B400785AF4 /* MIOCoreContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIOCoreContext.swift; sourceTree = "<group>"; };
-		87FDF8372F7542B400785AF4 /* MIOCoreContext+UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MIOCoreContext+UserDefaults.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		99D5EC8B3021F0DE00E3168A /* MIOCore */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = MIOCore;
+			path = Sources/MIOCore;
+			sourceTree = "<group>";
+		};
+		99D5ECBE3021F10800E3168A /* MIOCoreLogger */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = MIOCoreLogger;
+			path = Sources/MIOCoreLogger;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		87FDF7B42F75361F00785AF4 /* Frameworks */ = {
@@ -101,8 +66,8 @@
 			isa = PBXGroup;
 			children = (
 				87FDF7FF2F7536FE00785AF4 /* Package.swift */,
-				87FDF7DE2F7536ED00785AF4 /* MIOCore */,
-				87FDF7E32F7536ED00785AF4 /* MIOCoreLogger */,
+				99D5EC8B3021F0DE00E3168A /* MIOCore */,
+				99D5ECBE3021F10800E3168A /* MIOCoreLogger */,
 				87FDF80C2F75374600785AF4 /* Frameworks */,
 				87FDF7B82F75361F00785AF4 /* Products */,
 			);
@@ -115,87 +80,6 @@
 				87FDF8052F75374000785AF4 /* MIOCoreLogger.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		87FDF7C22F7536ED00785AF4 /* Apple */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7C12F7536ED00785AF4 /* KeychainHelper.swift */,
-			);
-			path = Apple;
-			sourceTree = "<group>";
-		};
-		87FDF7C42F7536ED00785AF4 /* Environment */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7C32F7536ED00785AF4 /* Environment.swift */,
-			);
-			path = Environment;
-			sourceTree = "<group>";
-		};
-		87FDF7C82F7536ED00785AF4 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7C52F7536ED00785AF4 /* Multipart.swift */,
-				87FDF7C62F7536ED00785AF4 /* URL.swift */,
-				87FDF7C72F7536ED00785AF4 /* URLSession+Extension.swift */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
-		87FDF7CA2F7536ED00785AF4 /* Serialization */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7C92F7536ED00785AF4 /* XMLSerialization.swift */,
-			);
-			path = Serialization;
-			sourceTree = "<group>";
-		};
-		87FDF7CC2F7536ED00785AF4 /* Threads */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7CB2F7536ED00785AF4 /* MIOCoreQueue.swift */,
-			);
-			path = Threads;
-			sourceTree = "<group>";
-		};
-		87FDF7DE2F7536ED00785AF4 /* MIOCore */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7C22F7536ED00785AF4 /* Apple */,
-				87FDF7C42F7536ED00785AF4 /* Environment */,
-				87FDF7C82F7536ED00785AF4 /* Networking */,
-				87FDF7CA2F7536ED00785AF4 /* Serialization */,
-				87FDF7CC2F7536ED00785AF4 /* Threads */,
-				87FDF7CD2F7536ED00785AF4 /* MCDecimal.swift */,
-				87FDF7CE2F7536ED00785AF4 /* MIOCore.swift */,
-				87FDF7CF2F7536ED00785AF4 /* MIOCoreCast.swift */,
-				87FDF7D22F7536ED00785AF4 /* MIOCoreDate.swift */,
-				87FDF7D32F7536ED00785AF4 /* MIOCoreDictionary.swift */,
-				87FDF7D42F7536ED00785AF4 /* MIOCoreEAN.swift */,
-				87FDF7D52F7536ED00785AF4 /* MIOCoreError.swift */,
-				87FDF7D62F7536ED00785AF4 /* MIOCoreInt.swift */,
-				87FDF7D72F7536ED00785AF4 /* MIOCoreJson.swift */,
-				87FDF7D82F7536ED00785AF4 /* MIOCoreLexer.swift */,
-				87FDF7D92F7536ED00785AF4 /* MIOCoreParam.swift */,
-				87FDF7DA2F7536ED00785AF4 /* MIOCoreSize.swift */,
-				87FDF7DB2F7536ED00785AF4 /* MIOCoreUUID.swift */,
-				87FDF7DC2F7536ED00785AF4 /* MIOErrorCode.swift */,
-				87FDF7DD2F7536ED00785AF4 /* String+Extension.swift */,
-				87FDF8362F7542B400785AF4 /* MIOCoreContext.swift */,
-				87FDF8372F7542B400785AF4 /* MIOCoreContext+UserDefaults.swift */,
-			);
-			name = MIOCore;
-			path = Sources/MIOCore;
-			sourceTree = "<group>";
-		};
-		87FDF7E32F7536ED00785AF4 /* MIOCoreLogger */ = {
-			isa = PBXGroup;
-			children = (
-				87FDF7E22F7536ED00785AF4 /* MIOCoreLogger.swift */,
-			);
-			name = MIOCoreLogger;
-			path = Sources/MIOCoreLogger;
 			sourceTree = "<group>";
 		};
 		87FDF80C2F75374600785AF4 /* Frameworks */ = {
@@ -238,6 +122,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				99D5EC8B3021F0DE00E3168A /* MIOCore */,
+			);
 			name = MIOCore;
 			packageProductDependencies = (
 			);
@@ -258,6 +145,9 @@
 			);
 			dependencies = (
 				87FDF8102F75374600785AF4 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				99D5ECBE3021F10800E3168A /* MIOCoreLogger */,
 			);
 			name = MIOCoreLogger;
 			packageProductDependencies = (
@@ -330,30 +220,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87FDF7E42F7536ED00785AF4 /* XMLSerialization.swift in Sources */,
-				87FDF7E52F7536ED00785AF4 /* MIOCoreJson.swift in Sources */,
-				87FDF7E72F7536ED00785AF4 /* MIOCoreEAN.swift in Sources */,
-				87FDF7E92F7536ED00785AF4 /* MIOCoreQueue.swift in Sources */,
-				87FDF7EC2F7536ED00785AF4 /* Environment.swift in Sources */,
-				87FDF7ED2F7536ED00785AF4 /* MIOCoreSize.swift in Sources */,
-				87FDF7EE2F7536ED00785AF4 /* MCDecimal.swift in Sources */,
-				87FDF7EF2F7536ED00785AF4 /* MIOCoreDate.swift in Sources */,
-				87FDF7F02F7536ED00785AF4 /* String+Extension.swift in Sources */,
-				87FDF7F12F7536ED00785AF4 /* MIOCore.swift in Sources */,
-				87FDF8382F7542B400785AF4 /* MIOCoreContext+UserDefaults.swift in Sources */,
-				87FDF8392F7542B400785AF4 /* MIOCoreContext.swift in Sources */,
-				87FDF7F22F7536ED00785AF4 /* Multipart.swift in Sources */,
-				87FDF7F32F7536ED00785AF4 /* MIOCoreParam.swift in Sources */,
-				87FDF7F42F7536ED00785AF4 /* MIOCoreLexer.swift in Sources */,
-				87FDF7F52F7536ED00785AF4 /* MIOCoreCast.swift in Sources */,
-				87FDF7F72F7536ED00785AF4 /* MIOCoreInt.swift in Sources */,
-				87FDF7F82F7536ED00785AF4 /* KeychainHelper.swift in Sources */,
-				87FDF7F92F7536ED00785AF4 /* MIOCoreError.swift in Sources */,
-				87FDF7FA2F7536ED00785AF4 /* MIOErrorCode.swift in Sources */,
-				87FDF7FB2F7536ED00785AF4 /* URL.swift in Sources */,
-				87FDF7FC2F7536ED00785AF4 /* URLSession+Extension.swift in Sources */,
-				87FDF7FD2F7536ED00785AF4 /* MIOCoreUUID.swift in Sources */,
-				87FDF7FE2F7536ED00785AF4 /* MIOCoreDictionary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +227,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87FDF8332F753EF700785AF4 /* MIOCoreLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
