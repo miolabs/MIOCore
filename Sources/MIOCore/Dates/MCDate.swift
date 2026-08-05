@@ -21,7 +21,7 @@ public enum MCDate {
 
     /// The ISO8601 options for a bare `yyyy-MM-dd` UTC date, shared by ``parseUTC(_:)`` and
     /// ``formatDayUTC(_:)``.
-    private static let isoDateOnlyOptions: ISO8601DateFormatter.Options = [
+    private static let _iso_date_only_options: ISO8601DateFormatter.Options = [
         .withYear, .withMonth, .withDay, .withDashSeparatorInDate,
     ]
 
@@ -207,7 +207,7 @@ public enum MCDate {
         let formatter = ISO8601DateFormatter()
         var date_str = string
 
-        var options = MCDate.isoDateOnlyOptions
+        var options = MCDate._iso_date_only_options
 
         if string.count == 10 {
             formatter.formatOptions = options
@@ -232,7 +232,7 @@ public enum MCDate {
     /// - Returns: The UTC day string.
     public static func formatDayUTC(_ date: Date) -> String {
         let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = MCDate.isoDateOnlyOptions
+        formatter.formatOptions = MCDate._iso_date_only_options
         return formatter.string(from: date)
     }
 

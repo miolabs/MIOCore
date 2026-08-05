@@ -21,16 +21,16 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Double`, or `def` when conversion is not possible.
     public static func double(_ value: Any?, `default` def: Double? = nil) -> Double? {
-        if let asInt = value! as? Int8 { return Double(asInt) }
-        if let asInt = value! as? Int16 { return Double(asInt) }
-        if let asInt = value! as? Int32 { return Double(asInt) }
-        if let asInt = value! as? Int64 { return Double(asInt) }
-        if let asInt = value! as? Int { return Double(asInt) }
-        if let asDecimal = value! as? Decimal { return NSDecimalNumber(decimal: asDecimal).doubleValue }
-        if let asFloat = value! as? Float { return Double(asFloat) }
-        if let asDouble = value! as? Double { return asDouble }
-        if let asString = value! as? String {
-            let integer = Double(asString)
+        if let as_int = value! as? Int8 { return Double(as_int) }
+        if let as_int = value! as? Int16 { return Double(as_int) }
+        if let as_int = value! as? Int32 { return Double(as_int) }
+        if let as_int = value! as? Int64 { return Double(as_int) }
+        if let as_int = value! as? Int { return Double(as_int) }
+        if let as_decimal = value! as? Decimal { return NSDecimalNumber(decimal: as_decimal).doubleValue }
+        if let as_float = value! as? Float { return Double(as_float) }
+        if let as_double = value! as? Double { return as_double }
+        if let as_string = value! as? String {
+            let integer = Double(as_string)
             if integer != nil { return integer! }
         }
 
@@ -48,16 +48,16 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Float`, or `def` when conversion is not possible.
     public static func float(_ value: Any?, `default` def: Float? = nil) -> Float? {
-        if let asInt = value! as? Int8 { return Float(asInt) }
-        if let asInt = value! as? Int16 { return Float(asInt) }
-        if let asInt = value! as? Int32 { return Float(asInt) }
-        if let asInt = value! as? Int64 { return Float(asInt) }
-        if let asInt = value! as? Int { return Float(asInt) }
-        if let asDecimal = value! as? Decimal { return NSDecimalNumber(decimal: asDecimal).floatValue }
-        if let asFloat = value! as? Float { return asFloat }
-        if let asDouble = value! as? Double { return Float(asDouble) }
-        if let asString = value! as? String {
-            let integer = Float(asString)
+        if let as_int = value! as? Int8 { return Float(as_int) }
+        if let as_int = value! as? Int16 { return Float(as_int) }
+        if let as_int = value! as? Int32 { return Float(as_int) }
+        if let as_int = value! as? Int64 { return Float(as_int) }
+        if let as_int = value! as? Int { return Float(as_int) }
+        if let as_decimal = value! as? Decimal { return NSDecimalNumber(decimal: as_decimal).floatValue }
+        if let as_float = value! as? Float { return as_float }
+        if let as_double = value! as? Double { return Float(as_double) }
+        if let as_string = value! as? String {
+            let integer = Float(as_string)
             if integer != nil { return integer! }
         }
 

@@ -30,20 +30,20 @@ public protocol MCContextProtocol {
 /// `Sendable` overload of `setGlobalValue(_:forKey:)` are additionally tracked and returned by
 /// ``sendableValues()`` for hand-off across concurrency boundaries.
 nonisolated open class MCContext: NSObject, MCContextProtocol {
-    private let lock = NSLock()
+    private let _lock = NSLock()
     private var _globals: [String: Any] = [:]
     private var _sendable_globals: [String: (any Sendable)] = [:]
 
     /// The current globals as a dictionary. Reads and writes are lock-guarded.
     public var globals: [String: Any] {
         get {
-            lock.lock()
-            defer { lock.unlock() }
+            _lock.lock()
+            defer { _lock.unlock() }
             return _globals
         }
         set {
-            lock.lock()
-            defer { lock.unlock() }
+            _lock.lock()
+            defer { _lock.unlock() }
             _globals = newValue
         }
     }
@@ -64,8 +64,8 @@ nonisolated open class MCContext: NSObject, MCContextProtocol {
     ///   - value: The value to store.
     ///   - key: The key to store it under.
     public func setGlobalValue(_ value: Any, forKey key: String) {
-        lock.lock()
-        defer { lock.unlock() }
+        _lock.lock()
+        defer { _lock.unlock() }
         _globals[key] = value
     }
 
@@ -77,8 +77,8 @@ nonisolated open class MCContext: NSObject, MCContextProtocol {
     ///   - value: The `Sendable` value to store.
     ///   - key: The key to store it under.
     public func setGlobalValue(_ value: any Sendable, forKey key: String) {
-        lock.lock()
-        defer { lock.unlock() }
+        _lock.lock()
+        defer { _lock.unlock() }
         _globals[key] = value
         _sendable_globals[key] = value
     }
@@ -87,8 +87,8 @@ nonisolated open class MCContext: NSObject, MCContextProtocol {
     ///
     /// - Parameter key: The key to remove.
     public func removeGlobalValue(forKey key: String) {
-        lock.lock()
-        defer { lock.unlock() }
+        _lock.lock()
+        defer { _lock.unlock() }
         _globals.removeValue(forKey: key)
         _sendable_globals.removeValue(forKey: key)
     }
@@ -99,8 +99,8 @@ nonisolated open class MCContext: NSObject, MCContextProtocol {
     ///
     /// - Returns: The `Sendable` globals, keyed by name.
     open func sendableValues() -> [String: (any Sendable)] {
-        lock.lock()
-        defer { lock.unlock() }
+        _lock.lock()
+        defer { _lock.unlock() }
         return _sendable_globals
     }
 }

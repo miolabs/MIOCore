@@ -21,16 +21,16 @@ extension ISO8601DateFormatter {
     /// - Parameter dateString: The ISO8601 timestamp to parse.
     /// - Returns: The `Date` with microsecond precision, or `nil` if the base string cannot be parsed.
     public func microsecondsDate(from dateString: String) -> Date? {
-        guard let millisecondsDate = date(from: dateString) else { return nil }
-        guard let fractionIndex = dateString.lastIndex(of: ".") else { return millisecondsDate }
-        let tzIndex = dateString.lastIndex(of: "Z")
-        let plusIndex = dateString.lastIndex(of: "+")
-        let lastFractionIndex = max(fractionIndex, plusIndex ?? tzIndex ?? dateString.endIndex)
+        guard let milliseconds_date = date(from: dateString) else { return nil }
+        guard let fraction_index = dateString.lastIndex(of: ".") else { return milliseconds_date }
+        let tz_index = dateString.lastIndex(of: "Z")
+        let plus_index = dateString.lastIndex(of: "+")
+        let last_fraction_index = max(fraction_index, plus_index ?? tz_index ?? dateString.endIndex)
 
-        guard let startIndex = dateString.index(fractionIndex, offsetBy: 1, limitedBy: lastFractionIndex) else { return millisecondsDate }
+        guard let start_index = dateString.index(fraction_index, offsetBy: 1, limitedBy: last_fraction_index) else { return milliseconds_date }
         // Pad the missing zeros at the end and cut off nanoseconds
-        let microsecondsString = dateString[startIndex..<lastFractionIndex].padding(toLength: 6, withPad: "0", startingAt: 0)
-        guard let microseconds = TimeInterval(microsecondsString) else { return millisecondsDate }
-        return Date(timeIntervalSince1970: millisecondsDate.timeIntervalSince1970 + microseconds / 1_000_000.0)
+        let microseconds_string = dateString[start_index..<last_fraction_index].padding(toLength: 6, withPad: "0", startingAt: 0)
+        guard let microseconds = TimeInterval(microseconds_string) else { return milliseconds_date }
+        return Date(timeIntervalSince1970: milliseconds_date.timeIntervalSince1970 + microseconds / 1_000_000.0)
     }
 }

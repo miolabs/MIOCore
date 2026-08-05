@@ -73,12 +73,12 @@ public class MCLexer {
         inputString = string
         var input = string
         tokens = []
-        var foundToken = false
+        var found_token = false
 
         MCRuntime.autoReleasePool {
 
             repeat {
-                foundToken = false
+                found_token = false
                 for token in tokenTypes {
                     let regex = token["RegEx"] as! NSRegularExpression
                     let type = token["Type"] as! Int
@@ -96,12 +96,12 @@ public class MCLexer {
                             tokens.append(token)
                         }
                         input.removeSubrange(start..<end)
-                        foundToken = true
+                        found_token = true
                         break
                     }
                 }
 
-                if foundToken == false {
+                if found_token == false {
                     //throw new Error(`MCLexer: Token doesn't match any pattern. (${this.input})`);
                     NSLog("[MCLexer] Token doesn't match any pattern. \(inputString) - Remaining: \(input)")
                     break

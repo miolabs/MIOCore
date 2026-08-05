@@ -31,14 +31,14 @@ extension URLSession {
 
         let semaphore = DispatchSemaphore(value: 0)
 
-        let dataTask = self.dataTask(with: request) {
+        let data_task = self.dataTask(with: request) {
             data = $0
             response = $1
             error = $2
 
             semaphore.signal()
         }
-        dataTask.resume()
+        data_task.resume()
 
         // Bound the wait to a hard wall-clock deadline. Without this,
         // a misbehaving server (no response, dropped connection, etc.)
@@ -50,7 +50,7 @@ extension URLSession {
         if result == .timedOut {
             // Cancel the underlying request so the URLSession isn't holding
             // the socket open after we've given up.
-            dataTask.cancel()
+            data_task.cancel()
             return (
                 nil, nil,
                 NSError(
@@ -75,20 +75,20 @@ extension URLSession {
     ///   - timeout: The maximum time to block, in seconds. Defaults to `10`.
     /// - Returns: A tuple of the response `Data`, `URLResponse`, and `Error` (any may be `nil`).
     public func synchronousUploadTask(with request: URLRequest, data: Data?, timeout: TimeInterval = 10) -> (Data?, URLResponse?, Error?) {
-        nonisolated(unsafe) var resultData: Data?
+        nonisolated(unsafe) var result_data: Data?
         nonisolated(unsafe) var response: URLResponse?
         nonisolated(unsafe) var error: Error?
 
         let semaphore = DispatchSemaphore(value: 0)
 
-        let dataTask = self.uploadTask(with: request, from: data) {
-            resultData = $0
+        let data_task = self.uploadTask(with: request, from: data) {
+            result_data = $0
             response = $1
             error = $2
 
             semaphore.signal()
         }
-        dataTask.resume()
+        data_task.resume()
 
         // Bound the wait to a hard wall-clock deadline. Without this,
         // a misbehaving server (no response, dropped connection, etc.)
@@ -100,7 +100,7 @@ extension URLSession {
         if result == .timedOut {
             // Cancel the underlying request so the URLSession isn't holding
             // the socket open after we've given up.
-            dataTask.cancel()
+            data_task.cancel()
             return (
                 nil, nil,
                 NSError(
@@ -111,7 +111,7 @@ extension URLSession {
             )
         }
 
-        return (resultData, response, error)
+        return (result_data, response, error)
     }
 
 }

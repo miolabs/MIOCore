@@ -20,7 +20,7 @@ import Foundation
 public enum MCJSON {
 
     /// Renders `Date` values as `yyyy-MM-dd'T'HH:mm:ss'Z'` strings during serialization.
-    private static let json_formatter = MCDate.Formatters.z()
+    private static let _json_formatter = MCDate.Formatters.z()
 
     /// Serializes an object graph to JSON `Data`, first making it safe to encode.
     ///
@@ -69,7 +69,7 @@ public enum MCJSON {
     /// - Returns: An equivalent graph safe to pass to `JSONSerialization`.
     public static func serializable(_ obj: Any) -> Any {
         if let date = obj as? Date {
-            return json_formatter.string(from: date)
+            return _json_formatter.string(from: date)
         } else if let uuid = obj as? UUID {
             return uuid.uuidString.uppercased()
         } else if let dict = obj as? [String: Any] {

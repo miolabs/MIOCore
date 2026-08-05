@@ -82,17 +82,17 @@ public class XMLSerialization: NSObject, XMLParserDelegate {
 
             if (currentElement!["__XML_TAG_NAME__"] as! String) == elementName {
                 if foundCharacters.count > 0 {
-                    var prevElement = elementStack.last as! [String: Any]
-                    prevElement[elementName] = foundCharacters
-                    elementStack[elementStack.count - 1] = prevElement
+                    var prev_element = elementStack.last as! [String: Any]
+                    prev_element[elementName] = foundCharacters
+                    elementStack[elementStack.count - 1] = prev_element
                 }
             }
         } else {
             currentElement = elementStack.popLast() as? [String: Any]
-            var prevElement = elementStack.last as? [String: Any]
-            if prevElement != nil {
-                prevElement![elementName] = currentElement
-                elementStack[elementStack.count - 1] = prevElement!
+            var prev_element = elementStack.last as? [String: Any]
+            if prev_element != nil {
+                prev_element![elementName] = currentElement
+                elementStack[elementStack.count - 1] = prev_element!
             } else {
                 results = currentElement
             }

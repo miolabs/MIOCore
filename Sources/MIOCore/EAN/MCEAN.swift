@@ -38,10 +38,10 @@ public enum MCEAN {
 
         code += String(repeating: "0", count: padding) + number_str
 
-        return code + "\(calculate_ean_crc( code ))"
+        return code + "\(_calculate_ean_crc( code ))"
     }
 
-    private static func calculate_ean_crc(_ code: String) -> UInt32 {
+    private static func _calculate_ean_crc(_ code: String) -> UInt32 {
         var odd: UInt32 = 0
         var even: UInt32 = 0
         var i = 0

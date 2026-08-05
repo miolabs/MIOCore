@@ -18,32 +18,32 @@ extension MCDate {
         // MARK: - Per-pattern factories
 
         /// Local `yyyy-MM-dd`.
-        static func date() -> DateFormatter { cached("date") { make("yyyy-MM-dd", .current) } as! DateFormatter }
+        static func date() -> DateFormatter { _cached("date") { _make("yyyy-MM-dd", .current) } as! DateFormatter }
 
         /// Local `HH:mm`.
-        static func time() -> DateFormatter { cached("time") { make("HH:mm", .current) } as! DateFormatter }
+        static func time() -> DateFormatter { _cached("time") { _make("HH:mm", .current) } as! DateFormatter }
 
         /// Local `yyyy-MM-dd HH:mm`.
-        static func dateTime() -> DateFormatter { cached("dateTime") { make("yyyy-MM-dd HH:mm", .current) } as! DateFormatter }
+        static func dateTime() -> DateFormatter { _cached("dateTime") { _make("yyyy-MM-dd HH:mm", .current) } as! DateFormatter }
 
         /// Local `yyyy-MM-dd'T'HH:mm`.
-        static func dateTimeT() -> DateFormatter { cached("dateTimeT") { make("yyyy-MM-dd'T'HH:mm", .current) } as! DateFormatter }
+        static func dateTimeT() -> DateFormatter { _cached("dateTimeT") { _make("yyyy-MM-dd'T'HH:mm", .current) } as! DateFormatter }
 
         /// Local `yyyy-MM-dd'T'HH:mm:ss`.
-        static func dateTimeTS() -> DateFormatter { cached("dateTimeTS") { make("yyyy-MM-dd'T'HH:mm:ss", .current) } as! DateFormatter }
+        static func dateTimeTS() -> DateFormatter { _cached("dateTimeTS") { _make("yyyy-MM-dd'T'HH:mm:ss", .current) } as! DateFormatter }
 
         /// `en_US_POSIX` `yyyy-MM-dd HH:mm:ss` (the primary parse format).
-        static func dateTimeS() -> DateFormatter { cached("dateTimeS") { make("yyyy-MM-dd HH:mm:ss", posix) } as! DateFormatter }
+        static func dateTimeS() -> DateFormatter { _cached("dateTimeS") { _make("yyyy-MM-dd HH:mm:ss", _posix) } as! DateFormatter }
 
         /// Local `yyyy-MM-dd'T'HH:mm:ss'Z'` (a literal `Z`, not a zone specifier).
-        static func z() -> DateFormatter { cached("z") { make("yyyy-MM-dd'T'HH:mm:ss'Z'", .current) } as! DateFormatter }
+        static func z() -> DateFormatter { _cached("z") { _make("yyyy-MM-dd'T'HH:mm:ss'Z'", .current) } as! DateFormatter }
 
         /// A cached UTC `DateFormatter` (`en_US_POSIX`, no fixed pattern).
-        static func utc() -> DateFormatter { cached("utc") { MCDate.makeUTCFormatter() } as! DateFormatter }
+        static func utc() -> DateFormatter { _cached("utc") { MCDate.makeUTCFormatter() } as! DateFormatter }
 
         /// `ISO8601DateFormatter` with internet date-time and fractional seconds.
         static func iso() -> ISO8601DateFormatter {
-            cached("iso") {
+            _cached("iso") {
                 let df = ISO8601DateFormatter()
                 df.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
                 return df
@@ -52,10 +52,10 @@ extension MCDate {
 
         // MARK: - Shared building blocks
 
-        private static let posix = Locale(identifier: "en_US_POSIX")
+        private static let _posix = Locale(identifier: "en_US_POSIX")
 
         /// Builds a `DateFormatter` with the given pattern and locale.
-        private static func make(_ format: String, _ locale: Locale) -> DateFormatter {
+        private static func _make(_ format: String, _ locale: Locale) -> DateFormatter {
             let df = DateFormatter()
             df.locale = locale
             df.dateFormat = format
@@ -69,16 +69,16 @@ extension MCDate {
         /// with other users of `Thread.current.threadDictionary`.
         #if os(WASI)
         // WASI is single-threaded: a plain global cache is safe.
-        nonisolated(unsafe) private static var wasiCache: [String: Formatter] = [:]
-        private static func cached(_ key: String, factory: () -> Formatter) -> Formatter {
+        nonisolated(unsafe) private static var _wasi_cache: [String: Formatter] = [:]
+        private static func _cached(_ key: String, factory: () -> Formatter) -> Formatter {
             let namespaced = "MCDate.Formatters.\(key)"
-            if let df = wasiCache[namespaced] { return df }
+            if let df = _wasi_cache[namespaced] { return df }
             let df = factory()
-            wasiCache[namespaced] = df
+            _wasi_cache[namespaced] = df
             return df
         }
         #else
-        private static func cached(_ key: String, factory: () -> Formatter) -> Formatter {
+        private static func _cached(_ key: String, factory: () -> Formatter) -> Formatter {
             let namespaced = "MCDate.Formatters.\(key)"
             let dict = Thread.current.threadDictionary
             if let df = dict[namespaced] as? Formatter { return df }

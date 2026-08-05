@@ -24,41 +24,41 @@ final class MCLoggerRegistry: @unchecked Sendable {
         func sync<T>(execute body: () -> T) -> T { body() }
         func sync<T>(flags: Flags, execute body: () -> T) -> T { body() }
     }
-    private let q = QueueShim()
+    private let _q = QueueShim()
     #else
-    private let q = DispatchQueue(label: "com.duallink.logger.registry", attributes: .concurrent)
+    private let _q = DispatchQueue(label: "com.duallink.logger.registry", attributes: .concurrent)
     #endif
-    private var cache: [String: Entry] = [:]
+    private var _cache: [String: Entry] = [:]
 
     private init() {}
 
     // Normalize file path: drop extension and convert path separators to dots, e.g. Sources/Foo/Bar.swift -> Sources.Foo.Bar
-    private func normalizedLabel(from file: String) -> String {
+    private func _normalized_label(from file: String) -> String {
         var path = file
         // remove last extension if any
-        if let dotIndex = file.utf8.lastIndex(of: UInt8(ascii: ".")) {
-            let noExt = String(file[..<dotIndex])
-            path = noExt
+        if let dot_index = file.utf8.lastIndex(of: UInt8(ascii: ".")) {
+            let no_ext = String(file[..<dot_index])
+            path = no_ext
         }
 
         return path.replacingOccurrences(of: "/", with: "_")
     }
 
     // Resolve log level from environment variables, walking label components like: Module_Sub_A_B_LogLevel
-    private func configuredLevel(for label: String) -> Logger.Level {
-        var levelStr: String? = nil
+    private func _configured_level(for label: String) -> Logger.Level {
+        var level_str: String? = nil
         let components = label.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "_")
         var probe = components
         while probe.isEmpty == false {
             let key = (probe.joined(separator: "_") + "_LogLevel").lowercased()
             if let v = MCEnvironment.variable(key)?.lowercased() {
-                levelStr = v.trimmingCharacters(in: .whitespacesAndNewlines)
+                level_str = v.trimmingCharacters(in: .whitespacesAndNewlines)
                 break
             }
             probe = probe.dropLast()
         }
 
-        switch levelStr {
+        switch level_str {
         case "trace": return .trace
         case "debug": return .debug
         case "info": return .info
@@ -70,19 +70,19 @@ final class MCLoggerRegistry: @unchecked Sendable {
         }
     }
 
-    private func makeEntry(label: String) -> Entry {
-        let lvl = configuredLevel(for: label)
+    private func _make_entry(label: String) -> Entry {
+        let lvl = _configured_level(for: label)
         var l = Logger(label: label)
         l.logLevel = lvl
         return Entry(logger: l, level: lvl)
     }
 
-    private func entry(for label: String) -> Entry {
+    private func _entry(for label: String) -> Entry {
         // Fast read path
-        if let e = q.sync(execute: { cache[label] }) { return e }
+        if let e = _q.sync(execute: { _cache[label] }) { return e }
         // Create and store synchronously with a barrier so all threads see it immediately
-        let created = makeEntry(label: label)
-        q.sync(flags: .barrier) { cache[label] = created }
+        let created = _make_entry(label: label)
+        _q.sync(flags: .barrier) { _cache[label] = created }
         return created
     }
 
@@ -94,8 +94,8 @@ final class MCLoggerRegistry: @unchecked Sendable {
         function: String = #function,
         line: UInt = #line
     ) {
-        let label = normalizedLabel(from: file)
-        let e = entry(for: label)
+        let label = _normalized_label(from: file)
+        let e = _entry(for: label)
         // Fast path: if requested level is below configured threshold, do nothing and DO NOT evaluate message()
         guard level >= e.level else { return }
         e.logger.log(level: level, message(), file: file, function: function, line: line)
@@ -103,9 +103,9 @@ final class MCLoggerRegistry: @unchecked Sendable {
 
     // Create/return a custom logger obeying the same cached level
     func newCustomLogger(_ label: String) -> Logger {
-        if let e = q.sync(execute: { cache[label] }) { return e.logger }
-        let created = makeEntry(label: label)
-        q.sync(flags: .barrier) { cache[label] = created }
+        if let e = _q.sync(execute: { _cache[label] }) { return e.logger }
+        let created = _make_entry(label: label)
+        _q.sync(flags: .barrier) { _cache[label] = created }
         return created.logger
     }
 }

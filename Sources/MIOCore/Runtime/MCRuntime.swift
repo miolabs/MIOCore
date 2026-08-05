@@ -10,7 +10,7 @@ import Foundation
 /// autorelease-pool wrapper that is a no-op off Apple platforms.
 public enum MCRuntime {
 
-    private static let classesLock = NSLock()
+    private static let _classes_lock = NSLock()
     private nonisolated(unsafe) static var classesByName: [String: AnyClass] = [:]
 
     /// Registers a class under a string key for later lookup by ``classFromString(_:)``.
@@ -23,7 +23,7 @@ public enum MCRuntime {
     ///   - type: The class to register.
     ///   - key: The string key to register it under (typically the class name).
     public static func registerClass(_ type: AnyClass, forKey key: String) {
-        classesLock.withLock {
+        _classes_lock.withLock {
             classesByName[key] = type
         }
     }
@@ -35,7 +35,7 @@ public enum MCRuntime {
     /// - Parameter key: The registration key.
     /// - Returns: The registered class, or `nil` if nothing is registered under `key`.
     public static func classFromString(_ key: String) -> AnyClass? {
-        classesLock.withLock {
+        _classes_lock.withLock {
             classesByName[key]
         }
     }

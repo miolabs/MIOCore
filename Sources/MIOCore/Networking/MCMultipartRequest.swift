@@ -25,26 +25,26 @@ public struct MCMultipartRequest {
     /// The multipart boundary token separating parts.
     public let boundary: String
 
-    private let separator: String = "\r\n"
-    private var data: Data
+    private let _separator: String = "\r\n"
+    private var _data: Data
 
     /// Creates an empty multipart body.
     ///
     /// - Parameter boundary: The boundary token. Defaults to a fresh random UUID string.
     public init(boundary: String = UUID().uuidString) {
         self.boundary = boundary
-        self.data = .init()
+        self._data = .init()
     }
 
-    private mutating func appendBoundarySeparator() {
-        data.append("--\(boundary)\(separator)")
+    private mutating func _append_boundary_separator() {
+        _data.append("--\(boundary)\(_separator)")
     }
 
-    private mutating func appendSeparator() {
-        data.append(separator)
+    private mutating func _append_separator() {
+        _data.append(_separator)
     }
 
-    private func disposition(_ key: String) -> String {
+    private func _disposition(_ key: String) -> String {
         "Content-Disposition: form-data; name=\"\(key)\""
     }
 
@@ -57,10 +57,10 @@ public struct MCMultipartRequest {
         key: String,
         value: String
     ) {
-        appendBoundarySeparator()
-        data.append(disposition(key) + separator)
-        appendSeparator()
-        data.append(value + separator)
+        _append_boundary_separator()
+        _data.append(_disposition(key) + _separator)
+        _append_separator()
+        _data.append(value + _separator)
     }
 
     /// Adds a file part with a filename and MIME type.
@@ -76,11 +76,11 @@ public struct MCMultipartRequest {
         fileMimeType: String,
         fileData: Data
     ) {
-        appendBoundarySeparator()
-        data.append(disposition(key) + "; filename=\"\(fileName)\"" + separator)
-        data.append("Content-Type: \(fileMimeType)" + separator + separator)
-        data.append(fileData)
-        appendSeparator()
+        _append_boundary_separator()
+        _data.append(_disposition(key) + "; filename=\"\(fileName)\"" + _separator)
+        _data.append("Content-Type: \(fileMimeType)" + _separator + _separator)
+        _data.append(fileData)
+        _append_separator()
     }
 
     /// The `Content-Type` header value to send, including the boundary.
@@ -90,8 +90,8 @@ public struct MCMultipartRequest {
 
     /// The fully-assembled request body, terminated with the closing boundary.
     public var httpBody: Data {
-        var bodyData = data
-        bodyData.append("--\(boundary)--")
-        return bodyData
+        var body_data = _data
+        body_data.append("--\(boundary)--")
+        return body_data
     }
 }

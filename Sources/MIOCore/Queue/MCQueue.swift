@@ -20,7 +20,7 @@ public enum MCQueue {
 
     fileprivate static let coordinator = DispatchQueue(label: "com.miolabs.core.main", attributes: .concurrent)
 
-    fileprivate static func setStatus(value: Bool, label key: String, prefix: String = "com.miolabs.core") {
+    fileprivate static func set_status(value: Bool, label key: String, prefix: String = "com.miolabs.core") {
         coordinator.sync(flags: .barrier) {
             if value {
                 queue_statuses["\(prefix).\(key)"] = true
@@ -32,7 +32,7 @@ public enum MCQueue {
         }
     }
 
-    /// Returns a snapshot of the queue-status registry as `"fullKey:held"` strings, for debugging.
+    /// Returns a snapshot of the queue-status registry as `"full_key:held"` strings, for debugging.
     ///
     /// - Returns: One entry per tracked status key.
     public static func runningInfo() -> [String] { queue_statuses.map { "\($0.key):\($0.value)" } }
@@ -75,11 +75,11 @@ public enum MCQueue {
     /// before the work would have been enqueued.
     public static func acquire(_ key: String, prefix: String = "com.miolabs.core") -> Bool {
         coordinator.sync(flags: .barrier) {
-            let fullKey = "\(prefix).\(key)"
-            if queue_statuses[fullKey] == true {
+            let full_key = "\(prefix).\(key)"
+            if queue_statuses[full_key] == true {
                 return false  // already held by another caller
             }
-            queue_statuses[fullKey] = true
+            queue_statuses[full_key] = true
             return true  // we acquired
         }
     }
@@ -88,7 +88,7 @@ public enum MCQueue {
     ///
     /// Named to make the acquire/release pairing visible at call sites.
     public static func release(_ key: String, prefix: String = "com.miolabs.core") {
-        setStatus(value: false, label: key, prefix: prefix)
+        set_status(value: false, label: key, prefix: prefix)
     }
 
     /// Returns the current cache sizes for monitoring

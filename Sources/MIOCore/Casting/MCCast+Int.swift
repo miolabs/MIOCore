@@ -9,7 +9,7 @@ import Foundation
 extension MCCast {
 
     /// Strips the fractional part of a numeric string so `Int("3.9")` becomes `Int("3")`.
-    private static func removingStringFloat(_ string: String) -> String {
+    private static func _removing_string_float(_ string: String) -> String {
         let components = string.components(separatedBy: ".")
         if components.count > 0 { return components[0] }
         return "0"
@@ -34,19 +34,19 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int`, or `def` when conversion is not possible.
     public static func int(_ value: Any?, `default` def: Int? = nil) -> Int? {
-        if let asString = value as? String { return Int(removingStringFloat(asString)) ?? def }
-        if let asBool = value as? Bool { return Int(asBool ? 1 : 0) }
-        if let asChar = value as? Character { return Int(String(asChar)) }
-        if let asInt = value as? Int8 { return Int(asInt) }
-        if let asInt = value as? Int16 { return Int(asInt) }
-        if let asInt = value as? Int32 { return Int(asInt) }
-        if let asInt = value as? Int64 { return Int(asInt) }
-        if let asInt = value as? Int { return asInt }
-        if let asFloat = value as? Float { return Int(asFloat) }
-        if let asDouble = value as? Double { return Int(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).intValue }
-        if let asNumber = value as? NSNumber { return asNumber.intValue }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).intValue }
+        if let as_string = value as? String { return Int(_removing_string_float(as_string)) ?? def }
+        if let as_bool = value as? Bool { return Int(as_bool ? 1 : 0) }
+        if let as_char = value as? Character { return Int(String(as_char)) }
+        if let as_int = value as? Int8 { return Int(as_int) }
+        if let as_int = value as? Int16 { return Int(as_int) }
+        if let as_int = value as? Int32 { return Int(as_int) }
+        if let as_int = value as? Int64 { return Int(as_int) }
+        if let as_int = value as? Int { return as_int }
+        if let as_float = value as? Float { return Int(as_float) }
+        if let as_double = value as? Double { return Int(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).intValue }
+        if let as_number = value as? NSNumber { return as_number.intValue }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).intValue }
 
         return def
     }
@@ -62,19 +62,19 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int8`, or `def` when conversion is not possible.
     public static func int8(_ value: Any?, `default` def: Int8? = nil) -> Int8? {
-        if let asString = value as? String { return Int8(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return Int8(asBool ? 1 : 0) }
-        if let asChar = value as? Character { return Int8(String(asChar)) }
-        if let asInt = value as? Int8 { return asInt }
-        if let asInt = value as? Int16 { return Int8(clamping: asInt) }
-        if let asInt = value as? Int32 { return Int8(clamping: asInt) }
-        if let asInt = value as? Int64 { return Int8(clamping: asInt) }
-        if let asInt = value as? Int { return Int8(clamping: asInt) }
-        if let asFloat = value as? Float { return Int8(asFloat) }
-        if let asDouble = value as? Double { return Int8(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int8Value }
-        if let asNumber = value as? NSNumber { return asNumber.int8Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int8Value }
+        if let as_string = value as? String { return Int8(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return Int8(as_bool ? 1 : 0) }
+        if let as_char = value as? Character { return Int8(String(as_char)) }
+        if let as_int = value as? Int8 { return as_int }
+        if let as_int = value as? Int16 { return Int8(clamping: as_int) }
+        if let as_int = value as? Int32 { return Int8(clamping: as_int) }
+        if let as_int = value as? Int64 { return Int8(clamping: as_int) }
+        if let as_int = value as? Int { return Int8(clamping: as_int) }
+        if let as_float = value as? Float { return Int8(as_float) }
+        if let as_double = value as? Double { return Int8(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int8Value }
+        if let as_number = value as? NSNumber { return as_number.int8Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int8Value }
 
         return def
     }
@@ -89,19 +89,19 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int16`, or `def` when conversion is not possible.
     public static func int16(_ value: Any?, `default` def: Int16? = nil) -> Int16? {
-        if let asString = value as? String { return Int16(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return Int16(asBool ? 1 : 0) }
-        if let asChar = value as? Character { return Int16(String(asChar)) }
-        if let asInt = value as? Int8 { return Int16(asInt) }
-        if let asInt = value as? Int16 { return asInt }
-        if let asInt = value as? Int32 { return Int16(clamping: asInt) }
-        if let asInt = value as? Int64 { return Int16(clamping: asInt) }
-        if let asInt = value as? Int { return Int16(clamping: asInt) }
-        if let asFloat = value as? Float { return Int16(asFloat) }
-        if let asDouble = value as? Double { return Int16(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int16Value }
-        if let asNumber = value as? NSNumber { return asNumber.int16Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int16Value }
+        if let as_string = value as? String { return Int16(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return Int16(as_bool ? 1 : 0) }
+        if let as_char = value as? Character { return Int16(String(as_char)) }
+        if let as_int = value as? Int8 { return Int16(as_int) }
+        if let as_int = value as? Int16 { return as_int }
+        if let as_int = value as? Int32 { return Int16(clamping: as_int) }
+        if let as_int = value as? Int64 { return Int16(clamping: as_int) }
+        if let as_int = value as? Int { return Int16(clamping: as_int) }
+        if let as_float = value as? Float { return Int16(as_float) }
+        if let as_double = value as? Double { return Int16(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int16Value }
+        if let as_number = value as? NSNumber { return as_number.int16Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int16Value }
 
         return def
     }
@@ -116,20 +116,20 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `UInt16`, or `def` when conversion is not possible.
     public static func uint16(_ value: Any?, `default` def: UInt16? = nil) -> UInt16? {
-        if let asString = value as? String { return UInt16(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return UInt16(asBool ? 1 : 0) }
-        if let asChar = value as? Character { return UInt16(String(asChar)) }
-        if let asInt = value as? UInt8 { return UInt16(asInt) }
-        if let asInt = value as? UInt16 { return asInt }
-        if let asInt = value as? UInt32 { return UInt16(clamping: asInt) }
-        if let asInt = value as? UInt64 { return UInt16(clamping: asInt) }
-        if let asInt = value as? UInt { return UInt16(clamping: asInt) }
-        if let asInt = value as? Int { return UInt16(clamping: asInt) }
-        if let asFloat = value as? Float { return UInt16(asFloat) }
-        if let asDouble = value as? Double { return UInt16(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).uint16Value }
-        if let asNumber = value as? NSNumber { return asNumber.uint16Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).uint16Value }
+        if let as_string = value as? String { return UInt16(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return UInt16(as_bool ? 1 : 0) }
+        if let as_char = value as? Character { return UInt16(String(as_char)) }
+        if let as_int = value as? UInt8 { return UInt16(as_int) }
+        if let as_int = value as? UInt16 { return as_int }
+        if let as_int = value as? UInt32 { return UInt16(clamping: as_int) }
+        if let as_int = value as? UInt64 { return UInt16(clamping: as_int) }
+        if let as_int = value as? UInt { return UInt16(clamping: as_int) }
+        if let as_int = value as? Int { return UInt16(clamping: as_int) }
+        if let as_float = value as? Float { return UInt16(as_float) }
+        if let as_double = value as? Double { return UInt16(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint16Value }
+        if let as_number = value as? NSNumber { return as_number.uint16Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint16Value }
 
         return def
     }
@@ -144,19 +144,19 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int32`, or `def` when conversion is not possible.
     public static func int32(_ value: Any?, `default` def: Int32? = nil) -> Int32? {
-        if let asString = value as? String { return Int32(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return Int32(asBool ? 1 : 0) }
-        if let asChar = value as? Character { return Int32(String(asChar)) }
-        if let asInt = value as? Int8 { return Int32(asInt) }
-        if let asInt = value as? Int16 { return Int32(asInt) }
-        if let asInt = value as? Int32 { return asInt }
-        if let asInt = value as? Int64 { return Int32(clamping: asInt) }
-        if let asInt = value as? Int { return Int32(clamping: asInt) }
-        if let asFloat = value as? Float { return Int32(asFloat) }
-        if let asDouble = value as? Double { return Int32(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int32Value }
-        if let asNumber = value as? NSNumber { return asNumber.int32Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int32Value }
+        if let as_string = value as? String { return Int32(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return Int32(as_bool ? 1 : 0) }
+        if let as_char = value as? Character { return Int32(String(as_char)) }
+        if let as_int = value as? Int8 { return Int32(as_int) }
+        if let as_int = value as? Int16 { return Int32(as_int) }
+        if let as_int = value as? Int32 { return as_int }
+        if let as_int = value as? Int64 { return Int32(clamping: as_int) }
+        if let as_int = value as? Int { return Int32(clamping: as_int) }
+        if let as_float = value as? Float { return Int32(as_float) }
+        if let as_double = value as? Double { return Int32(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int32Value }
+        if let as_number = value as? NSNumber { return as_number.int32Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int32Value }
 
         return def
     }
@@ -171,19 +171,19 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `UInt32`, or `def` when conversion is not possible.
     public static func uint32(_ value: Any?, `default` def: UInt32? = nil) -> UInt32? {
-        if let asString = value as? String { return UInt32(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return UInt32(asBool ? 1 : 0) }
-        if let asChar = value as? Character { return UInt32(String(asChar)) }
-        if let asInt = value as? UInt8 { return UInt32(asInt) }
-        if let asInt = value as? UInt16 { return UInt32(asInt) }
-        if let asInt = value as? UInt32 { return asInt }
-        if let asInt = value as? UInt64 { return UInt32(clamping: asInt) }
-        if let asInt = value as? UInt { return UInt32(clamping: asInt) }
-        if let asFloat = value as? Float { return UInt32(asFloat) }
-        if let asDouble = value as? Double { return UInt32(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).uint32Value }
-        if let asNumber = value as? NSNumber { return asNumber.uint32Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).uint32Value }
+        if let as_string = value as? String { return UInt32(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return UInt32(as_bool ? 1 : 0) }
+        if let as_char = value as? Character { return UInt32(String(as_char)) }
+        if let as_int = value as? UInt8 { return UInt32(as_int) }
+        if let as_int = value as? UInt16 { return UInt32(as_int) }
+        if let as_int = value as? UInt32 { return as_int }
+        if let as_int = value as? UInt64 { return UInt32(clamping: as_int) }
+        if let as_int = value as? UInt { return UInt32(clamping: as_int) }
+        if let as_float = value as? Float { return UInt32(as_float) }
+        if let as_double = value as? Double { return UInt32(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint32Value }
+        if let as_number = value as? NSNumber { return as_number.uint32Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint32Value }
 
         return def
     }
@@ -198,18 +198,18 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int64`, or `def` when conversion is not possible.
     public static func int64(_ value: Any?, `default` def: Int64? = nil) -> Int64? {
-        if let asString = value as? String { return Int64(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return Int64(asBool ? 1 : 0) }
-        if let asInt = value as? Int8 { return Int64(asInt) }
-        if let asInt = value as? Int16 { return Int64(asInt) }
-        if let asInt = value as? Int32 { return Int64(asInt) }
-        if let asInt = value as? Int64 { return asInt }
-        if let asInt = value as? Int { return Int64(asInt) }
-        if let asFloat = value as? Float { return Int64(asFloat) }
-        if let asDouble = value as? Double { return Int64(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int64Value }
-        if let asNumber = value as? NSNumber { return asNumber.int64Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).int64Value }
+        if let as_string = value as? String { return Int64(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return Int64(as_bool ? 1 : 0) }
+        if let as_int = value as? Int8 { return Int64(as_int) }
+        if let as_int = value as? Int16 { return Int64(as_int) }
+        if let as_int = value as? Int32 { return Int64(as_int) }
+        if let as_int = value as? Int64 { return as_int }
+        if let as_int = value as? Int { return Int64(as_int) }
+        if let as_float = value as? Float { return Int64(as_float) }
+        if let as_double = value as? Double { return Int64(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int64Value }
+        if let as_number = value as? NSNumber { return as_number.int64Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).int64Value }
 
         return def
     }
@@ -224,23 +224,23 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `UInt64`, or `def` when conversion is not possible.
     public static func uint64(_ value: Any?, `default` def: UInt64? = nil) -> UInt64? {
-        if let asString = value as? String { return UInt64(removingStringFloat(asString)) }
-        if let asBool = value as? Bool { return UInt64(asBool ? 1 : 0) }
-        if let asInt = value as? Int8 { return UInt64(asInt) }
-        if let asInt = value as? Int16 { return UInt64(asInt) }
-        if let asInt = value as? Int32 { return UInt64(asInt) }
-        if let asInt = value as? Int64 { return UInt64(asInt) }
-        if let asInt = value as? UInt { return UInt64(asInt) }
-        if let asInt = value as? UInt8 { return UInt64(asInt) }
-        if let asInt = value as? UInt16 { return UInt64(asInt) }
-        if let asInt = value as? UInt32 { return UInt64(asInt) }
-        if let asInt = value as? UInt64 { return asInt }
-        if let asInt = value as? UInt { return UInt64(asInt) }
-        if let asFloat = value as? Float { return UInt64(asFloat) }
-        if let asDouble = value as? Double { return UInt64(asDouble) }
-        if let asDecimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).uint64Value }
-        if let asNumber = value as? NSNumber { return asNumber.uint64Value }
-        if let asDecimal = value as? Decimal { return NSDecimalNumber(decimal: asDecimal.roundingBy(scale: 0, roundingMode: .plain)).uint64Value }
+        if let as_string = value as? String { return UInt64(_removing_string_float(as_string)) }
+        if let as_bool = value as? Bool { return UInt64(as_bool ? 1 : 0) }
+        if let as_int = value as? Int8 { return UInt64(as_int) }
+        if let as_int = value as? Int16 { return UInt64(as_int) }
+        if let as_int = value as? Int32 { return UInt64(as_int) }
+        if let as_int = value as? Int64 { return UInt64(as_int) }
+        if let as_int = value as? UInt { return UInt64(as_int) }
+        if let as_int = value as? UInt8 { return UInt64(as_int) }
+        if let as_int = value as? UInt16 { return UInt64(as_int) }
+        if let as_int = value as? UInt32 { return UInt64(as_int) }
+        if let as_int = value as? UInt64 { return as_int }
+        if let as_int = value as? UInt { return UInt64(as_int) }
+        if let as_float = value as? Float { return UInt64(as_float) }
+        if let as_double = value as? Double { return UInt64(as_double) }
+        if let as_decimal = value as? NSDecimalNumber { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint64Value }
+        if let as_number = value as? NSNumber { return as_number.uint64Value }
+        if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint64Value }
 
         return def
     }

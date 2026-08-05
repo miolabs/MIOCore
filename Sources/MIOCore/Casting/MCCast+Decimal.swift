@@ -29,17 +29,17 @@ extension MCCast {
     public static func decimal(_ value: Any?, `default` def: Decimal? = nil) -> Decimal? {
         if value == nil { return def }
 
-        if let asDecimal = value! as? NSDecimalNumber { return asDecimal.decimalValue }
-        if let asDouble = value! as? Double {
+        if let as_decimal = value! as? NSDecimalNumber { return as_decimal.decimalValue }
+        if let as_double = value! as? Double {
             // Decimal(floatLiteral:) carries the Double's binary noise into the mantissa
             // (-3182.7 -> -3182.6999999999999791, >64 bits). The shortest round-trip
             // string representation yields a clean, compact Decimal.
-            if asDouble.isFinite == false { return Decimal.nan }
-            return Decimal(string: "\(asDouble)") ?? Decimal(asDouble)
+            if as_double.isFinite == false { return Decimal.nan }
+            return Decimal(string: "\(as_double)") ?? Decimal(as_double)
         }
-        if let asDecimal = value! as? Decimal { return asDecimal }
+        if let as_decimal = value! as? Decimal { return as_decimal }
         if MCCast.isInt(value) { return Decimal(integerLiteral: MCCast.int(value)!) }
-        if let asString = value! as? String { return Decimal(string: asString) ?? def }
+        if let as_string = value! as? String { return Decimal(string: as_string) ?? def }
 
         return def
     }
