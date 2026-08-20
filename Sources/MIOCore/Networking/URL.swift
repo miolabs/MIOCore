@@ -34,8 +34,12 @@ public func MIOCoreURLDataRequest(_ request:URLRequest, completion: @Sendable @e
 //        let session = URLSession(configuration: sessionConfig)
     let config = URLSessionConfiguration.ephemeral
     let session = URLSession( configuration: config )
-    defer { session.invalidateAndCancel() }
-    
+    // finishTasksAndInvalidate, not invalidateAndCancel: the latter iterates the
+    // session's task registry off its work queue (FoundationNetworking bug, still
+    // present in Swift 6.3) and crashes when it races a completing task. Here it
+    // could also cancel the just-resumed task, since the defer runs immediately.
+    defer { session.finishTasksAndInvalidate() }
+
     let task = session.dataTask(with: request, completionHandler: {
         data, response, error in
         
@@ -66,7 +70,9 @@ public func MIOCoreURLDataRequest_sync(_ request:URLRequest) throws -> Data? {
 //    config.urlCache = nil
 
     let session = URLSession.init(configuration: config)
-    defer { session.invalidateAndCancel() }
+    // finishTasksAndInvalidate, not invalidateAndCancel: see MIOCoreURLDataRequest above.
+    // On the timeout path synchronousDataTask has already cancelled the task itself.
+    defer { session.finishTasksAndInvalidate() }
     
     let (data, _, error) = session.synchronousDataTask(with: request)
                      
