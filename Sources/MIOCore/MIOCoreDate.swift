@@ -360,7 +360,10 @@ func mcd_date_time_formatter_iso() -> ISO8601DateFormatter {
 func mcd_date_time_formatter_z() -> DateFormatter {
     return threadFormatter("mcd_date_time_formatter_z") {
         let df = DateFormatter()
-        df.locale = Locale.current
+        // The literal 'Z' promises UTC: format in GMT0 regardless of the process time zone,
+        // otherwise a server running outside UTC (local dev on a Mac) labels local wall-clock as Z.
+        df.locale = Locale(identifier: "en_US_POSIX")
+        df.timeZone = TimeZone(secondsFromGMT: 0)
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         return df
     } as! DateFormatter
