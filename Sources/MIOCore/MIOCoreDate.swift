@@ -305,6 +305,7 @@ func mcd_date_formatter() -> DateFormatter {
     return threadFormatter("mcd_date_formatter") {
         let df = DateFormatter()
         df.locale = Locale.current
+        df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
         df.dateFormat = "yyyy-MM-dd"
         return df
     } as! DateFormatter
@@ -314,6 +315,7 @@ func mcd_time_formatter() -> DateFormatter {
     return threadFormatter("mcd_time_formatter") {
         let df = DateFormatter()
         df.locale = Locale.current
+        df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
         df.dateFormat = "HH:mm"
         return df
     } as! DateFormatter
@@ -323,6 +325,7 @@ func mcd_date_time_formatter() -> DateFormatter {
     return threadFormatter("mcd_date_time_formatter") {
         let df = DateFormatter()
         df.locale = Locale.current
+        df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
         df.dateFormat = "yyyy-MM-dd HH:mm"
         return df
     } as! DateFormatter
@@ -332,6 +335,7 @@ func mcd_date_time_formatter_t() -> DateFormatter {
     return threadFormatter("mcd_date_time_formatter_t") {
         let df = DateFormatter()
         df.locale = Locale.current
+        df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
         df.dateFormat = "yyyy-MM-dd'T'HH:mm"
         return df
     } as! DateFormatter
@@ -341,6 +345,7 @@ func mcd_date_time_formatter_t_s() -> DateFormatter {
     return threadFormatter("mcd_date_time_formatter_t_s") {
         let df = DateFormatter()
         df.locale = Locale.current
+        df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         return df
     } as! DateFormatter
@@ -373,6 +378,7 @@ func mcd_date_time_formatter_s() -> DateFormatter {
     return threadFormatter("mcd_date_time_formatter_s") {
         let df = DateFormatter()
         df.locale = Locale(identifier: "en_US_POSIX")
+        df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return df
     } as! DateFormatter
