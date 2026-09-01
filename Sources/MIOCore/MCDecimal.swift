@@ -97,3 +97,41 @@ extension NSDecimalNumber
         return (self as Decimal).roundingBy(scale: scale, roundingMode: roundingMode)
     }
 }
+
+/// Encodes and decodes a `Decimal` as a JSON string.
+///
+/// `JSONEncoder`/`JSONDecoder` round-trip bare JSON numbers through `Double`, which corrupts
+/// currency values. Wrapping a `Decimal` property with `@DecimalString` keeps the value exact by
+/// putting it on the wire as a string. Decoding also tolerates a JSON number, routing it through
+/// ``MCDecimalValue(_:_:)`` so the `Double` noise is scrubbed.
+///
+/// ```swift
+/// struct Payload : Codable {
+///     @DecimalString var amount: Decimal
+/// }
+/// ```
+@propertyWrapper
+public struct DecimalString : Codable, Sendable
+{
+    public var wrappedValue: Decimal
+
+    public init( wrappedValue: Decimal ) { self.wrappedValue = wrappedValue }
+
+    public init( from decoder: Decoder ) throws {
+        let container = try decoder.singleValueContainer()
+        if let str = try? container.decode( String.self ), let value = MCDecimalValue( str ) {
+            wrappedValue = value
+        }
+        else if let dbl = try? container.decode( Double.self ), let value = MCDecimalValue( dbl ) {
+            wrappedValue = value
+        }
+        else {
+            throw DecodingError.dataCorruptedError( in: container, debugDescription: "Invalid decimal value" )
+        }
+    }
+
+    public func encode( to encoder: Encoder ) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode( "\(wrappedValue)" )
+    }
+}
