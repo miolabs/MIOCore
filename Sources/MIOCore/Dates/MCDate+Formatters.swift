@@ -36,7 +36,7 @@ extension MCDate {
         static func dateTimeS() -> DateFormatter { _cached("dateTimeS") { _make("yyyy-MM-dd HH:mm:ss", _posix) } as! DateFormatter }
 
         /// Local `yyyy-MM-dd'T'HH:mm:ss'Z'` (a literal `Z`, not a zone specifier).
-        static func z() -> DateFormatter { _cached("z") { _make("yyyy-MM-dd'T'HH:mm:ss'Z'", .current) } as! DateFormatter }
+        static func z() -> DateFormatter { _cached("z") { _make("yyyy-MM-dd'T'HH:mm:ss'Z'", _posix) } as! DateFormatter }
 
         /// A cached UTC `DateFormatter` (`en_US_POSIX`, no fixed pattern).
         static func utc() -> DateFormatter { _cached("utc") { MCDate.makeUTCFormatter() } as! DateFormatter }
@@ -58,6 +58,7 @@ extension MCDate {
         private static func _make(_ format: String, _ locale: Locale) -> DateFormatter {
             let df = DateFormatter()
             df.locale = locale
+            df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
             df.dateFormat = format
             return df
         }

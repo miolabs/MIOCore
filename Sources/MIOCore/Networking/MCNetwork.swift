@@ -39,7 +39,7 @@ public enum MCNetwork {
         //        let session = URLSession(configuration: sessionConfig)
         let config = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: config)
-        defer { session.invalidateAndCancel() }
+        defer { session.finishTasksAndInvalidate() }
 
         let task = session.dataTask(
             with: request,
@@ -72,7 +72,7 @@ public enum MCNetwork {
         //    config.urlCache = nil
 
         let session = URLSession.init(configuration: config)
-        defer { session.invalidateAndCancel() }
+        defer { session.finishTasksAndInvalidate() }
 
         let (data, _, error) = session.synchronousDataTask(with: request)
 
