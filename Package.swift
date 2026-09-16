@@ -6,7 +6,7 @@ import PackageDescription
 
 let package = Package(
     name: "MIOCore",
-    platforms: [.iOS(.v12), .macOS(.v12)],
+    platforms: [.iOS(.v15), .macOS(.v12)],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library( name: "MIOCoreLogger", targets: [ "MIOCoreLogger" ] ),
