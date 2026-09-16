@@ -1,8 +1,7 @@
 //
 //  XMLSerialization.swift
-//  
 //
-//  Created by Javier Segura Perez on 23/08/2020.
+//  Created by MIO Research Labs on 23/08/2020.
 //
 
 import Foundation
@@ -16,8 +15,24 @@ enum XMLSerializationError : Error
     case unknown
 }
 
+/// Parses XML into a nested dictionary/string structure, an `XMLSerialization`-style convenience.
+///
+/// Mirrors the shape of `JSONSerialization`: call ``xmlObject(with:options:)`` to turn XML `Data`
+/// into a nested `[String: Any]` tree (element name → children/text). Element text is stored under the
+/// element's own key; the internal `__XML_TAG_NAME__` marker tracks the current element while parsing.
+///
+/// ```swift
+/// let tree = try XMLSerialization.xmlObject(with: xmlData, options: [])
+/// ```
 public class XMLSerialization:NSObject, XMLParserDelegate
 {
+    /// Parses XML `Data` into a nested `Any` structure and returns the root.
+    ///
+    /// - Parameters:
+    ///   - data: The XML bytes to parse.
+    ///   - options: Reserved for future use; currently ignored.
+    /// - Returns: The parsed tree (typically a nested `[String: Any]`).
+    /// - Throws: The underlying `XMLParser` error if parsing fails.
     static public func xmlObject(with data:Data, options:[Any]) throws -> Any
     {
         let xs = XMLSerialization( with: data )
@@ -35,17 +50,19 @@ public class XMLSerialization:NSObject, XMLParserDelegate
         parser.delegate = self
         if parser.parse() == false {
             if error != nil { throw error! }
+            throw XMLSerializationError.unknown
         }
-        else { throw XMLSerializationError.unknown }
     }
     
+    /// The parsed result tree, available after parsing completes.
     public var results:Any?
-    
+
     var elementStack:[Any] = []
     var currentElement:[String:Any]?
     
     var foundCharacters:String = ""
     
+    /// `XMLParserDelegate` hook, pushes a new current element. Internal parsing plumbing.
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         
         if currentElement != nil { elementStack.append(currentElement!) }
@@ -56,6 +73,7 @@ public class XMLSerialization:NSObject, XMLParserDelegate
         foundCharacters = ""
     }
     
+    /// `XMLParserDelegate` hook, folds the finished element into its parent. Internal parsing plumbing.
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
                 
         if currentElement != nil {
@@ -85,10 +103,12 @@ public class XMLSerialization:NSObject, XMLParserDelegate
         //elementStack.popLast()
     }
     
+    /// `XMLParserDelegate` hook, accumulates text content. Internal parsing plumbing.
     public func parser(_ parser: XMLParser, foundCharacters string: String) {
         foundCharacters += string
     }
-    
+
+    /// `XMLParserDelegate` hook, captures a parse error to rethrow. Internal parsing plumbing.
     public func parser(_ parser: XMLParser, parseErrorOccurred parseError: any Error) {
         error = parseError
     }
