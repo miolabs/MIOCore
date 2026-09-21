@@ -10,94 +10,58 @@ math, JSON handling, and error types once, and use them on both sides without re
 
 The part you'll reach for most is input coercion. Values from JSON bodies, database rows, and HTTP
 parameters all arrive as `Any?` / `[String: Any?]`, and a plain `value as? Int` falls over the moment
-a number shows up as the string `"42"`. Helpers like ``MIOCoreIntValue(_:_:)`` and
-``MIOCoreParam(_:_:)`` take the value however it arrived and hand back a typed result, or throw a
-clear error.
+a number shows up as the string `"42"`. Helpers like ``MCCast/int(_:default:)`` and
+``MCParam/require(_:from:)`` take the value however it arrived and hand back a typed result, or throw
+a clear error.
 
 ## Topics
 
-### Type Coercion
+### Value Coercion
 
-Convert loosely-typed `Any?` values into concrete Swift types, falling back to a default instead of
-throwing.
+Coerce loosely-typed `Any?` values into concrete Swift types, falling back to a `default` instead of
+throwing. ``MCCast`` groups the family, one method per target type.
 
-- ``MIOCoreBoolValue(_:_:)``
-- ``MIOCoreIntValue(_:_:)``
-- ``MIOCoreInt8Value(_:_:)``
-- ``MIOCoreInt16Value(_:_:)``
-- ``MIOCoreInt32Value(_:_:)``
-- ``MIOCoreInt64Value(_:_:)``
-- ``MCUInt16Value(_:_:)``
-- ``MIOCoreUInt32Value(_:_:)``
-- ``MIOCoreUInt64Value(_:_:)``
-- ``MIOCoreDoubleValue(_:_:)``
-- ``MIOCoreFloatValue(_:_:)``
-- ``MCDecimalValue(_:_:)``
-- ``MIOCoreUUIDValue(_:_:optional:)``
-- ``MIOCoreIsIntValue(_:)``
+- ``MCCast``
 
 ### Request / Dictionary Parameters
 
 Read typed values from a `[String: Any?]`, failing cleanly when a key is missing or invalid.
+``MCParam`` groups the family: strict generic accessors (`require`/`optional`) plus the coercing
+typed getters (`int`/`decimal`/`bool`/...).
 
-- ``MIOCoreParam(_:_:)``
-- ``MIOCoreParam(_:_:_:)``
-- ``MIOCoreSafeParam(_:_:_:)``
-- ``optional_param(_:_:_:)``
-- ``MIOCoreParamInt(_:_:_:)``
-- ``MIOCoreParamInt16(_:_:_:)``
-- ``MIOCoreParamInt32(_:_:_:)``
-- ``MIOCoreParamInt64(_:_:_:)``
-- ``MIOCoreParamDecimal(_:_:_:)``
-- ``MIOCoreParamBool(_:_:_:)``
-- ``MIOCoreParamSelect(_:_:_:)``
+- ``MCParam``
 
 ### Decimal (money-safe)
 
 Build and round money-safe `Decimal` values, without `Double` rounding errors.
 
-- ``MCDecimalValue(_:_:)``
-- ``MIOCoreDecimalValue(_:_:)``
+- ``MCCast/decimal(_:default:)``
 - ``Foundation/Decimal/rounding()``
 - ``Foundation/Decimal/roundingBy(scale:roundingMode:)``
 
 ### Dates & Times
 
-Parse and format dates in GMT0 and ISO8601, consistently across Apple platforms and Linux.
+Parse and format dates in local time and UTC (and ISO8601), consistently across Apple platforms and
+Linux. ``MCDate`` groups the family, with the timezone regime explicit in each member name (plain =
+local, `UTC` suffix = UTC).
 
-- ``parse_date(_:)``
-- ``parse_date_or_nil(_:)``
-- ``parse_time(_:)``
-- ``parse_time_or_nil(_:)``
-- ``format_date(_:)``
-- ``format_time(_:)``
-- ``format_date_time(_:)``
-- ``format_date_time_t(_:)``
-- ``MIOCoreDate(fromString:)``
-- ``MCDateGMT0Parser(_:)``
-- ``MCDateGMT0Format(_:)``
-- ``MCTimeGMT0Format(_:)``
-- ``MIOCoreDateGMT0Formatter()``
-- ``MIOCoreDateCreateGMT0Formatter()``
-- ``MIOCoreISO8601Formatter()``
-- ``MIOCoreDateTDateTimeFormatter()``
-- ``dateFormaterInGMT0()``
+- ``MCDate``
+- ``Foundation/ISO8601DateFormatter/microsecondsDate(from:)``
 
 ### JSON
 
-Read and write JSON with cross-platform wrappers over `JSONSerialization`.
+Read and write JSON with cross-platform wrappers over `JSONSerialization`. ``MCJSON`` groups the
+family (`data`/`string` encoders plus the `serializable` sanitizer).
 
-- ``MIOCoreJsonValue(withJSONObject:options:)``
-- ``MIOCoreJsonStringify(withJSONObject:options:)``
-- ``MIOCoreSerializableJSON(_:)``
+- ``MCJSON``
 
 ### Errors
 
 The shared error type for the coercion and parameter helpers, plus building blocks for
 library-specific error codes.
 
-- ``MIOCoreError``
-- ``MIOErrorCode``
+- ``MCError``
+- ``MCErrorCode``
 - ``E_CORE``
 - ``E_DB``
 - ``E_DB_MYSQL``
@@ -116,50 +80,43 @@ String conveniences for templating, case conversion, subscripting, and C interop
 
 ### Networking
 
-Make async and synchronous URL requests, decode JSON responses, and build multipart bodies.
+Make async and synchronous URL requests, decode JSON responses, and build multipart bodies. ``MCNetwork``
+groups the request helpers.
 
-- ``MIOCoreURLDataRequest(_:completion:)``
-- ``MIOCoreURLDataRequest_sync(_:)``
-- ``MIOCoreURLJSONRequest(_:completion:)``
-- ``MIOCoreURLJSONRequest_sync(_:)``
-- ``MIOCoreURLJSONRequestExecute(method:urlString:body:headers:)-(_,_,[String:Any]?,_)``
-- ``MIOCoreURLJSONRequestExecute(method:urlString:body:headers:)-(_,_,Data?,_)``
-- ``MultipartRequest``
+- ``MCNetwork``
+- ``MCMultipartRequest``
 
 ### Context, globals & environment
 
 Carry process and request globals, persist values in `UserDefaults`, and read environment variables.
 
-- ``MIOCoreContextProtocol``
-- ``MIOCoreContext``
-- ``ContextUserDefaultVar``
-- ``ContextUserDefaultOptionalVar``
-- ``MCEnvironmentVar(_:)``
+- ``MCContextProtocol``
+- ``MCContext``
+- ``MCUserDefault``
+- ``MCUserDefaultOptional``
+- ``MCEnvironment``
 
 ### Lexer (tokenizer)
 
 Break a string into tokens (keywords, identifiers, symbols) for parsing. A small regex-driven
 tokenizer used by the query builders.
 
-- ``MIOCoreLexer``
-- ``MIOCoreLexerToken``
+- ``MCLexer``
+- ``MCLexer/Token``
 
 ### EAN barcodes
 
-Generate EAN-8 and EAN-13 retail barcodes, including the check digit.
+Generate EAN-8 and EAN-13 retail barcodes, including the check digit. ``MCEAN`` groups the generator
+and its ``MCEAN/Standard`` enum.
 
-- ``EAN_TYPE``
-- ``MIOCoreGenerateEAN(type:prefix:number:)``
+- ``MCEAN``
 
 ### Threads & queues
 
-Look up named dispatch queues and coordinate work with cooperative acquire and release.
+Look up named dispatch queues and coordinate work with cooperative acquire and release. ``MCQueue``
+groups the registry (`named`) and the cooperative locking (`acquire`/`release`).
 
-- ``MIOCoreQueue(label:prefix:)``
-- ``MIOCoreQueueAcquire(label:prefix:)``
-- ``MIOCoreQueueRelease(label:prefix:)``
-- ``MIOCoreQueueCacheStats()``
-- ``MIOCoreQueueRunningInfo()``
+- ``MCQueue``
 
 ### XML
 
@@ -171,7 +128,7 @@ Parse XML into a nested dictionary, `JSONSerialization`-style.
 
 An autorelease-pool shim that is a no-op on Linux and WASI.
 
-- ``MIOCoreAutoReleasePool(invoking:)``
+- ``MCRuntime``
 
 ### Geometry
 

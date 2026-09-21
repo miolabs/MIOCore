@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// swift-format-ignore-file
+
 #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 
 import Foundation
