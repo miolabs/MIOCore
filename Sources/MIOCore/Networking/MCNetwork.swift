@@ -62,10 +62,14 @@ public enum MCNetwork {
     /// code paths that aren't async. Uses an ephemeral session with a 240s request timeout and blocks
     /// the calling thread until completion (via `URLSession.synchronousDataTask(with:timeout:)`).
     ///
-    /// - Parameter request: The request to send.
+    /// - Parameters:
+    ///   - request: The request to send.
+    ///   - timeout: The maximum time to block, in seconds. Defaults to `10` — the historical
+    ///     value, kept for every caller that never chose one. Slow upstreams (Oracle OHIP
+    ///     answers a posting in 10–20 s under load) pass their own budget.
     /// - Returns: The response `Data`, or `nil` if the body was empty.
     /// - Throws: The transport error if the request fails.
-    public static func dataRequestSync(_ request: URLRequest) throws -> Data? {
+    public static func dataRequestSync(_ request: URLRequest, timeout: TimeInterval = 10) throws -> Data? {
         let config = URLSessionConfiguration.ephemeral
         config.timeoutIntervalForRequest = 240
         //    config.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -74,7 +78,7 @@ public enum MCNetwork {
         let session = URLSession.init(configuration: config)
         defer { session.finishTasksAndInvalidate() }
 
-        let (data, _, error) = session.synchronousDataTask(with: request)
+        let (data, _, error) = session.synchronousDataTask(with: request, timeout: timeout)
 
         if error != nil {
             print("ERROR MCNetwork.dataRequestSync: \(error!.localizedDescription)")
@@ -130,17 +134,19 @@ public enum MCNetwork {
     /// The blocking counterpart of ``jsonRequest(_:completion:)``. Defaults the `Content-Type` to
     /// `application/json` when unset, then parses the response with `JSONSerialization`.
     ///
-    /// - Parameter request: The request to send.
+    /// - Parameters:
+    ///   - request: The request to send.
+    ///   - timeout: The maximum time to block, in seconds (see ``dataRequestSync(_:timeout:)``).
     /// - Returns: The parsed JSON object (typically a dictionary or array), or `nil` if the body was empty.
     /// - Throws: The transport error, or a `JSONSerialization` error if the body is not valid JSON.
-    public static func jsonRequestSync(_ request: URLRequest) throws -> Any? {
+    public static func jsonRequestSync(_ request: URLRequest, timeout: TimeInterval = 10) throws -> Any? {
         var r = request
 
         if r.value(forHTTPHeaderField: "Content-Type") == nil {
             r.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
 
-        let data = try dataRequestSync(r)
+        let data = try dataRequestSync(r, timeout: timeout)
         if data == nil { return nil }
 
         let json = try JSONSerialization.jsonObject(with: data!, options: [])

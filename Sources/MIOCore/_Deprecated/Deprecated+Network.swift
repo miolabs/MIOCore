@@ -19,9 +19,9 @@ public func MIOCoreURLDataRequest(_ request: URLRequest, completion: @Sendable @
     MCNetwork.dataRequest(request, completion: completion)
 }
 
-@available(*, deprecated, renamed: "MCNetwork.dataRequestSync(_:)")
-public func MIOCoreURLDataRequest_sync(_ request: URLRequest) throws -> Data? {
-    try MCNetwork.dataRequestSync(request)
+@available(*, deprecated, renamed: "MCNetwork.dataRequestSync(_:timeout:)")
+public func MIOCoreURLDataRequest_sync(_ request: URLRequest, timeout: TimeInterval = 10) throws -> Data? {
+    try MCNetwork.dataRequestSync(request, timeout: timeout)
 }
 
 @available(*, deprecated, renamed: "MCNetwork.jsonRequest(_:completion:)")
@@ -29,9 +29,9 @@ public func MIOCoreURLJSONRequest(_ request: URLRequest, completion: @Sendable @
     MCNetwork.jsonRequest(request, completion: completion)
 }
 
-@available(*, deprecated, renamed: "MCNetwork.jsonRequestSync(_:)")
-public func MIOCoreURLJSONRequest_sync(_ request: URLRequest) throws -> Any? {
-    try MCNetwork.jsonRequestSync(request)
+@available(*, deprecated, renamed: "MCNetwork.jsonRequestSync(_:timeout:)")
+public func MIOCoreURLJSONRequest_sync(_ request: URLRequest, timeout: TimeInterval = 10) throws -> Any? {
+    try MCNetwork.jsonRequestSync(request, timeout: timeout)
 }
 
 @available(*, deprecated, renamed: "MCNetwork.jsonRequestExecute(method:urlString:body:headers:)")
