@@ -17,26 +17,35 @@ extension MCDate {
 
         // MARK: - Per-pattern factories
 
-        /// Local `yyyy-MM-dd`.
-        static func date() -> DateFormatter { _cached("date") { _make("yyyy-MM-dd", .current) } as! DateFormatter }
+        // The patterned formatters run in the PROCESS time zone on purpose: the wire
+        // contract is wall-clock time with no offset. A Date that reads 16:00 where it
+        // was created serializes as "16:00", and "16:00" parses back as 16:00 local —
+        // symmetric on every leg (POS device, manager app, GMT pod), so the wall time
+        // survives end-to-end. Never pin these to UTC: that inverts the contract on
+        // devices (a POS in Madrid would write 14:00 for a 16:00 sale). The locale is
+        // always en_US_POSIX so a device's 12-hour-clock override or non-Latin-digit
+        // locale (ar_AE, …) can never rewrite the explicit patterns.
 
-        /// Local `HH:mm`.
-        static func time() -> DateFormatter { _cached("time") { _make("HH:mm", .current) } as! DateFormatter }
+        /// Local wall-clock `yyyy-MM-dd`.
+        static func date() -> DateFormatter { _cached("date") { _make("yyyy-MM-dd") } as! DateFormatter }
 
-        /// Local `yyyy-MM-dd HH:mm`.
-        static func dateTime() -> DateFormatter { _cached("dateTime") { _make("yyyy-MM-dd HH:mm", .current) } as! DateFormatter }
+        /// Local wall-clock `HH:mm`.
+        static func time() -> DateFormatter { _cached("time") { _make("HH:mm") } as! DateFormatter }
 
-        /// Local `yyyy-MM-dd'T'HH:mm`.
-        static func dateTimeT() -> DateFormatter { _cached("dateTimeT") { _make("yyyy-MM-dd'T'HH:mm", .current) } as! DateFormatter }
+        /// Local wall-clock `yyyy-MM-dd HH:mm`.
+        static func dateTime() -> DateFormatter { _cached("dateTime") { _make("yyyy-MM-dd HH:mm") } as! DateFormatter }
 
-        /// Local `yyyy-MM-dd'T'HH:mm:ss`.
-        static func dateTimeTS() -> DateFormatter { _cached("dateTimeTS") { _make("yyyy-MM-dd'T'HH:mm:ss", .current) } as! DateFormatter }
+        /// Local wall-clock `yyyy-MM-dd'T'HH:mm`.
+        static func dateTimeT() -> DateFormatter { _cached("dateTimeT") { _make("yyyy-MM-dd'T'HH:mm") } as! DateFormatter }
 
-        /// `en_US_POSIX` `yyyy-MM-dd HH:mm:ss` (the primary parse format).
-        static func dateTimeS() -> DateFormatter { _cached("dateTimeS") { _make("yyyy-MM-dd HH:mm:ss", _posix) } as! DateFormatter }
+        /// Local wall-clock `yyyy-MM-dd'T'HH:mm:ss`.
+        static func dateTimeTS() -> DateFormatter { _cached("dateTimeTS") { _make("yyyy-MM-dd'T'HH:mm:ss") } as! DateFormatter }
 
-        /// Local `yyyy-MM-dd'T'HH:mm:ss'Z'` (a literal `Z`, not a zone specifier).
-        static func z() -> DateFormatter { _cached("z") { _make("yyyy-MM-dd'T'HH:mm:ss'Z'", _posix) } as! DateFormatter }
+        /// Local wall-clock `yyyy-MM-dd HH:mm:ss` (the primary parse format).
+        static func dateTimeS() -> DateFormatter { _cached("dateTimeS") { _make("yyyy-MM-dd HH:mm:ss") } as! DateFormatter }
+
+        /// Local wall-clock `yyyy-MM-dd'T'HH:mm:ss'Z'` (a literal `Z`, not a zone specifier).
+        static func z() -> DateFormatter { _cached("z") { _make("yyyy-MM-dd'T'HH:mm:ss'Z'") } as! DateFormatter }
 
         /// A cached UTC `DateFormatter` (`en_US_POSIX`, no fixed pattern).
         static func utc() -> DateFormatter { _cached("utc") { MCDate.makeUTCFormatter() } as! DateFormatter }
@@ -50,15 +59,24 @@ extension MCDate {
             } as! ISO8601DateFormatter
         }
 
+        /// A fresh formatter for `format` pinned to `timeZone` — the forced-zone parse path
+        /// (``MCDate/parseOrNil(_:in:)``). Not cached: it is a cold, caller-chosen path, and
+        /// caching by zone would let arbitrary zones grow the per-thread cache.
+        static func fresh(_ format: String, timeZone: TimeZone) -> DateFormatter {
+            let df = _make(format)
+            df.timeZone = timeZone
+            return df
+        }
+
         // MARK: - Shared building blocks
 
         private static let _posix = Locale(identifier: "en_US_POSIX")
 
-        /// Builds a `DateFormatter` with the given pattern and locale.
-        private static func _make(_ format: String, _ locale: Locale) -> DateFormatter {
+        /// Builds a wall-clock `DateFormatter`: fixed `en_US_POSIX` locale, process time zone.
+        private static func _make(_ format: String) -> DateFormatter {
             let df = DateFormatter()
-            df.locale = locale
-            df.timeZone = TimeZone(secondsFromGMT: 0)   // wire/DB timestamps carry no offset and are UTC
+            df.locale = _posix
+            // No timeZone: the process zone IS the contract (see the factories' comment).
             df.dateFormat = format
             return df
         }

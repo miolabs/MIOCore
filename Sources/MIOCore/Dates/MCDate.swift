@@ -10,8 +10,10 @@ import Foundation
 ///
 /// Two timezone regimes, made explicit by the member names:
 ///
-/// - **Local** (device time via `Locale.current`): ``parse(_:)`` / ``parseOrNil(_:)`` (multi-format),
-///   ``parseTime(_:)`` / ``parseTimeOrNil(_:)``, and the `format...` day/time entry points.
+/// - **Local** (the process time zone — the wall-clock wire contract: strings carry no offset,
+///   "16:00" means 16:00 where the process runs, symmetric in both directions):
+///   ``parse(_:)`` / ``parseOrNil(_:)`` (multi-format), ``parseTime(_:)`` / ``parseTimeOrNil(_:)``,
+///   and the `format...` day/time entry points.
 /// - **UTC** (fixed zero offset, no daylight saving): ``parseUTC(_:)``, ``formatDayUTC(_:)``,
 ///   ``formatTimeUTC(_:)``, and the ``utcFormatter()`` / ``makeUTCFormatter(locale:)`` accessors.
 ///
@@ -57,47 +59,73 @@ public enum MCDate {
     /// - Parameter string: The textual date to parse.
     /// - Returns: The parsed `Date`, or `nil` if no format matches.
     public static func parseOrNil(_ string: String) -> Date? {
+        _parseMultiFormat(string, formatter: _cachedFormatter(for:))
+    }
+
+    /// Parses a date string with the multi-format engine, interpreting the text in `timeZone`
+    /// instead of the process zone.
+    ///
+    /// The wall-clock contract stays the default everywhere; this is the deliberate,
+    /// caller-chosen escape hatch for when a value must be read in a fixed zone — e.g.
+    /// `TimeZone(secondsFromGMT: 0)` to force GMT+0. Embedded zone markers are still
+    /// ignored, exactly like ``parseOrNil(_:)``.
+    ///
+    /// - Parameters:
+    ///   - string: The textual date to parse.
+    ///   - timeZone: The zone the text's wall clock is interpreted in.
+    /// - Returns: The parsed `Date`, or `nil` if no format matches.
+    public static func parseOrNil(_ string: String, in timeZone: TimeZone) -> Date? {
+        _parseMultiFormat(string) { Formatters.fresh($0, timeZone: timeZone) }
+    }
+
+    /// The throwing companion of ``parseOrNil(_:in:)``.
+    ///
+    /// - Parameters:
+    ///   - string: The textual date to parse.
+    ///   - timeZone: The zone the text's wall clock is interpreted in.
+    /// - Returns: The parsed `Date`.
+    /// - Throws: ``MCError/general(_:functionName:)`` if no known format matches.
+    public static func parse(_ string: String, in timeZone: TimeZone) throws -> Date {
+        guard let ret = parseOrNil(string, in: timeZone) else {
+            throw MCError.general("Could not parse date >>\(string)<< in \(timeZone.identifier)")
+        }
+        return ret
+    }
+
+    /// The recognized patterns, in parse-likelihood order.
+    private static let _multiFormatPatterns = [
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd",
+        "yyyy-MM-dd HH:mm",
+        "yyyy-MM-dd'T'HH:mm",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+    ]
+
+    /// The thread-cached (process-zone) formatter for one of ``_multiFormatPatterns``.
+    private static func _cachedFormatter(for pattern: String) -> DateFormatter {
+        switch pattern {
+        case "yyyy-MM-dd HH:mm:ss":   return Formatters.dateTimeS()
+        case "yyyy-MM-dd":            return Formatters.date()
+        case "yyyy-MM-dd HH:mm":      return Formatters.dateTime()
+        case "yyyy-MM-dd'T'HH:mm":    return Formatters.dateTimeT()
+        case "yyyy-MM-dd'T'HH:mm:ss": return Formatters.dateTimeTS()
+        default:                      return Formatters.z()
+        }
+    }
+
+    /// The multi-format engine. `formatter` supplies the `DateFormatter` for each pattern,
+    /// which is what selects the zone regime: the per-thread cached formatters (process
+    /// zone, the default) or fresh ones pinned to a forced zone.
+    private static func _parseMultiFormat(_ string: String, formatter: (String) -> DateFormatter) -> Date? {
         var date: Date?
         MCRuntime.autoReleasePool {
 
-            var df: DateFormatter
-
-            // Most probably case
-            df = Formatters.dateTimeS()
-            if let ret = df.date(from: string) {
-                date = ret
-                return
-            }
-
-            // Check other cases
-            df = Formatters.date()
-            if let ret = df.date(from: string) {
-                date = ret
-                return
-            }
-
-            df = Formatters.dateTime()
-            if let ret = df.date(from: string) {
-                date = ret
-                return
-            }
-
-            df = Formatters.dateTimeT()
-            if let ret = df.date(from: string) {
-                date = ret
-                return
-            }
-
-            df = Formatters.dateTimeTS()
-            if let ret = df.date(from: string) {
-                date = ret
-                return
-            }
-
-            df = Formatters.z()
-            if let ret = df.date(from: string) {
-                date = ret
-                return
+            for pattern in _multiFormatPatterns {
+                if let ret = formatter(pattern).date(from: string) {
+                    date = ret
+                    return
+                }
             }
 
             // Last-resort attempts slice fixed character ranges. Guard the length
@@ -110,14 +138,11 @@ public enum MCDate {
 
             }
 
-            df = Formatters.dateTimeS()
+            let df = formatter("yyyy-MM-dd HH:mm:ss")
             if let ret = df.date(from: last_try) {
                 date = ret
                 return
             }
-
-            //df = Formatters.dateTimeS()
-            //if let ret = df.date(from: last_try ) { date = ret; return }
 
             // Check for a timeshift
             guard last_try.count >= 13 else { return }
