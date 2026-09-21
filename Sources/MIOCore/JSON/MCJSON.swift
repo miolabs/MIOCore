@@ -19,8 +19,10 @@ import Foundation
 /// ```
 public enum MCJSON {
 
-    /// Renders `Date` values as `yyyy-MM-dd'T'HH:mm:ss'Z'` strings during serialization.
-    private static let _json_formatter = MCDate.Formatters.z()
+    /// Renders `Date` values as `yyyy-MM-dd'T'HH:mm:ss'Z'` strings (local wall clock, literal `Z`)
+    /// during serialization. Resolved per call: a `static let` would capture the formatter cached on
+    /// whichever thread touched it first and share that non-thread-safe `DateFormatter` process-wide.
+    private static var _json_formatter: DateFormatter { MCDate.Formatters.z() }
 
     /// Serializes an object graph to JSON `Data`, first making it safe to encode.
     ///

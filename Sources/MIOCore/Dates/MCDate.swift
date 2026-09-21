@@ -10,8 +10,10 @@ import Foundation
 ///
 /// Two timezone regimes, made explicit by the member names:
 ///
-/// - **Local** (device time via `Locale.current`): ``parse(_:)`` / ``parseOrNil(_:)`` (multi-format),
-///   ``parseTime(_:)`` / ``parseTimeOrNil(_:)``, and the `format...` day/time entry points.
+/// - **Local** (the process time zone — the wall-clock wire contract: strings carry no offset,
+///   "16:00" means 16:00 where the process runs, symmetric in both directions):
+///   ``parse(_:)`` / ``parseOrNil(_:)`` (multi-format), ``parseTime(_:)`` / ``parseTimeOrNil(_:)``,
+///   and the `format...` day/time entry points.
 /// - **UTC** (fixed zero offset, no daylight saving): ``parseUTC(_:)``, ``formatDayUTC(_:)``,
 ///   ``formatTimeUTC(_:)``, and the ``utcFormatter()`` / ``makeUTCFormatter(locale:)`` accessors.
 ///
