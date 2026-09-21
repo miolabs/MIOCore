@@ -135,4 +135,30 @@ final class MCDateWallClockTests: XCTestCase {
             XCTAssertEqual(d!.timeIntervalSince1970, 1786579200, accuracy: 0.5)  // 2026-08-13T00:00:00Z
         }
     }
+
+    // MARK: - The forced-zone escape hatch (parse in a caller-chosen zone)
+
+    /// `parse(_:in:)` interprets the text in the GIVEN zone, whatever the process zone is —
+    /// the deliberate opt-out from the wall-clock default (e.g. force GMT+0).
+    func testForcedZoneParseIgnoresTheProcessTimeZone() {
+        let utc = TimeZone(secondsFromGMT: 0)!
+        let dubai = TimeZone(identifier: "Asia/Dubai")!
+        withTimeZone("Europe/Madrid") {
+            XCTAssertEqual(MCDate.parseOrNil(self.wall, in: utc)?.timeIntervalSince1970,
+                           1786636800, "16:00 forced GMT+0")  // 2026-08-13T16:00:00Z
+            XCTAssertEqual(MCDate.parseOrNil(self.wall, in: dubai),
+                           self.wallInstant("Asia/Dubai"), "16:00 forced Dubai")
+        }
+    }
+
+    /// The forced-zone path keeps the same lenient shapes and marker-ignoring as the default engine.
+    func testForcedZoneParseKeepsTheEngineSemantics() {
+        let utc = TimeZone(secondsFromGMT: 0)!
+        withTimeZone("Europe/Madrid") {
+            XCTAssertEqual(MCDate.parseOrNil("2026-08-13T16:00:00.000Z", in: utc)?.timeIntervalSince1970, 1786636800)
+            XCTAssertEqual(MCDate.parseOrNil("2026-08-13T16:00", in: utc)?.timeIntervalSince1970, 1786636800)
+            XCTAssertNil(MCDate.parseOrNil("garbage", in: utc))
+            XCTAssertNil(try? MCDate.parse("garbage", in: utc))
+        }
+    }
 }

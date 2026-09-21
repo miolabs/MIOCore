@@ -59,6 +59,15 @@ extension MCDate {
             } as! ISO8601DateFormatter
         }
 
+        /// A fresh formatter for `format` pinned to `timeZone` — the forced-zone parse path
+        /// (``MCDate/parseOrNil(_:in:)``). Not cached: it is a cold, caller-chosen path, and
+        /// caching by zone would let arbitrary zones grow the per-thread cache.
+        static func fresh(_ format: String, timeZone: TimeZone) -> DateFormatter {
+            let df = _make(format)
+            df.timeZone = timeZone
+            return df
+        }
+
         // MARK: - Shared building blocks
 
         private static let _posix = Locale(identifier: "en_US_POSIX")
