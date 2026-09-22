@@ -63,9 +63,10 @@ public enum MCJSON {
 
     /// Recursively rewrites an object graph into JSON-serializable values.
     ///
-    /// `JSONSerialization` rejects `Date` and `UUID`; this walks dictionaries and arrays and replaces
-    /// them with canonical string forms, a `Date` via the `yyyy-MM-dd'T'HH:mm:ss'Z'` formatter, and a
-    /// `UUID` as its uppercased string. Other values pass through unchanged.
+    /// `JSONSerialization` rejects `Date`, `UUID`, `Data` and `URL`; this walks dictionaries and arrays
+    /// and replaces them with canonical string forms: a `Date` via the `yyyy-MM-dd'T'HH:mm:ss'Z'`
+    /// formatter, a `UUID` as its uppercased string, `Data` as base64, a `URL` as its absolute string.
+    /// Other values pass through unchanged.
     ///
     /// - Parameter obj: The object graph to sanitize.
     /// - Returns: An equivalent graph safe to pass to `JSONSerialization`.
@@ -74,6 +75,12 @@ public enum MCJSON {
             return _json_formatter.string(from: date)
         } else if let uuid = obj as? UUID {
             return uuid.uuidString.uppercased()
+        } else if let data = obj as? Data {
+            // Bytes travel as base64 on the wire (a bytea column read by MIODB, a Binary attribute).
+            return data.base64EncodedString()
+        } else if let url = obj as? URL {
+            // A URI attribute holds a URL in memory; on the wire it is its absolute string.
+            return url.absoluteString
         } else if let dict = obj as? [String: Any] {
             var clean_dict = [:] as [String: Any]
 

@@ -16,6 +16,14 @@ final class MCJsonTests: XCTestCase {
         XCTAssertTrue(converted is String)
     }
 
+    func testSerializableJSONConvertsDataToBase64AndURLToAbsoluteString() {
+        XCTAssertEqual(MCJSON.serializable(Data([1, 2, 3])) as? String, "AQID")
+        XCTAssertEqual(MCJSON.serializable(URL(string: "https://dual-link.com/docs?x=1")!) as? String, "https://dual-link.com/docs?x=1")
+        let out = MCJSON.serializable(["blob": Data([0xFF]), "link": URL(string: "https://dual-link.com/")!]) as? [String: Any]
+        XCTAssertEqual(out?["blob"] as? String, "/w==")
+        XCTAssertEqual(out?["link"] as? String, "https://dual-link.com/")
+    }
+
     func testSerializableJSONWalksNestedContainers() {
         let uuid = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")!
         let input: [String: Any] = ["id": uuid, "list": [uuid]]
