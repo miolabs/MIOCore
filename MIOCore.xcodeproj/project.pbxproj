@@ -30,13 +30,11 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		99D5EC8B3021F0DE00E3168A /* MIOCore */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			name = MIOCore;
 			path = Sources/MIOCore;
 			sourceTree = "<group>";
 		};
 		99D5ECBE3021F10800E3168A /* MIOCoreLogger */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			name = MIOCoreLogger;
 			path = Sources/MIOCoreLogger;
 			sourceTree = "<group>";
 		};
@@ -487,7 +485,6 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
@@ -533,7 +530,6 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
