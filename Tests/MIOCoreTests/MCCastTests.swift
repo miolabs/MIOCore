@@ -82,4 +82,77 @@ final class MCCastTests: XCTestCase {
             }
         }
     }
+
+    // MARK: - Strict xValue variants
+
+    private enum AppError: Error, Equatable { case missingFlag }
+
+    func testStrictVariantsReturnCoercedValue() throws {
+        XCTAssertEqual(try MCCast.boolValue("yes"), true)
+        XCTAssertEqual(try MCCast.intValue("42"), 42)
+        XCTAssertEqual(try MCCast.int8Value("100"), 100)
+        XCTAssertEqual(try MCCast.int16Value(7), 7)
+        XCTAssertEqual(try MCCast.uint16Value(7 as Int), 7)
+        XCTAssertEqual(try MCCast.int32Value("7"), 7)
+        XCTAssertEqual(try MCCast.uint32Value(7 as UInt8), 7)
+        XCTAssertEqual(try MCCast.int64Value(7), 7)
+        XCTAssertEqual(try MCCast.uint64Value(7), 7)
+        XCTAssertEqual(try MCCast.doubleValue("1.5"), 1.5)
+        XCTAssertEqual(try MCCast.floatValue(1.5), 1.5)
+        XCTAssertEqual(try MCCast.decimalValue("19.99"), Decimal(string: "19.99"))
+        XCTAssertEqual(try MCCast.uuidValue("6BA7B810-9DAD-11D1-80B4-00C04FD430C8"),
+                       UUID(uuidString: "6BA7B810-9DAD-11D1-80B4-00C04FD430C8"))
+    }
+
+    func testStrictVariantsUseDefaultBeforeThrowing() throws {
+        XCTAssertEqual(try MCCast.boolValue(nil, default: false), false)
+        XCTAssertEqual(try MCCast.intValue("abc", default: 0), 0)
+        XCTAssertEqual(try MCCast.int8Value("abc", default: 5), 5)
+        XCTAssertEqual(try MCCast.doubleValue(nil, default: 2), 2)
+    }
+
+    func testStrictVariantsThrowCastErrorOnNilOrUnconvertible() {
+        let calls: [() throws -> Any] = [
+            { try MCCast.boolValue(nil) },
+            { try MCCast.intValue("abc") },
+            { try MCCast.int8Value(nil) },
+            { try MCCast.int16Value("x") },
+            { try MCCast.uint16Value(nil) },
+            { try MCCast.int32Value(nil) },
+            { try MCCast.uint32Value(nil) },
+            { try MCCast.int64Value(nil) },
+            { try MCCast.uint64Value(nil) },
+            { try MCCast.doubleValue(nil) },   // used to crash on the force-unwrap
+            { try MCCast.floatValue(nil) },
+            { try MCCast.decimalValue("abc") },
+            { try MCCast.uuidValue("not-a-uuid") },
+        ]
+        for call in calls {
+            XCTAssertThrowsError(try call()) { error in
+                guard case MCCastError.invalidValue = error else { return XCTFail("unexpected \(error)") }
+            }
+        }
+    }
+
+    func testStrictVariantsThrowCustomError() {
+        XCTAssertThrowsError(try MCCast.boolValue(nil, error: AppError.missingFlag)) { error in
+            XCTAssertEqual(error as? AppError, .missingFlag)
+        }
+        XCTAssertThrowsError(try MCCast.intValue("abc", error: AppError.missingFlag)) { error in
+            XCTAssertEqual(error as? AppError, .missingFlag)
+        }
+    }
+
+    func testCastErrorDescriptionNamesValueAndType() {
+        let desc = MCCastError.invalidValue("abc", type: Int.self).errorDescription ?? ""
+        XCTAssertTrue(desc.contains("\"abc\""))
+        XCTAssertTrue(desc.contains("Int"))
+    }
+
+    func testBareCastsStayUnambiguousWithoutTypeContext() {
+        let flag = MCCast.bool("yes")
+        let count = MCCast.int("3")
+        XCTAssertEqual(flag, true)
+        XCTAssertEqual(count, 3)
+    }
 }

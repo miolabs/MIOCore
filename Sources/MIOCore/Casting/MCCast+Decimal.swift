@@ -43,4 +43,12 @@ extension MCCast {
 
         return def
     }
+
+    /// Converts any value to `Decimal`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``decimal(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func decimalValue(_ value: Any?, `default` def: Decimal? = nil, error: Error? = nil) throws -> Decimal {
+        try _required(decimal(value, default: def), value, error)
+    }
 }

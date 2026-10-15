@@ -39,4 +39,13 @@ extension MCCast {
 
         return ret ?? def
     }
+
+    /// Converts any value to a `UUID`, throwing when it cannot.
+    ///
+    /// The strict form of ``uuid(_:default:optional:)``: accepts a `UUID` or a UUID string, and an
+    /// unconvertible value (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)``
+    /// when `error` is `nil`.
+    public static func uuidValue(_ value: Any?, `default` def: UUID? = nil, error: Error? = nil) throws -> UUID {
+        try _required(uuid(value, default: def), value, error)
+    }
 }
