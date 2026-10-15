@@ -42,4 +42,25 @@ extension MCCast {
 
         return def
     }
+
+    /// Converts any value to a `Bool`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``bool(_:default:)``: same coercion rules, but a `nil`/unconvertible
+    /// value (with no `def`) throws instead of returning `nil`.
+    ///
+    /// ```swift
+    /// try MCCast.boolValue("yes")                    // true
+    /// try MCCast.boolValue(nil)                      // throws MCCastError.invalidValue
+    /// try MCCast.boolValue(nil, error: MyErr.flag)   // throws MyErr.flag
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - value: The dynamic value to convert.
+    ///   - def: The value returned when `value` is `nil`/`NSNull`/unconvertible. Defaults to `nil`.
+    ///   - error: The error to throw instead of ``MCCastError/invalidValue(_:type:)``. Defaults to `nil`.
+    /// - Returns: The coerced `Bool`.
+    /// - Throws: `error`, or ``MCCastError/invalidValue(_:type:)``, when no `Bool` is available.
+    public static func boolValue(_ value: Any?, `default` def: Bool? = nil, error: Error? = nil) throws -> Bool {
+        try _required(bool(value, default: def), value, error)
+    }
 }

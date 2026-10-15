@@ -62,7 +62,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int8`, or `def` when conversion is not possible.
     public static func int8(_ value: Any?, `default` def: Int8? = nil) -> Int8? {
-        if let as_string = value as? String { return Int8(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return Int8(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return Int8(as_bool ? 1 : 0) }
         if let as_char = value as? Character { return Int8(String(as_char)) }
         if let as_int = value as? Int8 { return as_int }
@@ -89,7 +89,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int16`, or `def` when conversion is not possible.
     public static func int16(_ value: Any?, `default` def: Int16? = nil) -> Int16? {
-        if let as_string = value as? String { return Int16(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return Int16(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return Int16(as_bool ? 1 : 0) }
         if let as_char = value as? Character { return Int16(String(as_char)) }
         if let as_int = value as? Int8 { return Int16(as_int) }
@@ -116,7 +116,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `UInt16`, or `def` when conversion is not possible.
     public static func uint16(_ value: Any?, `default` def: UInt16? = nil) -> UInt16? {
-        if let as_string = value as? String { return UInt16(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return UInt16(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return UInt16(as_bool ? 1 : 0) }
         if let as_char = value as? Character { return UInt16(String(as_char)) }
         if let as_int = value as? UInt8 { return UInt16(as_int) }
@@ -144,7 +144,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int32`, or `def` when conversion is not possible.
     public static func int32(_ value: Any?, `default` def: Int32? = nil) -> Int32? {
-        if let as_string = value as? String { return Int32(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return Int32(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return Int32(as_bool ? 1 : 0) }
         if let as_char = value as? Character { return Int32(String(as_char)) }
         if let as_int = value as? Int8 { return Int32(as_int) }
@@ -171,7 +171,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `UInt32`, or `def` when conversion is not possible.
     public static func uint32(_ value: Any?, `default` def: UInt32? = nil) -> UInt32? {
-        if let as_string = value as? String { return UInt32(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return UInt32(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return UInt32(as_bool ? 1 : 0) }
         if let as_char = value as? Character { return UInt32(String(as_char)) }
         if let as_int = value as? UInt8 { return UInt32(as_int) }
@@ -198,7 +198,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `Int64`, or `def` when conversion is not possible.
     public static func int64(_ value: Any?, `default` def: Int64? = nil) -> Int64? {
-        if let as_string = value as? String { return Int64(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return Int64(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return Int64(as_bool ? 1 : 0) }
         if let as_int = value as? Int8 { return Int64(as_int) }
         if let as_int = value as? Int16 { return Int64(as_int) }
@@ -224,7 +224,7 @@ extension MCCast {
     ///   - def: The value returned when `value` is unconvertible. Defaults to `nil`.
     /// - Returns: The coerced `UInt64`, or `def` when conversion is not possible.
     public static func uint64(_ value: Any?, `default` def: UInt64? = nil) -> UInt64? {
-        if let as_string = value as? String { return UInt64(_removing_string_float(as_string)) }
+        if let as_string = value as? String { return UInt64(_removing_string_float(as_string)) ?? def }
         if let as_bool = value as? Bool { return UInt64(as_bool ? 1 : 0) }
         if let as_int = value as? Int8 { return UInt64(as_int) }
         if let as_int = value as? Int16 { return UInt64(as_int) }
@@ -243,6 +243,70 @@ extension MCCast {
         if let as_decimal = value as? Decimal { return NSDecimalNumber(decimal: as_decimal.roundingBy(scale: 0, roundingMode: .plain)).uint64Value }
 
         return def
+    }
+
+    /// Converts any value to `Int`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``int(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func intValue(_ value: Any?, `default` def: Int? = nil, error: Error? = nil) throws -> Int {
+        try _required(int(value, default: def), value, error)
+    }
+
+    /// Converts any value to `Int8`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``int8(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func int8Value(_ value: Any?, `default` def: Int8? = nil, error: Error? = nil) throws -> Int8 {
+        try _required(int8(value, default: def), value, error)
+    }
+
+    /// Converts any value to `Int16`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``int16(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func int16Value(_ value: Any?, `default` def: Int16? = nil, error: Error? = nil) throws -> Int16 {
+        try _required(int16(value, default: def), value, error)
+    }
+
+    /// Converts any value to `UInt16`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``uint16(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func uint16Value(_ value: Any?, `default` def: UInt16? = nil, error: Error? = nil) throws -> UInt16 {
+        try _required(uint16(value, default: def), value, error)
+    }
+
+    /// Converts any value to `Int32`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``int32(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func int32Value(_ value: Any?, `default` def: Int32? = nil, error: Error? = nil) throws -> Int32 {
+        try _required(int32(value, default: def), value, error)
+    }
+
+    /// Converts any value to `UInt32`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``uint32(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func uint32Value(_ value: Any?, `default` def: UInt32? = nil, error: Error? = nil) throws -> UInt32 {
+        try _required(uint32(value, default: def), value, error)
+    }
+
+    /// Converts any value to `Int64`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``int64(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func int64Value(_ value: Any?, `default` def: Int64? = nil, error: Error? = nil) throws -> Int64 {
+        try _required(int64(value, default: def), value, error)
+    }
+
+    /// Converts any value to `UInt64`, throwing when it cannot.
+    ///
+    /// The strict counterpart of ``uint64(_:default:)``: same coercion rules, but an unconvertible value
+    /// (with no `def`) throws `error`, or ``MCCastError/invalidValue(_:type:)`` when `error` is `nil`.
+    public static func uint64Value(_ value: Any?, `default` def: UInt64? = nil, error: Error? = nil) throws -> UInt64 {
+        try _required(uint64(value, default: def), value, error)
     }
 
     /// Reports whether a dynamic value is *already* one of Swift's signed integer types.
