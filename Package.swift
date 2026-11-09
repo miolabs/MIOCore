@@ -11,6 +11,10 @@ let package = Package(
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library( name: "MIOCoreLogger", targets: [ "MIOCoreLogger" ] ),
         .library( name: "MIOCore", targets: [ "MIOCore" ] ),
+        // Web (WebAssembly) modules only: memory / string helpers and the standard
+        // mio_alloc / mio_free exports. Its Swift code compiles only for WASI; the JavaScript
+        // half (Sources/MIOCoreWasm/js) is shipped as files, not built.
+        .library( name: "MIOCoreWasm", targets: [ "MIOCoreWasm" ] ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -24,6 +28,7 @@ let package = Package(
         //.systemLibrary(name: "TimeLib", pkgConfig: "TimeLib"),
         .target( name: "MIOCore", dependencies: [] ),
         .target( name: "MIOCoreLogger", dependencies: [ "MIOCore", .product(name: "Logging", package: "swift-log"), ] ),
+        .target( name: "MIOCoreWasm", dependencies: [], exclude: [ "js", "README.md" ] ),
         .testTarget(
             name: "MIOCoreTests",
             dependencies: ["MIOCore"]
