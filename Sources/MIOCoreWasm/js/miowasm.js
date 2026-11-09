@@ -78,7 +78,14 @@ export class MIOWasm {
             instance = await WebAssembly.instantiate( resolved, imports );
         } else if ( typeof Response !== "undefined" && resolved instanceof Response ) {
             if ( !resolved.ok ) throw new Error( "Could not load WebAssembly module: HTTP " + resolved.status );
-            instance = ( await WebAssembly.instantiateStreaming( resolved, imports ) ).instance;
+            // Streaming compile needs the server to send application/wasm; other servers
+            // (local dev servers, misconfigured hosts) still work from the bytes.
+            const streamable = ( resolved.headers.get( "Content-Type" ) || "" ).startsWith( "application/wasm" );
+            if ( streamable && typeof WebAssembly.instantiateStreaming === "function" ) {
+                instance = ( await WebAssembly.instantiateStreaming( resolved, imports ) ).instance;
+            } else {
+                instance = ( await WebAssembly.instantiate( await resolved.arrayBuffer(), imports ) ).instance;
+            }
         } else {
             instance = ( await WebAssembly.instantiate( resolved, imports ) ).instance;
         }
