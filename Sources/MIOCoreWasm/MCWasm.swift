@@ -10,6 +10,8 @@
 //    mio_alloc; JS frees it after the call.
 //  - Outputs: strings, bytes and JSON go back as one buffer, `[length: UInt32 LE][bytes]`,
 //    allocated here; JS reads it and calls mio_free.
+//  - Errors: a failed call records its error with `MCWasm.fail`; JS takes it with
+//    `mio_take_error()` (a buffer with the message, or 0 when there is none) and throws.
 //
 //  Compiled only for WASI: other platforms get an empty module.
 //
@@ -70,6 +72,25 @@ public enum MCWasm {
     public static func buffer<T: Encodable> ( json value: T ) -> UnsafeMutableRawPointer {
         buffer( ( try? JSONEncoder( ).encode( value ) ) ?? Data( "null".utf8 ) )
     }
+
+    // MARK: Errors
+
+    nonisolated(unsafe) static var lastError: String?
+
+    /// Records why the current call failed, for JS to read with mio_take_error.
+    public static func fail ( _ error: Error ) {
+        lastError = String( describing: error )
+    }
+
+    public static func fail ( _ message: String ) {
+        lastError = message
+    }
+
+    /// The recorded error, cleared.
+    public static func takeError ( ) -> String? {
+        defer { lastError = nil }
+        return lastError
+    }
 }
 
 // MARK: - Standard exports
@@ -84,6 +105,13 @@ public func mio_alloc ( _ size: Int32 ) -> UnsafeMutableRawPointer {
 @_cdecl("mio_free")
 public func mio_free ( _ pointer: UnsafeMutableRawPointer? ) {
     pointer?.deallocate( )
+}
+
+/// The error the last failed call recorded (a buffer), or 0; clears it.
+@_expose(wasm, "mio_take_error")
+@_cdecl("mio_take_error")
+public func mio_take_error ( ) -> UnsafeMutableRawPointer? {
+    MCWasm.takeError( ).map { MCWasm.buffer( $0 ) }
 }
 
 #endif
