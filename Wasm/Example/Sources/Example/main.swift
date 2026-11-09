@@ -36,4 +36,12 @@ public func example_reverse ( _ bytes: UnsafeRawPointer?, _ length: Int32 ) -> U
 public func example_add ( _ a: Int32, _ b: Int32, _ negate: Int32 ) -> Int32 {
     negate != 0 ? -( a + b ) : a + b
 }
+
+/// Fails when `divisor` is 0: the error is recorded for JS (mio_take_error).
+@_expose(wasm, "example_divide")
+@_cdecl("example_divide")
+public func example_divide ( _ a: Int32, _ divisor: Int32 ) -> Int32 {
+    guard divisor != 0 else { MCWasm.fail( "division by zero" ); return 0 }
+    return a / divisor
+}
 #endif

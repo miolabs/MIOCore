@@ -6,7 +6,7 @@ import { serveWasmAPI, MIOWasmWorker } from "../../Sources/MIOCoreWasm/js/miowas
 
 const bytes = readFileSync( process.argv[ 2 ] );
 const exportNames = WebAssembly.Module.exports( new WebAssembly.Module( bytes ) ).map( e => e.name );
-assert.ok( exportNames.includes( "mio_alloc" ) && exportNames.includes( "mio_free" ), "standard exports come from MIOCoreWasm" );
+assert.ok( exportNames.includes( "mio_alloc" ) && exportNames.includes( "mio_free" ) && exportNames.includes( "mio_take_error" ), "standard exports come from MIOCoreWasm" );
 
 const wasm = await MIOWasm.instantiate( bytes );
 assert.equal( wasm.callString( "example_echo", "hola, año" ), "HOLA, AÑO" );
@@ -16,6 +16,12 @@ assert.equal( wasm.callString( "example_optional", "" ), "some:" );
 assert.equal( wasm.callString( "example_optional", "x" ), "some:x" );
 assert.deepEqual( [ ...wasm.callBytes( "example_reverse", new Uint8Array( [ 1, 2, 3 ] ) ) ], [ 3, 2, 1 ] );
 assert.equal( wasm.call( "example_add", 2, 3, true ), -5 );
+// errors: recorded by MCWasm.fail, taken (and cleared) with mio_take_error
+assert.equal( wasm.call( "example_divide", 9, 3 ), 3 );
+assert.equal( wasm.exports.mio_take_error(), 0 );
+wasm.call( "example_divide", 9, 0 );
+assert.equal( wasm.readString( wasm.exports.mio_take_error() ), "division by zero" );
+assert.equal( wasm.exports.mio_take_error(), 0 );
 assert.throws( () => wasm.call( "nope" ), /No export/ );
 
 // memory is freed: many calls do not grow it

@@ -14,6 +14,9 @@ The JavaScript files are not built by SwiftPM. A web app copies them next to its
 - **Memory:** every module exports `mio_alloc(size) -> pointer` and `mio_free(pointer)`. They come from this library, so a module only declares its own functions.
 - **Arguments:** strings and bytes go in as (pointer, byte length), in memory JS got from `mio_alloc` and frees after the call. `null` is passed as (0, -1), which `MCWasm.optionalString` reads as `nil`. Booleans pass as 1 / 0; numbers pass as they are.
 - **Results:** strings, bytes and JSON come back as a pointer to `[length: UInt32 LE][bytes]`. JS reads it and frees it with `mio_free`.
+- **Errors:** a call that fails records why with `MCWasm.fail( error )`. JS calls `mio_take_error()`, which returns the message as a buffer (or 0 when there is none) and clears it.
+
+Functions don't have to be written by hand against this convention: MIOCoreMacros' `@Export` macro writes the wrapper for a plain Swift function, and its `mio-wasm-bindings` tool writes the matching JavaScript class.
 
 ## Swift side
 ```swift
